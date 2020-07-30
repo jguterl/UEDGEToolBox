@@ -3,6 +3,7 @@
 
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
+
 import pathlib
 
 here = pathlib.Path(__file__).parent.resolve()
@@ -15,11 +16,12 @@ long_description = (here / 'README.md').read_text(encoding='utf-8')
 
 setup(
     name='UEDGEToolBox',
-    version='0.1.0',
+    version_format='{tag}',
+    setup_requires=['setuptools-git-version'],
     description='Toolbox for UEDGE',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/jguterl/UEDGEToolBox',
+    url='https://github.com/jguterl/UEDGEToolBox/',
     author='J. Guterl',  # Optional
 
     # This should be a valid email address corresponding to the author listed
@@ -27,9 +29,9 @@ setup(
     author_email='guterlj@fusion.gat.com',  
     classifiers=[
         'Development Status :: 4 - Beta',
-        'Intended Audience :: Any UEDGE users',
-        'Topic :: Software Development :: Analysis and Run Tools for UEDGE',
-        'License :: ???',
+        #'Intended Audience :: Any UEDGE users',
+        'Topic :: Software Development',
+        #'License :: ???',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
@@ -41,7 +43,7 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages(where='src'),
     python_requires='>=3.5, <4',
-    install_requires=['colorama,datetime,os, sys, math, string, re,numpy,easygui,scipy,mpldatacursor'],  # Optional
+    install_requires=['colorama','datetime','numpy','easygui','scipy','mpldatacursor'],  # Optional
     #extras_require={  # Optional
     #    'dev': ['check-manifest'],
     #    'test': ['coverage'],

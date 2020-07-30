@@ -64,7 +64,7 @@ class UEDGEProjectsConfigFile():
         
         
     def SetProjectsConfigFile(self):
-        
+               print('Set a config file for UEDGE projects')
                self.ProjectsConfigFile=easygui.filesavebox(title='Set a config file for UEDGE projects',default=os.path.join(os.path.expanduser("~"),'.UedgeProjects'))
                if self.ProjectsConfigFile is  None:
                    print('No configuration file set for UEDGE projects... Type "SetProjectsConfigFile" to create or load one')

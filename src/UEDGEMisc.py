@@ -5,10 +5,9 @@ Created on Wed Feb 19 10:46:09 2020
 
 @author: jguterl
 """
-import uedge
+
 import os
-from uedge import *
-from .UEDGESettings import *
+from UEDGESettings import *
 
 def GetListPackage()->list:
     import pkgutil

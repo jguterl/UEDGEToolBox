@@ -1,0 +1,7 @@
+README.md
+setup.py
+src/UEDGEToolBox.egg-info/PKG-INFO
+src/UEDGEToolBox.egg-info/SOURCES.txt
+src/UEDGEToolBox.egg-info/dependency_links.txt
+src/UEDGEToolBox.egg-info/requires.txt
+src/UEDGEToolBox.egg-info/top_level.txt

@@ -35,17 +35,10 @@ class UEDGESettings(UEDGEProjects):
             super().__init__(self.SettingsConfig['ProjectsConfigFile'])
             self.CurrentProject=self.ProjectsConfig['CurrentProject']
         ShowProject(self.CurrentProject)    
-        
-        
-        
-        
-        
-        
-        
-            
-            self.UserName=self.config['UEDGE'].get('UserName')
-            self.ProjectsConfig
+        self.UserName=self.config['UEDGE'].get('UserName')
         self.Platform=self.GetPlatform()
+        
+        
     def WriteSettingsConfig(self):
         
         
