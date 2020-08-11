@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: UEDGEToolBox
+Version: 0.1.0
+Summary: Toolbox for UEDGE
+Home-page: https://github.com/jguterl/UEDGEToolBox/
+Author: J. Guterl
+Author-email: guterlj@fusion.gat.com
+License: UNKNOWN
+Project-URL: Bug Reports, https://github.com/jguterl/UEDGEToolBox/issues
+Project-URL: UEDGE, https://github.com/LLNL/UEDGE/
+Project-URL: Source, https://github.com/jguterl/UEDGEToolBox/
+Description: # UEDGEToolBox
+        ToolBox for UEDGE developed by J.Guterl at General Atomics (guterlj@fusion.gat.com). 
+        Available for python 3.X only. 
+        
+        
+        
+Keywords: sample,setuptools,development
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Topic :: Software Development
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.5, <4
+Description-Content-Type: text/markdown
