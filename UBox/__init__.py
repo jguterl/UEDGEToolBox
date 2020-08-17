@@ -13,11 +13,6 @@ Todo:
     * For module TODOs
 
 """
+from UBox import UBoxLauncher
+from UBox.UBoxLauncher import *
 
-
-#import pkg_resources 
-
-print('# Loading UEDGEToolBox ...')
-#version:{}'.format(pkg_resources.get_distribution('UEDGEToolBox').version))
-#import LauncherToolBox
-from LauncherToolBox import *
