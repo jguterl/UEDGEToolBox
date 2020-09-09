@@ -11,7 +11,10 @@ import types,math
 import numpy as np
 import os, sys, string, re
 from pathlib import Path
-from uedge import bbb # just for compliance with python IDE rules. Do not do anything
+try:
+    from uedge import bbb # just for compliance with python IDE rules. Do not do anything
+except:
+    pass
 from colorama import  Back, Style
 from datetime import date,datetime
 from UEDGEToolBox.DataManager.Grid import UBoxGrid

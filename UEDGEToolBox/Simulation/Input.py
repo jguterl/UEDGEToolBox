@@ -5,7 +5,7 @@ Created on Fri Aug 28 00:57:10 2020
 
 @author: jguterl
 """
-
+import numpy as np
 from UEDGEToolBox.Utils.Misc import GetListPackage,ClassInstanceMethod 
 class UBoxInput():
     

@@ -6,12 +6,15 @@ Created on Wed Feb 19 10:46:09 2020
 @author: jguterl
 """
 
-import io,inspect,builtins,types,sys,os,uedge,pkgutil,platform,shutil
+import io,inspect,builtins,types,sys,os,pkgutil,platform,shutil
 from typing import Callable
 from datetime import date,datetime
 global ShowPreFix
 import numpy as np
-
+try:
+    import uedge
+except:
+    pass
 class AddUBoxPrefix():
 
     def __init__(self,Method,PreFix='test'):
@@ -127,15 +130,18 @@ def ProcessPreFix(PreFix,ClsName,Str):
     
 def GetListPackage()->list:
     import pkgutil
-    import uedge
     ListPkgUEDGE=[]
-    package = uedge
-    PkgList=list(pkgutil.iter_modules(package.__path__))
-    for pkg in PkgList:
-        PkgName=pkg.name
-        if PkgName.endswith('py'):
-            ListPkgUEDGE.append(PkgName[:-2])
-   
+    try: 
+        import uedge
+        
+        package = uedge
+        PkgList=list(pkgutil.iter_modules(package.__path__))
+        for pkg in PkgList:
+            PkgName=pkg.name
+            if PkgName.endswith('py'):
+                ListPkgUEDGE.append(PkgName[:-2])
+    except:
+        pass
     return ListPkgUEDGE
 
 def CheckFileExist(FilePath:str)->bool:
@@ -527,6 +533,6 @@ class ClassInstanceMethod(classmethod):
         descr_get = super().__get__ if instance is None else self.__func__.__get__
         return descr_get(instance, type_)
 
-iota=np.array([np.arange(1,i+1) for i in range(1,300)])           
+iota=np.array([np.arange(1,i+1) for i in range(1,300)],dtype=np.ndarray)           
                     
         

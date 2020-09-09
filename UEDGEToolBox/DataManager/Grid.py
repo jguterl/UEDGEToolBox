@@ -21,7 +21,7 @@ class UBoxGrid():
         if FileName is not None:
             self.ImportGrid(FileName)
         self.Verbose=Verbose
-        
+        self.ax=None
         
     def GetGrid(self):
         return self.Grid
@@ -32,7 +32,7 @@ class UBoxGrid():
     def ShowCell(self,ixiy,ax=None,Annotate=True):
         if Grid is not None:
             self.PlotCell(ixiy,rm=self.Grid['rm'],zm=self.Grid['zm'],ax=ax,Verbose=self.Verbose,Annotate=Annotate)
-             
+
     
     @staticmethod        
     def PlotCell(ixiy,rm=None,zm=None,ax=None,Verbose=False,color='r',Annotate=True):
@@ -55,8 +55,10 @@ class UBoxGrid():
         """
         
         from uedge import com
-        if ax is None:
-            ax=plt.gca()
+        if ax is not None:
+            self.ax=ax
+        if not hasattr(self,'ax') or self.ax is None:
+            self.ax=plt.gca()
         if type(ixiy)!=list:
             ixiy=[ixiy]
          
@@ -70,9 +72,9 @@ class UBoxGrid():
             z=zm[ix,iy,0]
             r0 = [rm[ix, iy, 1], rm[ix, iy, 2],rm[ix, iy, 4], rm[ix, iy, 3], rm[ix, iy, 1]]
             z0 = [zm[ix, iy, 1], zm[ix, iy, 2], zm[ix, iy, 4], zm[ix, iy, 3], zm[ix, iy, 1]]
-            ax.plot(r0, z0, '-',color=color, label='Grid', linewidth=2)
+            self.ax.plot(r0, z0, '-',color=color, label='Grid', linewidth=2)
             if Annotate:
-                 annot=ax.annotate("ix={},iy={}".format(ix,iy), xy=(r,z), xytext=(-20,20),textcoords="offset points",
+                 annot=self.ax.annotate("ix={},iy={}".format(ix,iy), xy=(r,z), xytext=(-20,20),textcoords="offset points",
                             bbox=dict(boxstyle="round", fc="w"),
                             arrowprops=dict(arrowstyle="->"))
     
@@ -99,8 +101,10 @@ class UBoxGrid():
                 return
                 
 
-        if ax is None:
-            ax=plt.gca()
+        if ax is not None:
+            self.ax=ax
+        if not hasattr(self,'ax') or self.ax is None:
+            self.ax=plt.gca()
         
         def onpick(evt):
             if evt.artist in Pos.keys():
@@ -120,34 +124,33 @@ class UBoxGrid():
             if evt.mouseevent.button == 3:
                 annot.set_visible(False)
                 
-            ax.figure.canvas.draw_idle()
+            self.ax.figure.canvas.draw_idle()
         old_artist={}
         Nx=len(r)
         Ny=len(r[0])
-        ax.figure.suptitle("{} nx={} ny={}".format(Title,Nx,Ny))
-        if ax is None:
-            ax=plt.gca()
+        self.ax.figure.suptitle("{}\n nx={} ny={}".format(Title,Nx,Ny))
+        
         idx=[np.array([1,2,4,3,1])]
         Dic={}
         Pos={}
         Obj={}
         for i in range(Nx):
             for j in range(Ny):
-                    Data=np.concatenate((r[i][j][idx],z[i][j][idx])).reshape(2,5).T
+                    Data=np.concatenate((r[i,j,idx],z[i,j,idx])).reshape(2,5).T
                     p=matplotlib.patches.Polygon(Data,closed=True,fill=False,edgecolor=edgecolor,label='ix={},iy={}'.format(i,j),picker=2)
-                    c=ax.add_patch(p) #draw the contours
+                    c=self.ax.add_patch(p) #draw the contours
                     Obj[p]=c
                     Dic[p]='ix={},iy={}'.format(i,j)
-                    Pos[p]=(r[i][j][0],z[i][j][0])
+                    Pos[p]=(r[i,j,0],z[i,j,0])
                     
-            
-        plt.ylim(z.min(),z.max())
-        plt.xlim(r.min(),r.max())
-        annot = ax.annotate("", xy=(0,0), xytext=(-20,20),textcoords="offset points",
+        print('xmin:',[np.where(z>0,z,1e10).min(),z.max()])
+        self.ax.set_ylim([np.where(z>0,z,1e10).min(),z.max()])
+        self.ax.set_xlim([np.where(r>0,r,1e10).min(),r.max()])
+        annot = self.ax.annotate("", xy=(0,0), xytext=(-20,20),textcoords="offset points",
                             bbox=dict(boxstyle="round", fc="w"),
                             arrowprops=dict(arrowstyle="->"))
         annot.set_visible(False)
-        ax.figure.canvas.mpl_connect('pick_event', onpick)
+        self.ax.figure.canvas.mpl_connect('pick_event', onpick)
         plt.show()
     
         
@@ -231,7 +234,7 @@ class UBoxGrid():
             print(repr(e))
             
 
-Grid=UBoxGrid()
+#Grid=UBoxGrid()
 # def PlotSeparatrix(ax=None,color='r',linewidth=1,**kwargs):
 #     from uedge import com
 #     M.PlotFluxSurface(com.rm,com.zm,com.iysptrx,ax,color,linewidth,**kwargs)

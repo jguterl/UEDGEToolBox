@@ -7,7 +7,7 @@ Created on Wed Aug 26 01:12:10 2020
 """
 import os
 from UEDGEToolBox.ProjectManager.Projects import UBoxSingleProject 
-from UEDGEToolBox.Utils.Misc import SetClassArgs  
+from UEDGEToolBox.Utils.Misc import SetClassArgs,ClassInstanceMethod 
 
 class UBoxSource():
     Verbose=False
@@ -27,7 +27,7 @@ class UBoxSource():
                 return Project.GetDir(Folder)
             else:
                 return os.path.abspath(Folder)
-                
+    @ClassInstanceMethod            
     def Source(self,FileName=None,CaseName=None,Folder=None,Project=None,EnforceExistence=True,CreateFolder=False):
         if Folder in UBoxSingleProject.ListDir:
             if Project is None:

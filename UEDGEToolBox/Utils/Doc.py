@@ -12,9 +12,12 @@
 
 from UEDGEToolBox.Utils.Misc import GetListPackage
 from colorama import  Back, Style
-import uedge
-#import uedge
-#@UBoxPrefix
+try:
+    import uedge
+except:
+    raise ImportError('Cannot found the module "uedge".')
+
+
 
 class UBoxDoc():
     """ UBoxDoc is a wrapper for the documentation of the various UEDGE variables contained in UEDGE packages (e.g bbb,com,...). 
@@ -213,9 +216,8 @@ class UBoxDoc():
     def __PrintVarInfo(self,Dic,OnlyVar=False):
         if 'Function' in list(Dic.keys()):
             SP='{colorG}{:<{widthP}}{reset}'.format(Dic.get('Package'),colorG=Back.RED,reset=Style.RESET_ALL,widthP=self.widthP)
-            S='{colorV}{:<{widthV}}\
-                {reset}'.format(Dic.get('Variable'),colorV=Back.YELLOW,reset=Style.RESET_ALL,widthV=self.widthV)
-            print('{:<{widthV}} {:<{widthP}}  '.format(S,SP,widthP=self.widthP,widthV=self.widthV))
+            S='{colorV}{:<{widthV}}{reset}'.format(Dic.get('Function'),colorV=Back.YELLOW,reset=Style.RESET_ALL,widthV=self.widthV)
+            print('{:<{widthV}} : {:<{widthP}}\n'.format(S,SP,widthP=self.widthP,widthV=self.widthV))
         else:    
             if OnlyVar:
                 SP='{colorG}{:<{widthP}}{reset}'.format(Dic.get('Package'),colorG=Back.RED,reset=Style.RESET_ALL,widthP=self.widthP)

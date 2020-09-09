@@ -20,8 +20,9 @@ from UEDGEToolBox.ProjectManager.Projects import UBoxProjects
 from UEDGEToolBox.ProjectManager.Settings import UBoxSettings
 from UEDGEToolBox.Utils.Doc import UBoxDoc
 from UEDGEToolBox.DataManager.ExtData import UBoxExtData
-
+from UEDGEToolBox.DataManager.Grid import UBoxGrid
 from UEDGEToolBox.Simulation.RunSim import UBoxRun
+from UEDGEToolBox.Simulation.Sim import UBoxSim
 #from UEDGEToolBox.Grid import *
 import yaml
 try: 
@@ -56,7 +57,7 @@ class UBoxLauncher(UBoxProjects,UBoxRun):
         self.Print('UEDGEToolBox sucessfully launched. Type QuickStart() for basic commands.')
         if CreateAliases:
             CreateGlobalAliases(self.Doc,Verbose=self.Verbose)
-            CreateGlobalAliases(self,Include=GetMethods(UBoxRun),Verbose=self.Verbose)
+            CreateGlobalAliases(self,Include=GetMethods(UBoxSim),Verbose=self.Verbose)
             CreateGlobalAliases(self,Include=['SetCaseName','Source','SourceGrid'],Verbose=self.Verbose)
                                
     def __CheckUEDGE(self):

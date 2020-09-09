@@ -6,7 +6,10 @@ Created on Tue Aug 25 20:25:20 2020
 @author: jguterl
 """
 import os
-from uedge import bbb # just for compliance with python IDE rules. Do not do anything
+try:
+    from uedge import bbb # just for compliance with python IDE rules. Do not do anything
+except:
+    pass
 from colorama import  Back, Style
 from datetime import date,datetime
 #from UEDGEToolBox.DataManager.Grid import UBoxGrid
@@ -15,7 +18,7 @@ from UEDGEToolBox.Utils.Misc import LsFolder,QueryYesNo,GetTimeStamp
 from UEDGEToolBox.Simulation.Simulations import UBoxSimUtils
 from UEDGEToolBox.Simulation.Input import UBoxInput
 from UEDGEToolBox.DataManager.IO import UBoxIO
-
+import numpy as np
 class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput):
     CaseName=None
     Verbose=False
@@ -62,10 +65,10 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput):
         # Explore Folder
         Folder='InputDir'
         
-        if hasattr(self,'CaseName'):
-            CaseName=self.CaseName
-        else:
-            CaseName=None
+        #if hasattr(self,'CaseName'):
+            #CaseName=self.CaseName
+        #else:
+        CaseName=None
             
         if hasattr(self,'CurrentProject'):
             Project=self.CurrentProject

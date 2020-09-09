@@ -3,9 +3,10 @@
 from UEDGEToolBox.Simulation.Sim import UBoxSim
 from UEDGEToolBox.Utils.Misc import LsFolder
 from UEDGEToolBox.Utils.Doc import UBoxDoc
+from UEDGEToolBox.DataManager.Grid import UBoxGrid
 from uedge import bbb
 from uedge import *
-import sys
+import sys,os
 from colorama import  Back, Style
 
 
@@ -136,6 +137,31 @@ Todo:
         self.SetPackageParams(self.DefaultNumerics())
         self.Verbose=Verbose
         print('UBoxRun initialized')
+        
+    def DisplayGrid(self,FileName=None,Project=None,Folder='GridDir'):
+        """ """
+            
+        Ext='*'
+        
+        if hasattr(self,'CurrentProject') and Project is None:
+            Project=self.CurrentProject
+
+        if FileName is None:
+            FileName=LsFolder(self.Source(None,None,Folder,Project),Ext=Ext)
+        if FileName is None:
+            print("Cannot read the file {}... Exiting".format(FileName))
+            return
+
+        FilePath=self.Source(FileName,None,Folder,Project)
+        if self.Verbose:
+            print("Loading data from file:{}".format(FilePath))
+        # Looking for file
+        if FilePath is not None and os.path.isfile(FilePath):
+            UGrid=UBoxGrid()
+            UGrid.ImportGrid(FilePath)
+            UGrid.PlotGrid(Title=FilePath) 
+        else:
+            print("Cannot read the file {}... Exiting".format(FilePath))
 
 
     

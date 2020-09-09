@@ -8,7 +8,7 @@ Created on Tue Aug 18 16:55:49 2020
 
 from UEDGEToolBox.Utils.Misc import QueryYesNo,GetPlatform
 import os,easygui,getpass,yaml
-from UEDGEToolBox.DataManager.DataSet import UBoxDataSet
+from UEDGEToolBox.DataManager.DataSet import UBoxDataSet,GetDefaultDataSet
     
 class UBoxSettings(UBoxDataSet):
     """ """
@@ -190,9 +190,8 @@ class UBoxSettings(UBoxDataSet):
     
                   
     def __CreateConfigFile(self):
-        Settings={}
         UserName=input('Enter the username (press enter for default system username): ')
-        if UserName is '':
+        if UserName == '':
             UserName=getpass.getuser()
             print(UserName)
         self._UserName=UserName
@@ -200,7 +199,7 @@ class UBoxSettings(UBoxDataSet):
         self._Affiliation=input('Enter the institution:')
         self._RootPathProjects=UBoxSettings.__GetRootPathProjects()
         self._ProjectsFile=UBoxSettings.__GetProjectsFile()
-        self._DataSets=UBoxDataSet.GetDefaultDataSet()
+        self._DataSets=GetDefaultDataSet()
         self.ShowSettings()
         if QueryYesNo('Are these settings correct?'):
             print('Creation of the settings config file:',self._SettingsFile)

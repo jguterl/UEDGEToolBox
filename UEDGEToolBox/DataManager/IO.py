@@ -11,8 +11,10 @@ from UEDGEToolBox.DataManager.IOFormat import UBoxNumpy,UBoxHdf5
 
 import os,deepdish
 import numpy as np
-from uedge import *
-
+try:
+    from uedge import *
+except:
+    pass
 class UBoxLoader():
     """Helper for UBoxIO."""
     Verbose=False

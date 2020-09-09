@@ -1,10 +1,9 @@
 
 from UEDGEToolBox.Utils.Misc import GetListPackage,QueryYesNo,ClassInstanceMethod 
-from UEDGEToolBox.Utils.Doc import UBoxDoc
+
 # try:
 #     #from UEDGEToolBox.Launcher import Doc
 # except:
-Doc=UBoxDoc()
 
 def GetDefaultDataSet()->dict:
         """
@@ -19,7 +18,7 @@ def GetDefaultDataSet()->dict:
         DefaultDataSet['plasmavars']=['te','ti','phi','ng','up','tg','ni']
         DefaultDataSet['plasmavarss']=[V+'s' for V in DefaultDataSet['plasmavars']]
         DefaultDataSet['grid']=['nisp','ngsp','rm','zm','nx','ny','iysptrx','psi','psinormc']
-        DefaultDataSet['run']=['dtreal','dt_tot','ftol_dt','GridFileName']
+        DefaultDataSet['run']=['dtreal','dt_tot','ftol_dt','GridFileName','minu','ziin','znuclin']
         DefaultDataSet['regular']=DefaultDataSet['plasmavars']+DefaultDataSet['plasmavarss']+DefaultDataSet['run']+DefaultDataSet['grid']
         DefaultDataSet['plasma']=DefaultDataSet['plasmavars']+DefaultDataSet['plasmavarss']
 
@@ -32,7 +31,7 @@ class UBoxDataFilter():
     @ClassInstanceMethod   
     def CollectUEDGEData(self,DataSet=None,ExtraVars:list=[])->dict:
         return self.CollectData(DataSet,DataType='UEDGE',ExtraVars=ExtraVars)['UEDGE']
-    
+    GetDefaultDataSet
     @ClassInstanceMethod   
     def CollectData(self,DataSet=None,DataType='UEDGE',ExtraVars:list=[])->dict:
         """
@@ -103,6 +102,7 @@ class UBoxDataFilter():
     
     @ClassInstanceMethod 
     def SetDoc(self):
+        from UEDGEToolBox.Utils.Doc import UBoxDoc
         if not hasattr(self,'Doc') or self.Doc is None:
                  self.Doc=UBoxDoc()
                  

@@ -632,7 +632,8 @@ class UBoxProjects(UBoxSettings):
     def LsGridDir(self,Folder=None,Ext='*'):
         if Folder is None:
             Folder=''    
-        LsFolder(os.path.join(self.CurrentProject.GridDir,Folder),Ext)
-        
+        LsFolder(os.path.join(self.CurrentProject.GridDir,Folder),Ext=Ext)
+    
+         
 
     
