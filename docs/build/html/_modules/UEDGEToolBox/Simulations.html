@@ -1,0 +1,714 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>UEDGEToolBox.Simulations &mdash; UEDGEToolBox 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> UEDGEToolBox
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#getting-started">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#quickstart">QuickStart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#uedgetoolbox-settings">UEDGEToolBox.Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#initialization-of-uedgetoolbox">Initialization of UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#developping-uedgetoolbox">Developping UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#loading-uedgetoolbox-when-starting-a-python-session">Loading UEDGEToolBox when starting a python session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#documentation">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../DataSet.html">UEDGEToolBox.DataSet module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Settings.html">UEDGEToolBox.Settings module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">UEDGEToolBox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>UEDGEToolBox.Simulations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for UEDGEToolBox.Simulations</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Thu Feb  6 15:52:13 2020</span>
+
+<span class="sd">@author: jguterl</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">types</span>
+<span class="c1">#import matplotlib.pyplot as plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">math</span><span class="o">,</span> <span class="nn">string</span><span class="o">,</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">uedge</span> <span class="kn">import</span> <span class="n">bbb</span> <span class="c1"># just for compliance with python IDE rules. Do not do anything</span>
+<span class="kn">from</span> <span class="nn">colorama</span> <span class="kn">import</span>  <span class="n">Back</span><span class="p">,</span> <span class="n">Style</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span><span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">UEDGEToolBox.Grid</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">UEDGEToolBox.Utils</span> <span class="kn">import</span> <span class="n">Source</span><span class="p">,</span><span class="n">LsFolder</span><span class="p">,</span><span class="n">GetListPackage</span>
+<span class="c1">#from UEDGEToolBox.Plot import *</span>
+<span class="c1">#from UEDGEToolBox.Projects import *</span>
+<span class="c1">#from UEDGEToolBox.IO import *</span>
+
+<div class="viewcode-block" id="UBoxSimUtils"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils">[docs]</a><span class="k">class</span> <span class="nc">UBoxSimUtils</span><span class="p">(</span><span class="n">UBoxGrid</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">Verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># Import Uedge packages as attribute of the class instance</span>
+        <span class="c1"># WARNING: this is not a deep copy!!!</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">InputLines</span><span class="o">=</span><span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ListPkg</span><span class="o">=</span><span class="n">GetListPackage</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Verbose</span><span class="o">=</span><span class="n">Verbose</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loaded Packages:&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">ListPkg</span><span class="p">)</span>
+        <span class="c1"># for pkg in self.ListPkg:</span>
+        <span class="c1">#     exec(&#39;self.&#39; + pkg + &#39;=&#39; + pkg,globals(),locals())</span>
+        <span class="c1">#self.IO=UBoxIO(self.Verbose)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ExcludeList</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ExcludeList&#39;</span><span class="p">,</span><span class="s1">&#39;ListPkg&#39;</span><span class="p">,</span><span class="s1">&#39;IO&#39;</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">ListPkg</span>
+        <span class="c1">#self.SetVersion()</span>
+        
+   
+                                   
+<div class="viewcode-block" id="UBoxSimUtils.Updateftol"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.Updateftol">[docs]</a>    <span class="k">def</span> <span class="nf">Updateftol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">bbb</span><span class="o">.</span><span class="n">ylodt</span> <span class="o">=</span> <span class="n">bbb</span><span class="o">.</span><span class="n">yl</span>
+        <span class="n">bbb</span><span class="o">.</span><span class="n">pandf1</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bbb</span><span class="o">.</span><span class="n">neq</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">bbb</span><span class="o">.</span><span class="n">yl</span><span class="p">,</span> <span class="n">bbb</span><span class="o">.</span><span class="n">yldot</span><span class="p">)</span>
+        <span class="n">fnrm_old</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">sum</span><span class="p">((</span><span class="n">bbb</span><span class="o">.</span><span class="n">yldot</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">bbb</span><span class="o">.</span><span class="n">neq</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">bbb</span><span class="o">.</span><span class="n">sfscal</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">bbb</span><span class="o">.</span><span class="n">neq</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">ftol_dt</span><span class="p">,</span> <span class="mf">0.01</span><span class="o">*</span><span class="n">fnrm_old</span><span class="p">),</span><span class="n">bbb</span><span class="o">.</span><span class="n">ftol_min</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.GetData"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.GetData">[docs]</a>    <span class="k">def</span> <span class="nf">GetData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Field</span><span class="p">,</span><span class="n">Package</span><span class="o">=</span><span class="s1">&#39;bbb&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            Field (TYPE): DESCRIPTION.</span>
+<span class="sd">            Package (TYPE, optional): DESCRIPTION. Defaults to &#39;bbb&#39;.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            TYPE: DESCRIPTION.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># UEDGE packages are reloaded in the local namespace of the method.</span>
+        <span class="c1">#However, no new instances of UEDGE packages are created.</span>
+        <span class="c1"># Instances in the local namespace are the same instances that were previously loaded</span>
+        <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListPkg</span><span class="p">:</span>
+            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;from uedge import &#39;</span><span class="o">+</span><span class="n">pkg</span><span class="p">)</span>
+
+        <span class="n">Out</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
+        <span class="n">comm</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">=</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Field</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span><span class="n">Package</span><span class="p">,</span><span class="n">Field</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Retrieving data:&#39;</span><span class="p">,</span><span class="n">comm</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">exec</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span><span class="nb">globals</span><span class="p">(),</span><span class="n">Out</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cannot set </span><span class="si">{}</span><span class="s1">=</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Field</span><span class="p">,</span><span class="n">Package</span><span class="p">,</span><span class="n">Field</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">Out</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Field</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cound not get data for </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Field</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">Out</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Field</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.SetData"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.SetData">[docs]</a>    <span class="k">def</span> <span class="nf">SetData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListPkg</span><span class="p">:</span>
+            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;from uedge import &#39;</span><span class="o">+</span><span class="n">pkg</span><span class="p">)</span>
+        <span class="n">Out</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
+        <span class="n">comm</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">=</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Field</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span><span class="s1">&#39;bbb&#39;</span><span class="p">,</span><span class="n">Field</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Setting data:&#39;</span><span class="p">,</span><span class="n">comm</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">exec</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span><span class="nb">globals</span><span class="p">(),</span><span class="n">Out</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cannot set </span><span class="si">{}</span><span class="s1">=</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Field</span><span class="p">,</span><span class="s1">&#39;bbb&#39;</span><span class="p">,</span><span class="n">Field</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">Out</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Field</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cound not get data for </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Field</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="o">=</span><span class="n">Out</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.GetGrid"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.GetGrid">[docs]</a>    <span class="k">def</span> <span class="nf">GetGrid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Grid</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;rm&#39;</span><span class="p">:</span><span class="n">com</span><span class="o">.</span><span class="n">rm</span><span class="p">,</span><span class="s1">&#39;zm&#39;</span><span class="p">:</span><span class="n">com</span><span class="o">.</span><span class="n">zm</span><span class="p">,</span><span class="s1">&#39;iysptrx&#39;</span><span class="p">:</span><span class="n">com</span><span class="o">.</span><span class="n">iysptrx</span><span class="p">,</span><span class="s1">&#39;nx&#39;</span><span class="p">:</span><span class="n">com</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span><span class="s1">&#39;ny&#39;</span><span class="p">:</span><span class="n">com</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span><span class="s1">&#39;psi&#39;</span><span class="p">:</span><span class="n">com</span><span class="o">.</span><span class="n">psi</span><span class="p">,</span><span class="s1">&#39;psinormc&#39;</span><span class="p">:</span><span class="n">com</span><span class="o">.</span><span class="n">psinormc</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">Grid</span></div>
+
+
+
+
+<div class="viewcode-block" id="UBoxSimUtils.LoadInterp"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.LoadInterp">[docs]</a>    <span class="k">def</span> <span class="nf">LoadInterp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">FileName</span><span class="p">,</span><span class="n">OldGrid</span><span class="o">=</span><span class="s1">&#39;loaded&#39;</span><span class="p">,</span><span class="n">NewGrid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">CaseName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Folder</span><span class="o">=</span><span class="s1">&#39;SaveDir&#39;</span><span class="p">,</span><span class="n">LoadPackage</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">,</span><span class="n">InterpolateData</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">,</span><span class="n">LoadList</span><span class="o">=</span><span class="p">[],</span><span class="n">ExcludeList</span><span class="o">=</span><span class="p">[],</span><span class="n">Format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">CheckDim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">Verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">Format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Format</span>
+        <span class="n">Verbose</span><span class="o">=</span><span class="n">Verbose</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">Verbose</span>
+
+        <span class="k">if</span> <span class="n">NewGrid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">NewGrid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">GetGrid</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">NewGrid</span><span class="p">)</span><span class="o">==</span><span class="nb">str</span><span class="p">:</span>
+                <span class="n">NewGrid</span><span class="o">=</span><span class="n">UEDGEMesh</span><span class="p">()</span><span class="o">.</span><span class="n">ImportMesh</span><span class="p">(</span><span class="n">NewGrid</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">NewGrid</span><span class="p">)</span><span class="o">!=</span><span class="nb">dict</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;NewGrid must a Grid or a path toward a grid file&quot;</span><span class="p">)</span>
+
+        <span class="n">FilePath</span><span class="o">=</span><span class="n">Source</span><span class="p">(</span><span class="n">FileName</span><span class="p">,</span><span class="n">Folder</span><span class="o">=</span><span class="n">Folder</span><span class="p">,</span><span class="n">Enforce</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">Verbose</span><span class="o">=</span><span class="n">Verbose</span><span class="p">,</span><span class="n">CaseName</span><span class="o">=</span><span class="n">CaseName</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">Verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Load data in file:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">FilePath</span><span class="p">))</span>
+        <span class="c1"># Looking for file</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">FilePath</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">Verbose</span><span class="o">=</span><span class="n">Verbose</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">LoadInterpolate</span><span class="p">(</span><span class="n">FilePath</span><span class="p">,</span><span class="n">OldGrid</span><span class="p">,</span><span class="n">NewGrid</span><span class="p">,</span><span class="n">Format</span><span class="p">,</span><span class="n">LoadList</span><span class="p">,</span><span class="n">ExcludeList</span><span class="p">,</span><span class="n">CheckDim</span><span class="p">,</span><span class="n">LoadPackage</span><span class="p">,</span><span class="n">InterpolateData</span><span class="p">)</span>
+            <span class="n">bbb</span><span class="o">.</span><span class="n">restart</span><span class="o">=</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The file </span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">FilePath</span><span class="p">))</span></div>
+
+
+
+
+   
+
+
+<div class="viewcode-block" id="UBoxSimUtils.GetClassAttr"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.GetClassAttr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">GetClassAttr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="n">Verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">        Args:</span>
+<span class="sd">            cls (TYPE): DESCRIPTION.</span>
+<span class="sd">            Verbose (TYPE, optional): DESCRIPTION. Defaults to False.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Attr (TYPE): DESCRIPTION.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Attr</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;__&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">k</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="nb">classmethod</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">Verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">Attr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Attr</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.GetInstanceAttr"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.GetInstanceAttr">[docs]</a>    <span class="k">def</span> <span class="nf">GetInstanceAttr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">Attr</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;__&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">k</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="nb">classmethod</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">Verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">Attr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Attr</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.ShowClass"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.ShowClass">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">ShowClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="n">Verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">Attr</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;__&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">k</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="nb">classmethod</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">Verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">Attr</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">A</span><span class="p">,</span><span class="n">V</span> <span class="ow">in</span> <span class="n">Attr</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">comm</span><span class="o">=</span><span class="s1">&#39;print(&quot;</span><span class="si">{}</span><span class="s1">&quot;,&quot;=&quot;,)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">V</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">V</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.Show"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.Show">[docs]</a>    <span class="k">def</span> <span class="nf">Show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Internal UEDGE parameters:&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">A</span><span class="p">,</span><span class="n">V</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetInstanceAttr</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">Result</span><span class="o">=</span><span class="n">SearchSilent</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Result</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">Pkg</span><span class="o">=</span><span class="n">Result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;Package&#39;</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; - </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Pkg</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">V</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; - XXX.</span><span class="si">{}</span><span class="s1">=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">V</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> Run parameters:&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">A</span><span class="p">,</span><span class="n">V</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">GetClassAttr</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; - </span><span class="si">{}</span><span class="s1">=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">V</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.SetParams"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.SetParams">[docs]</a>    <span class="k">def</span> <span class="nf">SetParams</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            Verbose (TYPE, optional): DESCRIPTION. Defaults to False.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">OverrideObjectParams</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">OverrideClassParams</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">Params</span><span class="o">=</span><span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetInstanceAttr</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ExcludeList</span><span class="p">)</span>
+        <span class="n">Params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Setting up following params in UEDGE:&#39;</span><span class="p">,</span><span class="nb">list</span><span class="p">(</span><span class="n">Params</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">SetPackageParams</span><span class="p">(</span><span class="n">Params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.SetPackageParams"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.SetPackageParams">[docs]</a>    <span class="k">def</span> <span class="nf">SetPackageParams</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Dic</span><span class="p">:</span><span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">        Args:</span>
+<span class="sd">            Verbose (TYPE, optional): DESCRIPTION. Defaults to False.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">A</span><span class="p">,</span><span class="n">V</span> <span class="ow">in</span> <span class="n">Dic</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">V</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">Result</span><span class="o">=</span><span class="n">SearchSilent</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Result</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="n">Pkg</span><span class="o">=</span><span class="n">Result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;Package&#39;</span><span class="p">]</span>
+                    <span class="n">comm</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Pkg</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">V</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">comm</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">exec</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span><span class="nb">globals</span><span class="p">(),</span><span class="nb">globals</span><span class="p">())</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cannot set </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1"> = </span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Pkg</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">V</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No package found for </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">A</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.OverrideObjectParams"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.OverrideObjectParams">[docs]</a>    <span class="k">def</span> <span class="nf">OverrideObjectParams</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">        Args:</span>
+<span class="sd">            **kwargs (TYPE): DESCRIPTION.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="c1">#Override object attribute</span>
+        <span class="n">Dic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">GetInstanceAttr</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">Dic</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">v</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.OverrideClassParams"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.OverrideClassParams">[docs]</a>    <span class="k">def</span> <span class="nf">OverrideClassParams</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1">#Override class attribute</span>
+        <span class="n">Dic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">GetClassAttr</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">Dic</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">v</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.PrintTimeStepModif"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.PrintTimeStepModif">[docs]</a>    <span class="k">def</span> <span class="nf">PrintTimeStepModif</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">i</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PrintInfo</span><span class="p">(</span><span class="s1">&#39;New time-step = </span><span class="si">{:.4E}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">dtreal</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="n">Back</span><span class="o">.</span><span class="n">MAGENTA</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.PrintCurrentIteration"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.PrintCurrentIteration">[docs]</a>    <span class="k">def</span> <span class="nf">PrintCurrentIteration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">PrintInfo</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{cn}</span><span class="s1">: Main loop i=</span><span class="si">{i}</span><span class="s1">/</span><span class="si">{imax}</span><span class="s1">       dtreal=</span><span class="si">{dt:.4E}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cn</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">CaseName</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">,</span><span class="n">imax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Imax</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">bbb</span><span class="o">.</span><span class="n">dtreal</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="n">Back</span><span class="o">.</span><span class="n">BLUE</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">PrintInfo</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{cn}</span><span class="s1">: Subloop   i=</span><span class="si">{i}</span><span class="s1">/</span><span class="si">{imax}</span><span class="s1"> j=</span><span class="si">{j}</span><span class="s1">/</span><span class="si">{jmax}</span><span class="s1"> dtreal=</span><span class="si">{dt:.4E}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cn</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">CaseName</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">,</span><span class="n">imax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Imax</span><span class="p">,</span><span class="n">j</span><span class="o">=</span><span class="n">j</span><span class="p">,</span><span class="n">jmax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Jmax</span><span class="p">,</span><span class="n">dt</span><span class="o">=</span><span class="n">bbb</span><span class="o">.</span><span class="n">dtreal</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="n">Back</span><span class="o">.</span><span class="n">YELLOW</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.TimeEvolution"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.TimeEvolution">[docs]</a>    <span class="k">def</span> <span class="nf">TimeEvolution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Allow the evolution of UEDGE settings in time. Set by SetTimeEvolution(). Print a log of values associated with files</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+        <span class="c1">#for k,v in self.TimeParameters:</span>
+
+            <span class="c1">#bbb.dt_tot</span>
+
+
+
+
+
+<div class="viewcode-block" id="UBoxSimUtils.PrintInfo"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.PrintInfo">[docs]</a>    <span class="k">def</span> <span class="nf">PrintInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Str</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="n">Back</span><span class="o">.</span><span class="n">CYAN</span><span class="p">,</span><span class="n">Extra</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">Extra</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*---------------------------------------------------------*&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{color}{}{reset}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Str</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span><span class="n">reset</span><span class="o">=</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">Extra</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*---------------------------------------------------------*&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.Itrouble"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.Itrouble">[docs]</a>    <span class="k">def</span> <span class="nf">Itrouble</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Function that displays information on the problematic equation &#39;&#39;&#39;</span>
+        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">mod</span><span class="p">,</span><span class="n">argmax</span>
+        <span class="kn">from</span> <span class="nn">uedge</span> <span class="kn">import</span> <span class="n">bbb</span>
+        <span class="c1"># Set scaling factor</span>
+        <span class="n">scalfac</span> <span class="o">=</span> <span class="n">bbb</span><span class="o">.</span><span class="n">sfscal</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">svrpkg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;nksol&quot;</span><span class="p">):</span> <span class="n">scalfac</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">yl</span> <span class="o">+</span> <span class="mf">1.e-30</span><span class="p">)</span>  <span class="c1"># for time-dep calc.</span>
+
+        <span class="c1"># Find the fortran index of the troublemaking equation</span>
+        <span class="n">itrouble</span><span class="o">=</span><span class="n">argmax</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">yldot</span><span class="p">[:</span><span class="n">bbb</span><span class="o">.</span><span class="n">neq</span><span class="p">]))</span><span class="o">+</span><span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;** Fortran index of trouble making equation is:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">itrouble</span><span class="p">)</span>
+
+        <span class="c1"># Print equation information</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;** Number of equations solved per cell:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;numvar = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">numvar</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">iv_t</span> <span class="o">=</span> <span class="n">mod</span><span class="p">(</span><span class="n">itrouble</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">bbb</span><span class="o">.</span><span class="n">numvar</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="c1"># Use basis indexing for equation number</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;** Troublemaker equation is:&quot;</span><span class="p">)</span>
+        <span class="c1"># Verbose troublemaker equation</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxte</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Electron energy equation: iv_t=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iv_t</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxti</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ion energy equation: iv_t=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iv_t</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxphi</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Potential equation: iv_t=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iv_t</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxu</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxu</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxu</span><span class="p">[:,:,</span><span class="n">species</span><span class="p">]</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ion momentum equation of species </span><span class="si">{}</span><span class="s1">: iv_t=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">iv_t</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxn</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxn</span><span class="p">[:,:,</span><span class="n">species</span><span class="p">]</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ion density equation of species </span><span class="si">{}</span><span class="s1">: iv_t=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">iv_t</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxg</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxg</span><span class="p">[:,:,</span><span class="n">species</span><span class="p">]</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gas density equation of species </span><span class="si">{}</span><span class="s1">: iv_t=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">iv_t</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxtg</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxtg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxtg</span><span class="p">[:,:,</span><span class="n">species</span><span class="p">]</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gas temperature equation of species </span><span class="si">{}</span><span class="s1">: iv_t=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">iv_t</span><span class="p">))</span>
+        <span class="c1"># Display additional information about troublemaker cell</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;** Troublemaker cell (ix,iy) is:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">igyl</span><span class="p">[</span><span class="n">itrouble</span><span class="o">-</span><span class="mi">1</span><span class="p">,])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;** Timestep for troublemaker equation:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">dtuse</span><span class="p">[</span><span class="n">itrouble</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;** yl for troublemaker equation:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">yl</span><span class="p">[</span><span class="n">itrouble</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.WhichEq"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.WhichEq">[docs]</a>    <span class="k">def</span> <span class="nf">WhichEq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">itrouble</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Function that displays information on the problematic equation &#39;&#39;&#39;</span>
+        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">mod</span><span class="p">,</span><span class="n">argmax</span>
+        <span class="kn">from</span> <span class="nn">uedge</span> <span class="kn">import</span> <span class="n">bbb</span>
+        <span class="c1"># Set scaling factor</span>
+        <span class="n">scalfac</span> <span class="o">=</span> <span class="n">bbb</span><span class="o">.</span><span class="n">sfscal</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">svrpkg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;nksol&quot;</span><span class="p">):</span> <span class="n">scalfac</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">yl</span> <span class="o">+</span> <span class="mf">1.e-30</span><span class="p">)</span>  <span class="c1"># for time-dep calc.</span>
+
+        <span class="c1"># Find the fortran index of the troublemaking equation</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;** Fortran index of trouble making equation is:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">itrouble</span><span class="p">)</span>
+
+        <span class="c1"># Print equation information</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;** Number of equations solved per cell:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;numvar = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">numvar</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">iv_t</span> <span class="o">=</span> <span class="n">mod</span><span class="p">(</span><span class="n">itrouble</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">bbb</span><span class="o">.</span><span class="n">numvar</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="c1"># Use basis indexing for equation number</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;** Troublemaker equation is:&quot;</span><span class="p">)</span>
+        <span class="c1"># Verbose troublemaker equation</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxte</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Electron energy equation: iv_t=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iv_t</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxti</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ion energy equation: iv_t=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iv_t</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxphi</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Potential equation: iv_t=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iv_t</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxu</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxu</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxu</span><span class="p">[:,:,</span><span class="n">species</span><span class="p">]</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ion momentum equation of species </span><span class="si">{}</span><span class="s1">: iv_t=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">iv_t</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxn</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxn</span><span class="p">[:,:,</span><span class="n">species</span><span class="p">]</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ion density equation of species </span><span class="si">{}</span><span class="s1">: iv_t=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">iv_t</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxg</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxg</span><span class="p">[:,:,</span><span class="n">species</span><span class="p">]</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gas density equation of species </span><span class="si">{}</span><span class="s1">: iv_t=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">iv_t</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxtg</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxtg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">idxtg</span><span class="p">[:,:,</span><span class="n">species</span><span class="p">]</span><span class="o">-</span><span class="n">itrouble</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gas temperature equation of species </span><span class="si">{}</span><span class="s1">: iv_t=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">iv_t</span><span class="p">))</span>
+        <span class="c1"># Display additional information about troublemaker cell</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;** Troublemaker cell (ix,iy) is:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">igyl</span><span class="p">[</span><span class="n">itrouble</span><span class="o">-</span><span class="mi">1</span><span class="p">,])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;** Timestep for troublemaker equation:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">dtuse</span><span class="p">[</span><span class="n">itrouble</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;** yl for troublemaker equation:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">bbb</span><span class="o">.</span><span class="n">yl</span><span class="p">[</span><span class="n">itrouble</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.SetCaseName"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.SetCaseName">[docs]</a>    <span class="k">def</span> <span class="nf">SetCaseName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">CaseName</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">uedge</span> <span class="kn">import</span> <span class="n">bbb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CaseName</span><span class="o">=</span><span class="n">CaseName</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">bbb</span><span class="o">.</span><span class="n">CaseName</span><span class="o">=</span><span class="n">CaseName</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cannot set CaseName in bbb&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.GetCaseName"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.GetCaseName">[docs]</a>    <span class="k">def</span> <span class="nf">GetCaseName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">bbb</span><span class="o">.</span><span class="n">CaseName</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.SetDescription"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.SetDescription">[docs]</a>    <span class="k">def</span> <span class="nf">SetDescription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Description</span><span class="o">=</span><span class="n">Str</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.GetDescription"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.GetDescription">[docs]</a>    <span class="k">def</span> <span class="nf">GetDescription</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Description</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.GetVersion"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.GetVersion">[docs]</a>    <span class="k">def</span> <span class="nf">GetVersion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">uedge</span><span class="o">.</span><span class="n">__version__</span></div>
+<div class="viewcode-block" id="UBoxSimUtils.GetGitHash"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.GetGitHash">[docs]</a>    <span class="k">def</span> <span class="nf">GetGitHash</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">uedge</span><span class="o">.</span><span class="n">GitHash</span></div>
+<div class="viewcode-block" id="UBoxSimUtils.SetVersion"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.SetVersion">[docs]</a>    <span class="k">def</span> <span class="nf">SetVersion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">bbb</span><span class="o">.</span><span class="n">uedge_ver</span><span class="o">=</span><span class="n">uedge</span><span class="o">.</span><span class="n">__version__</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cannot set Uedge version&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.SaveLast"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.SaveLast">[docs]</a>    <span class="k">def</span> <span class="nf">SaveLast</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Save</span><span class="p">(</span><span class="s1">&#39;last.npy&#39;</span><span class="p">,</span><span class="n">CaseName</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">CaseName</span><span class="p">,</span><span class="n">Folder</span><span class="o">=</span><span class="s1">&#39;SaveDir&#39;</span><span class="p">,</span><span class="n">Mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">Mode</span><span class="p">,</span><span class="n">ExtraVars</span><span class="o">=</span><span class="p">[],</span><span class="n">GlobalVars</span><span class="o">=</span><span class="p">[],</span><span class="n">Tag</span><span class="o">=</span><span class="p">{},</span><span class="n">Format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">Format</span><span class="p">,</span><span class="n">ForceOverWrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UBoxSimUtils.AutoSave"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.AutoSave">[docs]</a>    <span class="k">def</span> <span class="nf">AutoSave</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iSave</span><span class="o">+=</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">iSave</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">ISave</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">iSave</span><span class="o">=</span><span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Save</span><span class="p">(</span><span class="s1">&#39;save_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">GetTimeStamp</span><span class="p">()))</span></div>
+
+
+<div class="viewcode-block" id="UBoxSimUtils.SaveFinalState"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSimUtils.SaveFinalState">[docs]</a>    <span class="k">def</span> <span class="nf">SaveFinalState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Save</span><span class="p">(</span><span class="s1">&#39;final_state_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">GetTimeStamp</span><span class="p">()),</span><span class="n">CaseName</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">CaseName</span><span class="p">,</span><span class="n">Folder</span><span class="o">=</span><span class="s1">&#39;SaveDir&#39;</span><span class="p">,</span><span class="n">Mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">Mode</span><span class="p">,</span><span class="n">Format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">Format</span><span class="p">,</span><span class="n">ForceOverWrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Save</span><span class="p">(</span><span class="s1">&#39;final_state&#39;</span><span class="p">,</span><span class="n">CaseName</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">CaseName</span><span class="p">,</span><span class="n">Folder</span><span class="o">=</span><span class="s1">&#39;SaveDir&#39;</span><span class="p">,</span><span class="n">Mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">Mode</span><span class="p">,</span><span class="n">Format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">Format</span><span class="p">,</span><span class="n">ForceOverWrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
+
+
+
+<div class="viewcode-block" id="UBoxSim"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSim">[docs]</a><span class="k">class</span> <span class="nc">UBoxSim</span><span class="p">(</span><span class="n">UBoxSimUtils</span><span class="p">):</span>
+<div class="viewcode-block" id="UBoxSim.Save"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSim.Save">[docs]</a>    <span class="k">def</span> <span class="nf">Save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">FileName</span><span class="p">,</span><span class="n">CaseName</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span><span class="n">Folder</span><span class="o">=</span><span class="s1">&#39;SaveDir&#39;</span><span class="p">,</span><span class="n">Mode</span><span class="o">=</span><span class="s1">&#39;regular&#39;</span><span class="p">,</span><span class="n">ExtraVars</span><span class="o">=</span><span class="p">[],</span><span class="n">GlobalVars</span><span class="o">=</span><span class="p">[],</span><span class="n">Tag</span><span class="o">=</span><span class="p">{},</span><span class="n">Format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">ForceOverWrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save UEDGE simulation data</span>
+<span class="sd">        See Save method of UEDGEIO class</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            FileName (TYPE): DESCRIPTION.</span>
+<span class="sd">            CaseName (TYPE, optional): DESCRIPTION. Defaults to &#39;auto&#39;.</span>
+<span class="sd">            Folder (TYPE, optional): DESCRIPTION. Defaults to &#39;SaveDir&#39;.</span>
+<span class="sd">            Mode (TYPE, optional): DESCRIPTION. Defaults to &#39;regular&#39;.</span>
+<span class="sd">            ExtraVars (TYPE, optional): DESCRIPTION. Defaults to [].</span>
+<span class="sd">            GlobalVars (TYPE, optional): DESCRIPTION. Defaults to [].</span>
+<span class="sd">            Tag (TYPE, optional): DESCRIPTION. Defaults to {}.</span>
+<span class="sd">            Format (TYPE, optional): DESCRIPTION. Defaults to None.</span>
+<span class="sd">            ForceOverWrite (TYPE, optional): DESCRIPTION. Defaults to False.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+
+
+
+        <span class="k">if</span> <span class="n">CaseName</span><span class="o">==</span><span class="s1">&#39;auto&#39;</span><span class="p">:</span>
+            <span class="n">CaseName</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">CaseName</span>
+
+
+        <span class="k">if</span> <span class="n">Format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">Format</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Tag</span><span class="o">=</span><span class="n">GenerateTag</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Tag</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">Tag</span><span class="p">)</span>
+        <span class="n">FilePath</span><span class="o">=</span><span class="n">Source</span><span class="p">(</span><span class="n">FileName</span><span class="p">,</span><span class="n">Folder</span><span class="o">=</span><span class="n">Folder</span><span class="p">,</span><span class="n">Enforce</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">Verbose</span><span class="o">=</span><span class="n">Verbose</span><span class="p">,</span><span class="n">CaseName</span><span class="o">=</span><span class="n">CaseName</span><span class="p">,</span><span class="n">CheckExistence</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">CreateFolder</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">Verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Saving data in file:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">FilePath</span><span class="p">))</span>
+        <span class="c1"># Looking for file</span>
+        <span class="k">if</span> <span class="n">ForceOverWrite</span> <span class="ow">or</span> <span class="n">UEDGEToolBox</span><span class="o">.</span><span class="n">CheckFileExist</span><span class="p">(</span><span class="n">FilePath</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">Verbose</span><span class="o">=</span><span class="n">Verbose</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">Save</span><span class="p">(</span><span class="n">FilePath</span><span class="p">,</span><span class="n">Mode</span><span class="p">,</span><span class="n">ExtraVars</span><span class="p">,</span><span class="n">GlobalVars</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Tag</span><span class="p">,</span><span class="n">Format</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No data saved in file:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">FilePath</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="UBoxSim.SaveLog"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSim.SaveLog">[docs]</a>    <span class="k">def</span> <span class="nf">SaveLog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">FileName</span><span class="p">,</span><span class="n">Str</span><span class="p">,</span><span class="n">Tag</span><span class="o">=</span><span class="p">{},</span><span class="n">Folder</span><span class="o">=</span><span class="s1">&#39;SaveDir&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Tag</span><span class="o">=</span><span class="n">GenerateTag</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Tag</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">Tag</span><span class="p">)</span>
+        <span class="n">FilePath</span><span class="o">=</span><span class="n">Source</span><span class="p">(</span><span class="n">FileName</span><span class="p">,</span><span class="n">Folder</span><span class="o">=</span><span class="n">Folder</span><span class="p">,</span><span class="n">Enforce</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">Verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Verbose</span><span class="p">,</span><span class="n">CaseName</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">CaseName</span><span class="p">,</span><span class="n">CheckExistence</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">CreateFolder</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">SaveLog</span><span class="p">(</span><span class="n">FilePath</span><span class="p">,</span><span class="n">Str</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Tag</span><span class="p">)</span></div>
+<div class="viewcode-block" id="UBoxSim.Load"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Simulations.UBoxSim.Load">[docs]</a>    <span class="k">def</span> <span class="nf">Load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">FileName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">CaseName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Folder</span><span class="o">=</span><span class="s1">&#39;SaveDir&#39;</span><span class="p">,</span><span class="n">LoadPackage</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span><span class="n">LoadList</span><span class="o">=</span><span class="p">[],</span><span class="n">ExcludeList</span><span class="o">=</span><span class="p">[],</span><span class="n">Format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">CheckDim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">Enforce</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">Filter</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wrapper method to load UEDGE simulation data</span>
+<span class="sd">        See Load method of UEDGEIO class</span>
+<span class="sd">        Args:</span>
+<span class="sd">            FileName (TYPE): DESCRIPTION.</span>
+<span class="sd">            CaseName (TYPE, optional): DESCRIPTION. Defaults to None.</span>
+<span class="sd">            Folder (TYPE, optional): DESCRIPTION. Defaults to &#39;SaveDir&#39;.</span>
+<span class="sd">            LoadList (TYPE, optional): DESCRIPTION. Defaults to [].</span>
+<span class="sd">            ExcludeList (TYPE, optional): DESCRIPTION. Defaults to [].</span>
+<span class="sd">            Format (TYPE, optional): DESCRIPTION. Defaults to &#39;numpy&#39;.</span>
+<span class="sd">            CheckCompat (TYPE, optional): DESCRIPTION. Defaults to True.</span>
+<span class="sd">            Verbose (TYPE, optional): DESCRIPTION. Defaults to False.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">FileName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">FileName</span><span class="o">=</span><span class="n">LsFolder</span><span class="p">(</span><span class="n">Source</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="n">Folder</span><span class="p">),</span><span class="n">Filter</span><span class="o">=</span><span class="n">Filter</span><span class="p">,</span><span class="n">Ext</span><span class="o">=</span><span class="s1">&#39;*.npy&#39;</span><span class="p">,</span><span class="n">LoadMode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">FileName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Nothing to load... Exiting ...&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">Format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Format</span>
+        <span class="n">Verbose</span><span class="o">=</span><span class="n">Verbose</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">Verbose</span>
+
+        <span class="kn">from</span> <span class="nn">uedge</span> <span class="kn">import</span> <span class="n">bbb</span>
+        <span class="k">if</span> <span class="n">Format</span><span class="o">==</span><span class="s1">&#39;npy&#39;</span> <span class="ow">or</span> <span class="n">Format</span><span class="o">==</span><span class="s1">&#39;numpy&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">FileName</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.npy&#39;</span><span class="p">):</span>
+                <span class="n">FileName</span><span class="o">=</span><span class="n">FileName</span><span class="o">+</span><span class="s1">&#39;.npy&#39;</span>
+
+        <span class="n">FilePath</span><span class="o">=</span><span class="n">Source</span><span class="p">(</span><span class="n">FileName</span><span class="p">,</span><span class="n">Folder</span><span class="o">=</span><span class="n">Folder</span><span class="p">,</span><span class="n">Enforce</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">Verbose</span><span class="o">=</span><span class="n">Verbose</span><span class="p">,</span><span class="n">CaseName</span><span class="o">=</span><span class="n">CaseName</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">Verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Load data in file:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">FilePath</span><span class="p">))</span>
+        <span class="c1"># Looking for file</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">FilePath</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">Verbose</span><span class="o">=</span><span class="n">Verbose</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="n">FilePath</span><span class="p">,</span><span class="n">Format</span><span class="p">,</span><span class="n">LoadList</span><span class="p">,</span><span class="n">ExcludeList</span><span class="p">,</span><span class="n">CheckDim</span><span class="p">,</span><span class="n">Enforce</span><span class="p">,</span><span class="n">LoadPackage</span><span class="p">)</span>
+            <span class="n">bbb</span><span class="o">.</span><span class="n">restart</span><span class="o">=</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The file </span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">FilePath</span><span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Jerome Guterl
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

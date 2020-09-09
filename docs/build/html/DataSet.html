@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>UEDGEToolBox.DataSet module &mdash; UEDGEToolBox 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="UEDGEToolBox.Settings module" href="Settings.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> UEDGEToolBox
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#getting-started">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#quickstart">QuickStart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#uedgetoolbox-settings">UEDGEToolBox.Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#initialization-of-uedgetoolbox">Initialization of UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#developping-uedgetoolbox">Developping UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#loading-uedgetoolbox-when-starting-a-python-session">Loading UEDGEToolBox when starting a python session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#documentation">Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">UEDGEToolBox.DataSet module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Settings.html">UEDGEToolBox.Settings module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UEDGEToolBox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>UEDGEToolBox.DataSet module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/DataSet.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-UEDGEToolBox.DataSet">
+<span id="uedgetoolbox-dataset-module"></span><h1>UEDGEToolBox.DataSet module<a class="headerlink" href="#module-UEDGEToolBox.DataSet" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="UEDGEToolBox.DataSet.UBoxDataSet">
+<em class="property">class </em><code class="sig-prename descclassname">UEDGEToolBox.DataSet.</code><code class="sig-name descname">UBoxDataSet</code><a class="reference internal" href="_modules/UEDGEToolBox/DataSet.html#UBoxDataSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.DataSet.UBoxDataSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="UEDGEToolBox.html#UEDGEToolBox.DataSet.UBoxDataSetUtils" title="UEDGEToolBox.DataSet.UBoxDataSetUtils"><code class="xref py py-class docutils literal notranslate"><span class="pre">UEDGEToolBox.DataSet.UBoxDataSetUtils</span></code></a></p>
+<p>Class to construct or load a set of UEDGE and python variables.</p>
+<dl class="py method">
+<dt id="UEDGEToolBox.DataSet.UBoxDataSet.GatherData">
+<code class="sig-name descname">GatherData</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">DataSetName</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ExtraVars</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">[]</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/UEDGEToolBox/DataSet.html#UBoxDataSet.GatherData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.DataSet.UBoxDataSet.GatherData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of variable names from a data set/or and a list of variable name and return a dictionary with variable names as keys and variable values as values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>DataSetName</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Name of a data set. Defaults to None.</p></li>
+<li><p><strong>ExtraVars</strong> (<em>list</em><em>(</em><em>str</em><em>)</em><em>, </em><em>optional</em>) – List of variable names. Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary dict[variable name]=variable value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.DataSet.UBoxDataSet.GetDefaultDataSet">
+<em class="property">static </em><code class="sig-name descname">GetDefaultDataSet</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/UEDGEToolBox/DataSet.html#UBoxDataSet.GetDefaultDataSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.DataSet.UBoxDataSet.GetDefaultDataSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return defaults datasets.</p>
+<blockquote>
+<div><p>DefaultDataSet (dict): dictionary of dataset.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.DataSet.UBoxDataSet.GetVarList">
+<code class="sig-name descname">GetVarList</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">DataSetName</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ExtraVars</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/UEDGEToolBox/DataSet.html#UBoxDataSet.GetVarList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.DataSet.UBoxDataSet.GetVarList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of variables from a dataset and a list of variable names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>DataSetName</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of a data set. Defaults to None.</p></li>
+<li><p><strong>ExtraVars</strong> (<em>list</em><em>(</em><em>str</em><em>)</em><em>, </em><em>optional</em>) – List of variable names. Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DESCRIPTION.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List (TYPE)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.DataSet.UBoxDataSet.SaveDataSet">
+<code class="sig-name descname">SaveDataSet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/UEDGEToolBox/DataSet.html#UBoxDataSet.SaveDataSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.DataSet.UBoxDataSet.SaveDataSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dummy method overloaded by an UBoxSettings save method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="UEDGEToolBox.DataSet.UBoxDataSetUtils">
+<em class="property">class </em><code class="sig-prename descclassname">UEDGEToolBox.DataSet.</code><code class="sig-name descname">UBoxDataSetUtils</code><a class="reference internal" href="_modules/UEDGEToolBox/DataSet.html#UBoxDataSetUtils"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.DataSet.UBoxDataSetUtils" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Utility class to handle construction of list of python and UEDGE variables.</p>
+<dl class="py method">
+<dt id="UEDGEToolBox.DataSet.UBoxDataSetUtils.DatatoDict">
+<em class="property">static </em><code class="sig-name descname">DatatoDict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">VarList</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">Verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/UEDGEToolBox/DataSet.html#UBoxDataSetUtils.DatatoDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.DataSet.UBoxDataSetUtils.DatatoDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a list of UEDGE and regular variables into a dictionary (e.g. VarList=[‘ne’] -&gt; Dic[‘ne’]=bbb.ne).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>DataSetName</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – DESCRIPTION. Defaults to None.</p></li>
+<li><p><strong>ExtraVars</strong> (<em>list</em><em>(</em><em>str</em><em>)</em><em>, </em><em>optional</em>) – DESCRIPTION. Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>TYPE</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DESCRIPTION.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.DataSet.UBoxDataSetUtils.ProcessVarList">
+<em class="property">static </em><code class="sig-name descname">ProcessVarList</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">VarList</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">Verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="_modules/UEDGEToolBox/DataSet.html#UBoxDataSetUtils.ProcessVarList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.DataSet.UBoxDataSetUtils.ProcessVarList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add UEDGE package in front variable names when variable is part of an UEDGE pakage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>VarList</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – DESCRIPTION.</p></li>
+<li><p><strong>Verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – DESCRIPTION. Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ProcessVarList</span><span class="p">(</span><span class="s1">&#39;ne&#39;</span><span class="p">)</span>
+<span class="go">&#39;bbb.ne&#39;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>list(str)</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>DESCRIPTION.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.DataSet.UBoxDataSetUtils.RemovePkg">
+<em class="property">static </em><code class="sig-name descname">RemovePkg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">VarName</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/UEDGEToolBox/DataSet.html#UBoxDataSetUtils.RemovePkg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.DataSet.UBoxDataSetUtils.RemovePkg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove package object in a variable name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>VarName</strong> (<em>str</em>) – Variable name.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">RemovePkg</span><span class="p">(</span><span class="s1">&#39;bbb.ne&#39;</span><span class="p">)</span>
+<span class="go">&#39;ne&#39;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>str</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Variable name without parent object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Settings.html" class="btn btn-neutral float-right" title="UEDGEToolBox.Settings module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Jerome Guterl
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -40,8 +40,7 @@ setup(
         'Programming Language :: Python :: 3 :: Only',
     ],
     keywords='sample, setuptools, development',  # Optional
-    package_dir={'': 'src'},
-    packages=find_packages(where='src'),
+    packages=['UEDGEToolBox'],
     python_requires='>=3.5, <4',
     install_requires=['colorama','datetime','numpy','easygui','scipy','mpldatacursor'],  # Optional
     #extras_require={  # Optional

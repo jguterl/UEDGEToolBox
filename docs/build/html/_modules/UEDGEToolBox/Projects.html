@@ -1,0 +1,778 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>UEDGEToolBox.Projects &mdash; UEDGEToolBox 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> UEDGEToolBox
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#getting-started">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#quickstart">QuickStart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#uedgetoolbox-settings">UEDGEToolBox.Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#initialization-of-uedgetoolbox">Initialization of UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#developping-uedgetoolbox">Developping UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#loading-uedgetoolbox-when-starting-a-python-session">Loading UEDGEToolBox when starting a python session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#documentation">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../DataSet.html">UEDGEToolBox.DataSet module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Settings.html">UEDGEToolBox.Settings module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">UEDGEToolBox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>UEDGEToolBox.Projects</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for UEDGEToolBox.Projects</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Fri Jul 31 00:23:14 2020</span>
+
+<span class="sd">@author: jguterl</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">UEDGEToolBox.Utils</span> <span class="kn">import</span> <span class="n">UBoxPrefix</span>
+<span class="kn">from</span> <span class="nn">UEDGEToolBox.Settings</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span><span class="nn">os</span><span class="o">,</span><span class="nn">easygui</span><span class="o">,</span><span class="nn">platform</span><span class="o">,</span><span class="nn">inspect</span><span class="o">,</span><span class="nn">configparser</span><span class="o">,</span><span class="nn">getpass</span><span class="o">,</span><span class="nn">errno</span><span class="o">,</span><span class="nn">shutil</span><span class="o">,</span><span class="nn">yaml</span><span class="o">,</span><span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="Project"><a class="viewcode-back" href="../../projects.html#UEDGEToolBox.Projects.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">():</span>
+    <span class="n">ListDir</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;InputDir&#39;</span><span class="p">,</span><span class="s1">&#39;SaveDir&#39;</span><span class="p">,</span><span class="s1">&#39;RunDir&#39;</span><span class="p">,</span><span class="s1">&#39;GridDir&#39;</span><span class="p">]</span>
+    <span class="n">Properties</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span><span class="s1">&#39;RootPath&#39;</span><span class="p">,</span><span class="s1">&#39;Owner&#39;</span><span class="p">,</span><span class="s1">&#39;IsCurrent&#39;</span><span class="p">,</span><span class="s1">&#39;Description&#39;</span><span class="p">]</span>
+    <span class="n">_YAMLTag</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;!project&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">RootPath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Owner</span><span class="o">=</span><span class="p">{},</span><span class="n">Description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">IsCurrent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">Parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Create</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">Dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">RootPath</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">RootPath</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">RootPath</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">RootPath</span><span class="o">=</span><span class="kc">None</span>
+        <span class="k">if</span> <span class="n">Description</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Description</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+        <span class="k">else</span><span class="p">:</span>    
+            <span class="bp">self</span><span class="o">.</span><span class="n">Description</span><span class="o">=</span><span class="n">Description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Name</span><span class="o">=</span><span class="n">Name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Owner</span><span class="o">=</span><span class="n">Owner</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Parent</span><span class="o">=</span><span class="n">Parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">IsCurrent</span><span class="o">=</span><span class="n">IsCurrent</span>
+        <span class="k">if</span> <span class="n">Dic</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__fromDict</span><span class="p">(</span><span class="n">Dic</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">Create</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__CreateFolder</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__CreateReadmeFile</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Project &#39;</span><span class="si">{}</span><span class="s2">&#39; created with folder &#39;</span><span class="si">{}</span><span class="s2">&#39; ...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Name</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">()))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Project &#39;</span><span class="si">{}</span><span class="s2">&#39; loaded...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Name</span><span class="p">))</span>
+                
+    <span class="k">def</span> <span class="nf">__toDict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Dic</span><span class="o">=</span><span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">Properties</span><span class="p">:</span>
+                <span class="n">Dic</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Dic</span>
+    
+    <span class="k">def</span> <span class="nf">__fromDict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Dic</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">Dic</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">k</span><span class="p">):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Project </span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Name</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">RootPath</span><span class="p">)</span>
+        
+<div class="viewcode-block" id="Project.to_yaml"><a class="viewcode-back" href="../../projects.html#UEDGEToolBox.Projects.Project.to_yaml">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="n">dumper</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">dumper</span><span class="o">.</span><span class="n">represent_mapping</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">YAMLTag</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">__toDict</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Project.from_yaml"><a class="viewcode-back" href="../../projects.html#UEDGEToolBox.Projects.Project.from_yaml">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_yaml</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="n">node_map</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">construct_mapping</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+        <span class="k">return</span> <span class="n">Project</span><span class="p">(</span><span class="n">Dic</span><span class="o">=</span><span class="n">node_map</span><span class="p">)</span></div>
+        
+    <span class="c1"># We define manually the import/export functions to save/load a project with yaml so we cn ignore the attribute &quot;Parent&quot; </span>
+    <span class="nd">@property</span> 
+    <span class="k">def</span> <span class="nf">InputDir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetDir</span><span class="p">(</span><span class="s1">&#39;InputDir&#39;</span><span class="p">)</span>
+    
+    <span class="nd">@property</span> 
+    <span class="k">def</span> <span class="nf">RunDir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetDir</span><span class="p">(</span><span class="s1">&#39;RunDir&#39;</span><span class="p">)</span>
+    
+    <span class="nd">@property</span> 
+    <span class="k">def</span> <span class="nf">SaveDir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetDir</span><span class="p">(</span><span class="s1">&#39;SaveDir&#39;</span><span class="p">)</span>
+    
+    <span class="nd">@property</span> 
+    <span class="k">def</span> <span class="nf">GridDir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetDir</span><span class="p">(</span><span class="s1">&#39;GridDir&#39;</span><span class="p">)</span>
+    
+
+    
+    <span class="k">def</span> <span class="nf">__Copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">NewName</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Project</span><span class="p">(</span><span class="n">Name</span><span class="o">=</span><span class="n">NewName</span><span class="p">,</span><span class="n">RootPath</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">RootPath</span><span class="p">,</span><span class="n">Owner</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Owner</span><span class="p">,</span><span class="n">Description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Description</span><span class="p">,</span><span class="n">Parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Parent</span><span class="p">,</span><span class="n">Create</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">__CreateFolder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">ListDir</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">GetDir</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+            
+    <span class="k">def</span> <span class="nf">__CreateReadmeFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39;/Readme.txt&#39;</span><span class="p">,</span><span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;****** UEDGE PROJECT ******</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;****** Username: </span><span class="si">{}</span><span class="s1">; email: </span><span class="si">{}</span><span class="s1">; affiliation: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Owner</span><span class="p">[</span><span class="s1">&#39;UserName&#39;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">Owner</span><span class="p">[</span><span class="s1">&#39;Email&#39;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">Owner</span><span class="p">[</span><span class="s1">&#39;Affiliation&#39;</span><span class="p">]))</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;************************************** </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;****** Description: </span><span class="se">\n\n\n\n\n\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="Project.Copy"><a class="viewcode-back" href="../../projects.html#UEDGEToolBox.Projects.Project.Copy">[docs]</a>    <span class="k">def</span> <span class="nf">Copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">NewName</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Copy the project into a new project. </span>
+<span class="sd">        </span>
+<span class="sd">        :param NewName: Name of the new project</span>
+<span class="sd">        :type NewName: Str</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+ 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Parent</span><span class="o">.</span><span class="n">ProjectExist</span><span class="p">(</span><span class="n">NewName</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">(</span><span class="n">NewName</span><span class="p">)):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Project &quot;</span><span class="si">{}</span><span class="s1">&quot; or folder &quot;</span><span class="si">{}</span><span class="s1">&quot; already exist. Cannot copy the project ...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">NewName</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">(</span><span class="n">NewName</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+                
+                <span class="bp">self</span><span class="o">.</span><span class="n">Parent</span><span class="o">.</span><span class="n">Projects</span><span class="p">[</span><span class="n">NewName</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__Copy</span><span class="p">(</span><span class="n">NewName</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__CopyFolder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Parent</span><span class="o">.</span><span class="n">Projects</span><span class="p">[</span><span class="n">NewName</span><span class="p">]</span><span class="o">.</span><span class="n">GetPath</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Parent</span><span class="o">.</span><span class="n">SetCurrentProject</span><span class="p">(</span><span class="n">NewName</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Parent</span><span class="o">.</span><span class="n">SaveProjects</span><span class="p">()</span>    </div>
+                
+<div class="viewcode-block" id="Project.GetPath"><a class="viewcode-back" href="../../projects.html#UEDGEToolBox.Projects.Project.GetPath">[docs]</a>    <span class="k">def</span> <span class="nf">GetPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Name</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">RootPath</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the path of the project folder.</span>
+<span class="sd">        </span>
+<span class="sd">        If no project name or rootpath is provided, name and rootpath are the ones from the instance.</span>
+<span class="sd">        </span>
+<span class="sd">        :param Name: project name, defaults to None</span>
+<span class="sd">        :type Name: str, optional</span>
+<span class="sd">        :param RootPath: project rootpath, defaults to None</span>
+<span class="sd">        :type RootPath: str, optional</span>
+<span class="sd">        :return: path of the project folder.</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>   
+        <span class="k">if</span> <span class="n">Name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Name</span>
+        <span class="k">if</span> <span class="n">RootPath</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">RootPath</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">RootPath</span>
+
+
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RootPath</span><span class="p">,</span><span class="n">Name</span><span class="p">))</span></div>
+        
+<div class="viewcode-block" id="Project.GetDir"><a class="viewcode-back" href="../../projects.html#UEDGEToolBox.Projects.Project.GetDir">[docs]</a>    <span class="k">def</span> <span class="nf">GetDir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Dir</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return path toward directory. Example: CurrentProject.GetDir(&#39;InputDir&#39;) returns /path/to/projects/InputDir.</span>
+<span class="sd">        </span>
+<span class="sd">        :param Dir: InputDir or GridDir or SaveDir or RunDir</span>
+<span class="sd">        :type Dir: str</span>
+<span class="sd">        :return: Path toward directory</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>   
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">Dir</span><span class="p">)</span></div>
+    
+    <span class="k">def</span> <span class="nf">__CopyFolder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Path</span><span class="p">):</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">(),</span><span class="n">Path</span><span class="p">,</span><span class="n">ignore</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">__MoveFolder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Path</span><span class="p">):</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">movetree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">(),</span><span class="n">Path</span><span class="p">)</span>
+    
+    
+<div class="viewcode-block" id="Project.Rename"><a class="viewcode-back" href="../../projects.html#UEDGEToolBox.Projects.Project.Rename">[docs]</a>    <span class="k">def</span> <span class="nf">Rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">NewName</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Parent</span><span class="o">.</span><span class="n">ProjectExist</span><span class="p">(</span><span class="n">NewName</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">(</span><span class="n">NewName</span><span class="p">)):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Project or folder &quot;</span><span class="si">{}</span><span class="s1">&quot; already exist. Cannot rename the project ...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">(</span><span class="n">NewName</span><span class="p">)))</span>
+            
+        <span class="k">else</span><span class="p">:</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">(</span><span class="n">NewName</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Name</span><span class="o">=</span><span class="n">NewName</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Register</span><span class="p">()</span></div>
+                
+    
+    <span class="k">def</span> <span class="nf">__Register</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Parent</span><span class="o">.</span><span class="n">SaveProjects</span><span class="p">()</span>
+    
+<div class="viewcode-block" id="Project.Show"><a class="viewcode-back" href="../../projects.html#UEDGEToolBox.Projects.Project.Show">[docs]</a>    <span class="k">def</span> <span class="nf">Show</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Display the properties of the project.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Project     : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Name</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RootPath    : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RootPath</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Description : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Description</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Owner       : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Owner</span><span class="p">))</span></div>
+    
+<div class="viewcode-block" id="Project.Summary"><a class="viewcode-back" href="../../projects.html#UEDGEToolBox.Projects.Project.Summary">[docs]</a>    <span class="k">def</span> <span class="nf">Summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{:30}</span><span class="s2"> | </span><span class="si">{:40}</span><span class="s2"> | </span><span class="si">{:40}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Name</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Description</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">RootPath</span><span class="p">)</span></div>
+        
+    
+    
+    <span class="k">def</span> <span class="nf">__Move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">NewRootPath</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Parent</span><span class="o">.</span><span class="n">ProjectExist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Name</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Name</span><span class="p">,</span><span class="n">NewRootPath</span><span class="p">)):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Project </span><span class="si">{}</span><span class="s1"> or folder &quot;</span><span class="si">{}</span><span class="s1">&quot; already exist. Cannot move the project ...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Name</span><span class="p">,</span><span class="n">NewRootPath</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">GetPath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Name</span><span class="p">,</span><span class="n">NewRootPath</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">RootPath</span><span class="o">=</span><span class="n">NewRootPath</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__Register</span><span class="p">()</span></div>
+            
+            
+<span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span><span class="n">Project</span><span class="p">,</span> <span class="n">Project</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">,</span> <span class="n">Dumper</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">SafeDumper</span><span class="p">)</span>
+<span class="n">yaml</span><span class="o">.</span><span class="n">add_constructor</span><span class="p">(</span><span class="n">Project</span><span class="o">.</span><span class="n">_YAMLTag</span><span class="p">,</span> <span class="n">Project</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">SafeLoader</span><span class="p">)</span>            
+        
+<span class="c1">####################################################################################################</span>
+
+        
+<div class="viewcode-block" id="UBoxProjects"><a class="viewcode-back" href="../../projects.html#UEDGEToolBox.Projects.UBoxProjects">[docs]</a><span class="nd">@UBoxPrefix</span>
+<span class="k">class</span> <span class="nc">UBoxProjects</span><span class="p">(</span><span class="n">UBoxSettings</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Settings=None</span>
+        <span class="c1"># if Settings is not None:</span>
+             <span class="n">Parent</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">)</span>
+             <span class="n">Parent</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">UBoxProjects</span>
+             <span class="k">return</span> <span class="n">Parent</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">UBoxProjects</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">=</span><span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_CurrentProject</span><span class="o">=</span><span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LoadProjects</span><span class="p">()</span>
+        
+        
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;UserName&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">UserName</span><span class="p">,</span><span class="s1">&#39;Email&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">Email</span><span class="p">,</span><span class="s1">&#39;Affiliation&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">Affiliation</span><span class="p">}</span>
+ 
+    <span class="k">def</span> <span class="nf">CurrentProjectGetter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span>
+     
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">CurrentProject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CurrentProject</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+             <span class="k">raise</span> <span class="ne">Warning</span><span class="p">(</span><span class="s1">&#39;No current project available. Use SetCurrentProject() to set a current project.&#39;</span><span class="p">)</span>
+         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CurrentProject</span>
+
+    <span class="nd">@CurrentProject</span><span class="o">.</span><span class="n">setter</span> 
+    <span class="k">def</span> <span class="nf">CurrentProject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Name</span><span class="p">):</span>
+         <span class="k">if</span> <span class="n">Name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_CurrentProject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__ClearCurrentProject</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span><span class="o">.</span><span class="n">IsCurrent</span><span class="o">=</span><span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">SaveProjects</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Current Project set to &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Name</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Project named </span><span class="si">{}</span><span class="s1"> does not exist ...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Name</span><span class="p">))</span>
+        
+    
+    <span class="k">def</span> <span class="nf">__GetPathProject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Name</span><span class="p">,</span><span class="n">RootPath</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">RootPath</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">Name</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__CreateProject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Name</span><span class="p">,</span><span class="n">RootPath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Owner</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="n">Owner</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Owner</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Owner</span>
+        <span class="k">if</span> <span class="n">RootPath</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">RootPath</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">RootPathProjects</span>
+        <span class="k">if</span> <span class="n">Description</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Description</span><span class="o">=</span><span class="s1">&#39;none&#39;</span>
+            
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ProjectExist</span><span class="p">(</span><span class="n">Name</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">__GetPathProject</span><span class="p">(</span><span class="n">Name</span><span class="p">,</span><span class="n">RootPath</span><span class="p">)):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Project </span><span class="si">{}</span><span class="s1"> or folder </span><span class="si">{}</span><span class="s1"> already exist.Cannot create project ...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Name</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">__GetPathProject</span><span class="p">(</span><span class="n">Name</span><span class="p">,</span><span class="n">RootPath</span><span class="p">)))</span>
+            <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Project Name       :&#39;</span><span class="p">,</span><span class="n">Name</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Project RootPath   :&#39;</span><span class="p">,</span><span class="n">RootPath</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Project Description:&#39;</span><span class="p">,</span><span class="n">Description</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Project Owner      :&#39;</span><span class="p">,</span><span class="n">Owner</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">QueryYesNo</span><span class="p">(</span><span class="s1">&#39;Confirming the creation of the project?&#39;</span><span class="p">):</span>
+               <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="p">[</span><span class="n">Name</span><span class="p">]</span><span class="o">=</span><span class="n">Project</span><span class="p">(</span><span class="n">Name</span><span class="p">,</span><span class="n">RootPath</span><span class="p">,</span><span class="n">Owner</span><span class="p">,</span><span class="n">Description</span><span class="p">,</span><span class="bp">self</span><span class="p">,</span><span class="n">Create</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+               <span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span><span class="o">=</span><span class="n">Name</span>
+               <span class="bp">self</span><span class="o">.</span><span class="n">SaveProjects</span><span class="p">()</span>             
+    
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Creation of project aborted...&quot;</span><span class="p">)</span>
+                
+    <span class="k">def</span> <span class="nf">__AddProject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Name</span><span class="p">,</span><span class="n">RootPath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Owner</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="n">Name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">QueryYesNo</span><span class="p">(</span><span class="s1">&#39;Project </span><span class="si">{}</span><span class="s1"> already exists in UBox. Overwrite it?&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Name</span><span class="p">)):</span>
+                <span class="k">return</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="p">[</span><span class="n">Name</span><span class="p">]</span><span class="o">=</span><span class="n">Project</span><span class="p">(</span><span class="n">Name</span><span class="o">=</span><span class="n">Name</span><span class="p">,</span><span class="n">RootPath</span><span class="o">=</span><span class="n">RootPath</span><span class="p">,</span><span class="n">Owner</span><span class="o">=</span><span class="n">Owner</span><span class="p">,</span><span class="n">Description</span><span class="o">=</span><span class="n">Description</span><span class="p">,</span><span class="n">Parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span><span class="o">=</span><span class="n">Name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SaveProjects</span><span class="p">()</span> 
+        
+        
+    <span class="k">def</span> <span class="nf">DeleteProject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">Name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span><span class="o">.</span><span class="n">Name</span><span class="o">==</span><span class="n">Name</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">SetCurrentProject</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">SetCurrentProject</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SaveProjects</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Project </span><span class="si">{}</span><span class="s1"> does not exist ...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Name</span><span class="p">))</span>
+    
+    
+    <span class="k">def</span> <span class="nf">CopyProject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">OldName</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="n">NewName</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Copy Project &#39;OldName&#39; into a new project &#39;NewName&#39;</span>
+<span class="sd">        </span>
+<span class="sd">        :param OldName: Name of the old project</span>
+<span class="sd">        :type OldName: str</span>
+<span class="sd">        :param NewName: Name of the new project</span>
+<span class="sd">        :type NewName: str</span>
+<span class="sd">        :return: None </span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">OldName</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">P</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="p">[</span><span class="n">OldName</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cannot find project </span><span class="si">{}</span><span class="s1"> ....&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">OldName</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        
+        <span class="n">P</span><span class="o">.</span><span class="n">Copy</span><span class="p">(</span><span class="n">NewName</span><span class="p">)</span>  
+        
+    <span class="k">def</span> <span class="nf">__ClearCurrentProject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">.</span><span class="n">IsCurrent</span><span class="o">=</span><span class="kc">False</span>
+            
+    <span class="k">def</span> <span class="nf">__SetCurrentProject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span><span class="o">=</span><span class="kc">None</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">IsCurrent</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span><span class="o">=</span><span class="n">k</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__ClearCurrentProject</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span><span class="o">.</span><span class="n">IsCurrent</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="k">break</span>
+                
+    <span class="k">def</span> <span class="nf">ProjectExist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Name</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check whether a project already exist.Return True if the project exists.</span>
+<span class="sd">        </span>
+<span class="sd">        :param Name: Name of the project</span>
+<span class="sd">        :type Name: str</span>
+<span class="sd">        :param Path: Path of the project</span>
+<span class="sd">        :type Path: str</span>
+<span class="sd">        :return: DESCRIPTION</span>
+<span class="sd">        :rtype: bool</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+          
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">Path</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+    
+            
+
+                 
+    <span class="k">def</span> <span class="nf">SetCurrentProject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Name</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set current project.</span>
+<span class="sd">        :param Name: Name of the project</span>
+<span class="sd">        :type Name: str</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">Name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span><span class="o">=</span><span class="n">Name</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__ClearCurrentProject</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span><span class="o">.</span><span class="n">IsCurrent</span><span class="o">=</span><span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">SaveProjects</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cannot find project </span><span class="si">{}</span><span class="s1"> ....&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Name</span><span class="p">))</span>
+            
+    
+    <span class="k">def</span> <span class="nf">ShowCurrentProject</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Show the current project.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No current project. To create a new one, type CreateProject()&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+        
+    <span class="k">def</span> <span class="nf">ShowProjects</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Show list of project. The current project is indicated by *.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; ************** Projects ****************&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">k</span><span class="o">==</span><span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span><span class="o">.</span><span class="n">Name</span><span class="p">:</span>
+                <span class="n">Str</span><span class="o">=</span><span class="s1">&#39;*&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">Str</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">{:2d}{:1s}</span><span class="s1">] </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">Str</span><span class="p">,</span><span class="n">v</span><span class="o">.</span><span class="n">Summary</span><span class="p">()))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; ****************************************&#39;</span><span class="p">)</span>   
+        
+    <span class="k">def</span> <span class="nf">ScanFolder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Folder</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Scan a folder to search and add existing projects.</span>
+<span class="sd">        </span>
+<span class="sd">        :param Folder: Name of the folder to scan</span>
+<span class="sd">        :type Folder: str</span>
+<span class="sd">        :return: DESCRIPTION</span>
+<span class="sd">        :rtype: TYPE</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">Folder</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cannot find the folder </span><span class="si">{}</span><span class="s1"> ...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Folder</span><span class="p">))</span>
+            <span class="k">return</span>
+        
+        <span class="n">ListSubFolder</span><span class="o">=</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Folder</span><span class="p">,</span><span class="s1">&#39;*&#39;</span><span class="p">))</span>
+        
+        <span class="k">for</span> <span class="n">S</span> <span class="ow">in</span> <span class="n">ListSubFolder</span><span class="p">:</span>
+            <span class="c1">#print(S)</span>
+            <span class="n">ListSubSubFolder</span><span class="o">=</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="s1">&#39;*&#39;</span><span class="p">))</span>
+            <span class="n">LSS</span><span class="o">=</span><span class="p">[]</span>
+            <span class="k">for</span> <span class="n">SS</span> <span class="ow">in</span> <span class="n">ListSubSubFolder</span><span class="p">:</span>
+                 <span class="n">LSS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">SS</span><span class="p">))</span>
+            <span class="c1">#print(LSS)</span>
+            <span class="c1">#print([L in LSS for L in Project.ListDir])</span>
+            <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="n">L</span> <span class="ow">in</span> <span class="n">LSS</span> <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="n">Project</span><span class="o">.</span><span class="n">ListDir</span><span class="p">]):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Found project </span><span class="si">{}</span><span class="s1"> in </span><span class="si">{}</span><span class="s1"> ... Loading it in UBox&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">S</span><span class="p">),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">S</span><span class="p">)))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__AddProject</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">S</span><span class="p">),</span><span class="n">RootPath</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">S</span><span class="p">),</span><span class="n">Description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Owner</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Owner</span><span class="p">)</span>
+                
+        
+    
+    <span class="k">def</span> <span class="nf">SaveProjects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ProjectsFile</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save projects in the the given project yml file. If no file is given, save in UBox.ProjectsFile.</span>
+<span class="sd">        </span>
+<span class="sd">        :param ProjectsFile: File where projects will be saved, defaults to None</span>
+<span class="sd">        :type ProjectsFile: str, optional</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>  
+        <span class="k">if</span> <span class="n">ProjectsFile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ProjectsFile</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ProjectsFile</span> 
+            
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ProjectsFile</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span> <span class="p">:</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">safe_dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">LoadProjects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ProjectsFile</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load projects from a project yml file. If no file is given, save in UBox.ProjectsFile.</span>
+<span class="sd">        </span>
+<span class="sd">        :param ProjectsFile: File where projects will be saved, defaults to None</span>
+<span class="sd">        :type ProjectsFile: str, optional</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ProjectsFile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ProjectsFile</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ProjectsFile</span>
+            
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Debug</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loading projects from &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ProjectsFile</span><span class="p">)</span>
+                    
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">ProjectsFile</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Projects file </span><span class="si">{}</span><span class="s1"> does not exist. Cannot load projects. Type SetProjectsFile() to create one.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ProjectsFile</span><span class="p">))</span>
+            <span class="k">return</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+                
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ProjectsFile</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">Projects</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Debug</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loaded Projects:&#39;</span><span class="p">,</span><span class="n">Projects</span><span class="p">)</span>
+                    
+            <span class="k">if</span> <span class="n">Projects</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">=</span><span class="n">Projects</span>
+                <span class="k">for</span> <span class="n">P</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="p">[</span><span class="n">P</span><span class="p">]</span><span class="o">.</span><span class="n">Parent</span><span class="o">=</span><span class="bp">self</span> 
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Debug</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loaded Projects:&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="p">)</span>    
+                <span class="bp">self</span><span class="o">.</span><span class="n">__SetCurrentProject</span><span class="p">()</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">ShowProjects</span><span class="p">()</span>
+                <span class="n">N</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Projects</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">N</span><span class="o">=</span><span class="mi">0</span>
+                
+                
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> projects loaded from </span><span class="si">{}</span><span class="s1"> ...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">ProjectsFile</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ShowCurrentProject</span><span class="p">()</span>
+            
+ 
+         
+            
+    <span class="k">def</span> <span class="nf">CreateProject</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a new project.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ProjectsFile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot create a new project. A project file must be first set with SetProjectsFile()&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        
+        <span class="n">Name</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter the name of the project: &#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">Name</span><span class="o">==</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Name of the project cannot be empty... Aborting project creation... Type &#39;CreateProject&#39; to create new project&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RootPath:</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RootPathProjects</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">QueryYesNo</span><span class="p">(</span><span class="s1">&#39;Confirming the roothpath?&#39;</span><span class="p">):</span>
+            <span class="n">RootPathProjects</span><span class="o">=</span><span class="n">easygui</span><span class="o">.</span><span class="n">diropenbox</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Select a rootfolder&#39;</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">RootPathProjects</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">RootPathProjects</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">SetRootPathProjects</span><span class="p">(</span><span class="n">RootPathProjects</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RootPathProjects set to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RootPathProjects</span><span class="p">))</span>
+        <span class="n">RootPath</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RootPathProjects</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">RootPath</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">RootPath</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ProjectExist</span><span class="p">(</span><span class="n">Name</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">__GetPathProject</span><span class="p">(</span><span class="n">Name</span><span class="p">,</span><span class="n">RootPath</span><span class="p">)):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Project </span><span class="si">{}</span><span class="s1"> or folder </span><span class="si">{}</span><span class="s1"> already exist.Cannot create project ...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Name</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">__GetPathProject</span><span class="p">(</span><span class="n">Name</span><span class="p">,</span><span class="n">RootPath</span><span class="p">)))</span>
+            <span class="k">return</span>
+         
+        <span class="n">Description</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter a brief description of the project: &#39;</span><span class="p">)</span>
+        <span class="n">Owner</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;UserName&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">UserName</span><span class="p">,</span><span class="s1">&#39;Affiliation&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">Affiliation</span><span class="p">,</span><span class="s1">&#39;Email&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">Email</span><span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__CreateProject</span><span class="p">(</span><span class="n">Name</span><span class="p">,</span><span class="n">RootPath</span><span class="p">,</span><span class="n">Description</span><span class="p">,</span><span class="n">Owner</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">SetProjectsFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">FileName</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the project yml file in UBox and reload projects from this file.</span>
+<span class="sd">        :param FileName: new project yml file, defaults to None</span>
+<span class="sd">        :type FileName: str, optional</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">FileName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please select a  file for the UBox projects&#39;</span><span class="p">)</span>
+            <span class="n">FileName</span><span class="o">=</span><span class="n">easygui</span><span class="o">.</span><span class="n">filesavebox</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Please select a file for the UBox projects&#39;</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="s1">&#39;.UBoxProjects.yml&#39;</span><span class="p">,</span><span class="n">filetypes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;*.yml&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">FileName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No  file set for the UBox projects...&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">FileName</span><span class="p">):</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">FileName</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="k">pass</span>
+   
+        <span class="bp">self</span><span class="o">.</span><span class="n">ProjectsFile</span><span class="o">=</span><span class="n">FileName</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">LoadProjects</span><span class="p">()</span>
+        
+    <span class="k">def</span> <span class="nf">LsInputDir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Ext</span><span class="o">=</span><span class="s1">&#39;*.py&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">Folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Folder</span><span class="o">=</span><span class="s1">&#39;&#39;</span>    
+        <span class="n">LsFolder</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span><span class="o">.</span><span class="n">InputDir</span><span class="p">,</span><span class="n">Folder</span><span class="p">),</span><span class="n">Ext</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">LsSaveDir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Ext</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">Folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Folder</span><span class="o">=</span><span class="s1">&#39;&#39;</span>    
+        <span class="n">LsFolder</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span><span class="o">.</span><span class="n">SaveDir</span><span class="p">,</span><span class="n">Folder</span><span class="p">),</span><span class="n">Ext</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">LsGridDir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Ext</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">Folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Folder</span><span class="o">=</span><span class="s1">&#39;&#39;</span>    
+        <span class="n">LsFolder</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CurrentProject</span><span class="o">.</span><span class="n">GridDir</span><span class="p">,</span><span class="n">Folder</span><span class="p">),</span><span class="n">Ext</span><span class="p">)</span></div>
+        
+
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Jerome Guterl
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

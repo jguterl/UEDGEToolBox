@@ -1,0 +1,523 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>UEDGEToolBox.Doc &mdash; UEDGEToolBox 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> UEDGEToolBox
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#getting-started">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#quickstart">QuickStart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#uedgetoolbox-settings">UEDGEToolBox.Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#initialization-of-uedgetoolbox">Initialization of UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#developping-uedgetoolbox">Developping UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#loading-uedgetoolbox-when-starting-a-python-session">Loading UEDGEToolBox when starting a python session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#documentation">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../DataSet.html">UEDGEToolBox.DataSet module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Settings.html">UEDGEToolBox.Settings module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">UEDGEToolBox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>UEDGEToolBox.Doc</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for UEDGEToolBox.Doc</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. module:: Doc</span>
+<span class="sd">        :platform: Unix, MacOS</span>
+<span class="sd">        :synopsis: Documentation for UEDGE.</span>
+
+<span class="sd">    .. moduleauthor:: Jerome Guterl &lt;guterlj@fusion.gat.com&gt;</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">UEDGEToolBox.Utils</span> <span class="kn">import</span> <span class="n">GetListPackage</span>
+<span class="kn">import</span> <span class="nn">uedge</span>
+<span class="c1">#@UBoxPrefix</span>
+
+<div class="viewcode-block" id="UBoxDoc"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Doc.UBoxDoc">[docs]</a><span class="k">class</span> <span class="nc">UBoxDoc</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; UBoxDoc is a wrapper for the documentation of the various UEDGE variables contained in UEDGE packages (e.g bbb,com,...). </span>
+<span class="sd">    </span>
+<span class="sd">    Note: </span>
+<span class="sd">        Aliases of the various public methods are available in the global namespace and can be access from the shell (e.g Search(&#39;ni&#39;)).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1">#---------------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ListPkg</span><span class="o">=</span><span class="n">GetListPackage</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">DocPkg</span><span class="o">=</span><span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">DocGrp</span><span class="o">=</span><span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">DocCom</span><span class="o">=</span><span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">widthP</span><span class="o">=</span><span class="mi">5</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">widthV</span><span class="o">=</span><span class="mi">20</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">widthG</span><span class="o">=</span><span class="mi">25</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">widthU</span><span class="o">=</span><span class="mi">10</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Setup documentation of UEDGE&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__SetupDoc</span><span class="p">()</span>
+
+<div class="viewcode-block" id="UBoxDoc.ShowGroup"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Doc.UBoxDoc.ShowGroup">[docs]</a>    <span class="k">def</span> <span class="nf">ShowGroup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">PkgName</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print list of groups in package PkgName.</span>
+<span class="sd">        If PkgName is None, print  groups for all UEDGE package.  </span>
+<span class="sd">        </span>
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; Doc.ShowGroup(&#39;bbb&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; ShowGroup(&#39;bbb&#39;)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            PkgName (str, optional): Name of package. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">PkgName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ListG</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DocGrp</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">ListG</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">G</span> <span class="ow">in</span> <span class="n">ListG</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__PrintGrpInfo</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">DocGrp</span><span class="p">[</span><span class="n">G</span><span class="p">][</span><span class="s1">&#39;Package&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group in package:&#39;</span><span class="p">,</span><span class="n">PkgName</span><span class="p">)</span>
+            <span class="n">ListG</span><span class="o">=</span><span class="p">[</span><span class="n">g</span> <span class="k">for</span> <span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">DocGrp</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;Package&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">PkgName</span><span class="p">]</span>
+            <span class="n">ListG</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">G</span> <span class="ow">in</span> <span class="n">ListG</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__PrintGrpInfo</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">PkgName</span><span class="p">)</span></div>
+            
+<div class="viewcode-block" id="UBoxDoc.ShowPackage"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Doc.UBoxDoc.ShowPackage">[docs]</a>    <span class="k">def</span> <span class="nf">ShowPackage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print the list of UEDGE packages currently loaded in the global namespace.</span>
+
+<span class="sd">        &gt;&gt;&gt; Doc.ShowPackage()</span>
+<span class="sd">        &gt;&gt;&gt; ShowPackage()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">ListP</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DocPkg</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">ListP</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">P</span> <span class="ow">in</span> <span class="n">ListP</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__PrintPkgInfo</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+        <span class="k">return</span> </div>
+                
+    <span class="c1">#---------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="UBoxDoc.ShowVar"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Doc.UBoxDoc.ShowVar">[docs]</a>    <span class="k">def</span> <span class="nf">ShowVar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ObjectName</span><span class="p">:</span><span class="nb">str</span> <span class="ow">or</span> <span class="nb">list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Start</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">Contain</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">OnlyVar</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">Sorted</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print a list of UEDGE variables contained in packages or groups given by ObjectName. If ObjectName is None, all UEDGE variables are displayed.  </span>
+<span class="sd">        Args:</span>
+<span class="sd">            ObjectName (str or list, optional): list or name of UEDGE groups or packages. Defaults to None.</span>
+<span class="sd">            Start (str, optional): Print only variables with name startingw with &quot;Start&quot;. Defaults to &#39;&#39;.</span>
+<span class="sd">            Contain (str, optional): Print only variables with names containing &quot;Contain&quot;. Defaults to &#39;&#39;.</span>
+<span class="sd">            OnlyVar (bool, optional): True: do not print documentation. Defaults to True.</span>
+<span class="sd">            Sorted (bool, optional): Sort printed variables by name. Defaults to True.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span> 
+        <span class="n">Dic</span><span class="o">=</span><span class="p">{}</span>
+      <span class="c1">#  ListV=[]</span>
+        <span class="k">if</span> <span class="n">ObjectName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+           <span class="n">ObjectName</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ListPkg</span>
+           
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">ObjectName</span><span class="p">)</span><span class="o">==</span><span class="nb">str</span><span class="p">:</span>
+            <span class="n">ObjectName</span><span class="o">=</span><span class="p">[</span><span class="n">ObjectName</span><span class="p">]</span>
+            
+        <span class="k">for</span> <span class="n">S</span> <span class="ow">in</span> <span class="n">ObjectName</span><span class="p">:</span>    
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">DocPkg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1">#Dic.update(self.DocPkg.get(S).fromkeys([v for v in self.DocPkg.get(S).keys() if v.startswith(Start)]))</span>
+                <span class="n">ListV</span><span class="o">=</span><span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">DocPkg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">S</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">Start</span><span class="p">)</span> <span class="ow">and</span> <span class="n">Contain</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
+                <span class="c1">#ListV.sort()</span>
+                <span class="k">for</span> <span class="n">V</span> <span class="ow">in</span> <span class="n">ListV</span><span class="p">:</span>
+                    <span class="n">Dic</span><span class="p">[</span><span class="n">V</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">DocPkg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">S</span><span class="p">)[</span><span class="n">V</span><span class="p">]</span>
+                    <span class="c1">#self.__PrintVarInfo(self.DocPkg.get(S)[V],OnlyVar) </span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">DocGrp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ListV</span><span class="o">=</span><span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">DocGrp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">S</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">Start</span><span class="p">)</span> <span class="ow">and</span> <span class="n">Contain</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="s1">&#39;Package&#39;</span><span class="p">]</span>
+                <span class="c1">#ListV.sort()</span>
+                <span class="k">for</span> <span class="n">V</span> <span class="ow">in</span> <span class="n">ListV</span><span class="p">:</span>
+                    <span class="n">Dic</span><span class="p">[</span><span class="n">V</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">DocGrp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">S</span><span class="p">)[</span><span class="n">V</span><span class="p">]</span>
+                    <span class="c1">#self.__PrintVarInfo(self.DocGrp.get(S)[V],OnlyVar)</span>
+        <span class="k">if</span> <span class="n">Sorted</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">Dic</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__PrintVarInfo</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">OnlyVar</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">Dic</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__PrintVarInfo</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">OnlyVar</span><span class="p">)</span></div>
+                
+        
+            
+<div class="viewcode-block" id="UBoxDoc.SearchDoc"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Doc.UBoxDoc.SearchDoc">[docs]</a>    <span class="k">def</span> <span class="nf">SearchDoc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Str</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print a list of UEDGE variables containing the string Search Str in their documentation. </span>
+<span class="sd">    </span>
+<span class="sd">        Args:</span>
+<span class="sd">            Str (str): String contained in documentation of UEDGE variables.</span>
+<span class="sd">    </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            None.</span>
+<span class="sd">    </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        
+        <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListPkg</span><span class="p">:</span>
+            <span class="n">Dic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">DocPkg</span><span class="p">[</span><span class="n">pkg</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">Dic</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">Str</span> <span class="ow">in</span> <span class="n">Dic</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;Doc&#39;</span><span class="p">]:</span> 
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__PrintVarInfo</span><span class="p">(</span><span class="n">Dic</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="kc">False</span><span class="p">)</span></div>
+                    
+   
+<div class="viewcode-block" id="UBoxDoc.Search"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Doc.UBoxDoc.Search">[docs]</a>    <span class="k">def</span> <span class="nf">Search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Str</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="n">Exact</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">OnlyVar</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">Silent</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;  </span>
+<span class="sd">        Return the list of UEDGE variables for which the input string is contained in the variable name or/and documentation.</span>
+<span class="sd">        Example: Search(&#39;ni&#39;)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            Str (str): string contained in names of UEDGE variables.</span>
+<span class="sd">            Exact (bool, optional): look for exact match between input string and variable name. Defaults to False.</span>
+<span class="sd">            OnlyVar (bool, optional): True: Print only UEDGE variable names | False: Print only UEDGE variable names and documentation.  Defaults to False.</span>
+<span class="sd">            Silent (bool, optional): Print list of results when Silent=False. Defaults to False.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Out (list): return list of dictionaries describing UEDGE variables if Silent is True.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">Out</span><span class="p">:</span><span class="nb">list</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListPkg</span><span class="p">:</span>
+            <span class="n">Dic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">DocPkg</span><span class="p">[</span><span class="n">pkg</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">Dic</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">Exact</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">Str</span><span class="o">==</span><span class="n">k</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">Silent</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">__PrintVarInfo</span><span class="p">(</span><span class="n">Dic</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">OnlyVar</span><span class="p">)</span>
+                        <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Dic</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">Str</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">Silent</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">__PrintVarInfo</span><span class="p">(</span><span class="n">Dic</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">OnlyVar</span><span class="p">)</span>
+                        <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Dic</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">Silent</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Out</span>  </div>
+        
+        
+        
+    <span class="k">def</span> <span class="nf">__ParseInfoVar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Str</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">dict</span><span class="p">:</span>
+        <span class="n">d</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">Fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Package&#39;</span><span class="p">,</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span><span class="s1">&#39;Attributes&#39;</span><span class="p">,</span><span class="s1">&#39;Dimension&#39;</span><span class="p">,</span><span class="s1">&#39;Type&#39;</span><span class="p">,</span><span class="s1">&#39;Address&#39;</span><span class="p">,</span><span class="s1">&#39;Pyadress&#39;</span><span class="p">,</span><span class="s1">&#39;Unit&#39;</span><span class="p">,</span><span class="s1">&#39;Comment&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">F</span> <span class="ow">in</span> <span class="n">Fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">F</span><span class="o">!=</span><span class="s1">&#39;Comment&#39;</span><span class="p">:</span>
+                <span class="n">idx</span><span class="o">=</span><span class="n">Str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">F</span><span class="o">+</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">idx</span><span class="o">&gt;-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">S</span><span class="o">=</span><span class="n">Str</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">F</span><span class="o">+</span><span class="s1">&#39;:&#39;</span><span class="p">):]</span>
+                    <span class="n">idxS</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="n">S</span><span class="o">=</span><span class="n">S</span><span class="p">[:</span><span class="n">idxS</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">S</span><span class="o">=</span><span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">idx</span><span class="o">=</span><span class="n">Str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">F</span><span class="o">+</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">idx</span><span class="o">&gt;-</span><span class="mi">1</span><span class="p">:</span> 
+                    <span class="n">S</span><span class="o">=</span><span class="n">Str</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">F</span><span class="o">+</span><span class="s1">&#39;:&#39;</span><span class="p">):]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">S</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">F</span><span class="p">]</span><span class="o">=</span><span class="n">S</span>
+        <span class="k">return</span> <span class="n">d</span>        
+    
+    <span class="c1">#---------------------------------------------------------------------------  </span>
+    <span class="k">def</span> <span class="nf">__PrintGrpInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">G</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="n">P</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="n">P</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">SP</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{colorG}</span><span class="s1">{:&lt;</span><span class="si">{widthP}</span><span class="s1">}</span><span class="si">{reset}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">colorG</span><span class="o">=</span><span class="n">Back</span><span class="o">.</span><span class="n">RED</span><span class="p">,</span><span class="n">reset</span><span class="o">=</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="p">,</span><span class="n">widthP</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthP</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">SP</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+            
+        <span class="n">S</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{colorG}</span><span class="s1">{:&lt;</span><span class="si">{widthG}</span><span class="s1">}</span><span class="si">{reset}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">colorG</span><span class="o">=</span><span class="n">Back</span><span class="o">.</span><span class="n">CYAN</span><span class="p">,</span><span class="n">reset</span><span class="o">=</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="p">,</span><span class="n">widthG</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthG</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">SP</span><span class="p">,</span><span class="n">S</span><span class="p">))</span>
+    <span class="c1">#---------------------------------------------------------------------------  </span>
+    <span class="k">def</span> <span class="nf">__PrintPkgInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">P</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+        
+        <span class="n">S</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{colorG}</span><span class="s1">{:&lt;</span><span class="si">{widthP}</span><span class="s1">}</span><span class="si">{reset}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">colorG</span><span class="o">=</span><span class="n">Back</span><span class="o">.</span><span class="n">RED</span><span class="p">,</span><span class="n">reset</span><span class="o">=</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="p">,</span><span class="n">widthP</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthP</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+    <span class="c1">#---------------------------------------------------------------------------     </span>
+    <span class="k">def</span> <span class="nf">__PrintVarInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Dic</span><span class="p">,</span><span class="n">OnlyVar</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">OnlyVar</span><span class="p">:</span>
+            <span class="n">SP</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{colorG}</span><span class="s1">{:&lt;</span><span class="si">{widthP}</span><span class="s1">}</span><span class="si">{reset}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Dic</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Package&#39;</span><span class="p">),</span><span class="n">colorG</span><span class="o">=</span><span class="n">Back</span><span class="o">.</span><span class="n">RED</span><span class="p">,</span><span class="n">reset</span><span class="o">=</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="p">,</span><span class="n">widthP</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthP</span><span class="p">)</span>
+            <span class="n">SG</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{colorG}</span><span class="s1">{:&lt;</span><span class="si">{widthG}</span><span class="s1">}</span><span class="si">{reset}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Dic</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Group&#39;</span><span class="p">),</span><span class="n">colorG</span><span class="o">=</span><span class="n">Back</span><span class="o">.</span><span class="n">CYAN</span><span class="p">,</span><span class="n">reset</span><span class="o">=</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="p">,</span><span class="n">widthG</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthG</span><span class="p">)</span>
+            <span class="n">S</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{colorV}</span><span class="s1">{:&lt;</span><span class="si">{widthV}</span><span class="s1">}</span><span class="se">\</span>
+<span class="s1">                </span><span class="si">{reset}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Dic</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Variable&#39;</span><span class="p">),</span><span class="n">colorV</span><span class="o">=</span><span class="n">Back</span><span class="o">.</span><span class="n">GREEN</span><span class="p">,</span><span class="n">reset</span><span class="o">=</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="p">,</span><span class="n">widthV</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthV</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;{:&lt;</span><span class="si">{widthV}</span><span class="s1">} {:&lt;</span><span class="si">{widthP}</span><span class="s1">} {:&lt;</span><span class="si">{widthG}</span><span class="s1">} &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="n">SP</span><span class="p">,</span><span class="n">SG</span><span class="p">,</span><span class="n">widthG</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthG</span><span class="p">,</span><span class="n">widthP</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthP</span><span class="p">,</span><span class="n">widthV</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthV</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+                
+            <span class="n">S</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{colorV}</span><span class="s1">{:&lt;</span><span class="si">{widthV}</span><span class="s1">}</span><span class="si">{reset}</span><span class="s1"> : </span><span class="si">{color}</span><span class="s1">{:&lt;</span><span class="si">{widthP}</span><span class="s1">}</span><span class="si">{reset}</span><span class="se">\</span>
+<span class="s1">                / </span><span class="si">{colorG}</span><span class="s1">{:&lt;</span><span class="si">{widthG}</span><span class="s1">}</span><span class="si">{reset}</span><span class="s1">  [</span><span class="si">{:&lt;}</span><span class="s1">] : </span><span class="si">{}</span><span class="s1"> : </span><span class="si">{colorD}{:.10}{reset}</span><span class="se">\</span>
+<span class="s1">                    &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Dic</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Variable&#39;</span><span class="p">),</span><span class="n">Dic</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Package&#39;</span><span class="p">),</span><span class="n">Dic</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Group&#39;</span><span class="p">),</span><span class="n">Dic</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Unit&#39;</span><span class="p">),</span>\
+                    <span class="n">Dic</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Dimension&#39;</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">Dic</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Default&#39;</span><span class="p">)),</span><span class="n">widthP</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthP</span><span class="p">,</span><span class="n">widthV</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthV</span><span class="p">,</span><span class="n">colorV</span><span class="o">=</span><span class="n">Back</span><span class="o">.</span><span class="n">GREEN</span>\
+                        <span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="n">Back</span><span class="o">.</span><span class="n">RED</span><span class="p">,</span><span class="n">reset</span><span class="o">=</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="p">,</span><span class="n">colorG</span><span class="o">=</span><span class="n">Back</span><span class="o">.</span><span class="n">CYAN</span><span class="p">,</span><span class="n">widthG</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthG</span><span class="p">,</span><span class="n">colorD</span><span class="o">=</span><span class="n">Back</span><span class="o">.</span><span class="n">MAGENTA</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+    	<span class="c1">#NLines=Dic.get(&#39;Comment&#39;).count(&#39;\n&#39;)</span>
+            <span class="k">for</span> <span class="n">S</span> <span class="ow">in</span> <span class="n">Dic</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Comment&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;{:&lt;</span><span class="si">{widthV}</span><span class="s1">} : </span><span class="si">{:&lt;}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="n">S</span><span class="p">,</span><span class="n">widthV</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">widthV</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                
+ 
+
+        
+    <span class="c1">#---------------------------------------------------------------------------                    </span>
+    <span class="k">def</span> <span class="nf">__GetVarInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Str</span><span class="p">,</span><span class="n">exact</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">L</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListPkg</span><span class="p">:</span>
+            <span class="n">Dic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">DocPkg</span><span class="p">[</span><span class="n">pkg</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">Dic</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">exact</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">Str</span><span class="o">==</span><span class="n">k</span><span class="p">:</span>
+                     <span class="n">L</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Dic</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">Str</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span> 
+                     <span class="n">L</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Dic</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">L</span>
+    <span class="c1">#---------------------------------------------------------------------------                     </span>
+    <span class="k">def</span> <span class="nf">__SetupDoc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListPkg</span><span class="p">:</span>
+            <span class="n">loc</span><span class="o">=</span><span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">DocPkg</span><span class="p">[</span><span class="n">pkg</span><span class="p">]</span><span class="o">=</span><span class="p">{}</span>
+            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;VarList=uedge.&#39;</span><span class="o">+</span><span class="n">pkg</span> <span class="o">+</span><span class="s1">&#39;py.&#39;</span><span class="o">+</span> <span class="n">pkg</span><span class="o">+</span><span class="s1">&#39;.varlist()&#39;</span><span class="p">,</span><span class="nb">globals</span><span class="p">(),</span><span class="n">loc</span><span class="p">)</span>
+            <span class="n">VarList</span><span class="o">=</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;VarList&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">V</span> <span class="ow">in</span> <span class="n">VarList</span><span class="p">:</span>
+                <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;VarStr=uedge.&#39;</span><span class="o">+</span><span class="n">pkg</span> <span class="o">+</span><span class="s1">&#39;py.&#39;</span><span class="o">+</span> <span class="n">pkg</span><span class="o">+</span><span class="s1">&#39;.listvar(&quot;&#39;</span><span class="o">+</span><span class="n">V</span><span class="o">+</span><span class="s1">&#39;&quot;)&#39;</span><span class="p">,</span><span class="nb">globals</span><span class="p">(),</span><span class="n">loc</span><span class="p">)</span>
+                <span class="n">VarStr</span><span class="o">=</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;VarStr&#39;</span><span class="p">]</span>
+                
+                <span class="k">if</span> <span class="n">V</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">DocPkg</span><span class="p">[</span><span class="n">pkg</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Variable is already defined:&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">DocVar</span><span class="p">[</span><span class="n">pkg</span><span class="p">][</span><span class="n">V</span><span class="p">])</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;V:&#39;</span><span class="p">,</span><span class="n">V</span><span class="p">,</span><span class="s1">&#39;pkg:&#39;</span><span class="p">,</span><span class="n">pkg</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Variable is already defined&#39;</span><span class="p">)</span>
+
+                <span class="k">try</span> <span class="p">:</span>
+                    <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;Val=&#39;</span> <span class="o">+</span> <span class="n">pkg</span><span class="o">+</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="n">V</span><span class="p">,</span><span class="nb">globals</span><span class="p">(),</span><span class="n">loc</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span> 
+                   <span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Val&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+                <span class="n">Val</span><span class="o">=</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Val&#39;</span><span class="p">]</span>
+
+                
+                <span class="bp">self</span><span class="o">.</span><span class="n">DocPkg</span><span class="p">[</span><span class="n">pkg</span><span class="p">][</span><span class="n">V</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__ParseInfoVar</span><span class="p">(</span><span class="n">VarStr</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">DocPkg</span><span class="p">[</span><span class="n">pkg</span><span class="p">][</span><span class="n">V</span><span class="p">][</span><span class="s1">&#39;Variable&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">V</span>
+                <span class="k">if</span> <span class="n">Val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">Val</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">DocPkg</span><span class="p">[</span><span class="n">pkg</span><span class="p">][</span><span class="n">V</span><span class="p">][</span><span class="s1">&#39;Default&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">Val</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">DocPkg</span><span class="p">[</span><span class="n">pkg</span><span class="p">][</span><span class="n">V</span><span class="p">][</span><span class="s1">&#39;Doc&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">VarStr</span>
+                <span class="c1">#self.DocDict[pkg][V]</span>
+        <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListPkg</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">V</span><span class="p">,</span><span class="n">D</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DocPkg</span><span class="p">[</span><span class="n">pkg</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="k">if</span> <span class="s1">&#39;Group&#39;</span> <span class="ow">in</span> <span class="n">D</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">D</span><span class="p">[</span><span class="s1">&#39;Group&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">DocGrp</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">DocGrp</span><span class="p">[</span><span class="n">D</span><span class="p">[</span><span class="s1">&#39;Group&#39;</span><span class="p">]]</span><span class="o">=</span><span class="p">{}</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">DocGrp</span><span class="p">[</span><span class="n">D</span><span class="p">[</span><span class="s1">&#39;Group&#39;</span><span class="p">]][</span><span class="n">V</span><span class="p">]</span><span class="o">=</span><span class="n">D</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">DocGrp</span><span class="p">[</span><span class="n">D</span><span class="p">[</span><span class="s1">&#39;Group&#39;</span><span class="p">]][</span><span class="s1">&#39;Package&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">pkg</span></div>
+    <span class="c1">#---------------------------------------------------------------------------</span>
+    
+    <span class="c1"># def HelpDoc(self):</span>
+    <span class="c1">#     print(&#39;****** UEDGE Documentation ***** &#39;)</span>
+    <span class="c1">#     print(&#39;*** Documentation command ***&#39;)</span>
+    <span class="c1">#     print(&#39;- ListGrp()&#39;)</span>
+    <span class="c1">#     print(&#39;- ListPkg()&#39;)</span>
+    <span class="c1">#     print(&#39;- ListVar(): list variable in package or group&#39;)</span>
+    <span class="c1">#     print(&#39;- Search()&#39;)</span>
+    <span class="c1">#     print(&#39;- SearchDoc()&#39;)                     </span>
+<span class="c1">#---------------------------------------------------------------------------                </span>
+<span class="c1">#---------------------------------------------------------------------------</span>
+                    
+
+ 
+<span class="c1">#---------------------------------------------------------------------------</span>
+<span class="c1"># def ListGrp(Str=None,OnlyVar=True):</span>
+<span class="c1">#     Doc.ListGrp(Str,OnlyVar)</span>
+    
+<span class="c1"># #---------------------------------------------------------------------------</span>
+<span class="c1"># def ListPkg(Str,OnlyVar=True):</span>
+<span class="c1">#     Doc.ListPkg()</span>
+    
+<span class="c1"># #---------------------------------------------------------------------------</span>
+<span class="c1"># def ListVar(Str,InStr=&#39;&#39;,OnlyVar=True):</span>
+<span class="c1">#     Doc.ListVar(Str,InStr,OnlyVar)</span>
+    
+<span class="c1"># #---------------------------------------------------------------------------</span>
+<span class="c1"># def Search(Str,exact=False,OnlyVar=False):</span>
+<span class="c1">#     Doc.Search(Str,exact,OnlyVar)</span>
+<span class="c1"># #--------------------------------------------------------------------------    </span>
+<span class="c1"># def SearchSilent(Str,exact=True,OnlyVar=False):</span>
+<span class="c1">#     return Doc.Search(Str,exact,OnlyVar,Silent=True)</span>
+<span class="c1"># #--------------------------------------------------------------------------</span>
+        
+<span class="c1"># def SearchDoc(Str,OnlyVar=False):</span>
+<span class="c1">#     Doc.SearchDoc(Str,OnlyVar)</span>
+
+<span class="c1"># def HelpDoc():</span>
+<span class="c1">#     Doc.HelpDoc()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Jerome Guterl
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

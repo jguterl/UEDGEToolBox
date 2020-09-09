@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
-import pkg_resources 
-print('# Loading UEDGEToolBox version:{}'.format(pkg_resources.get_distribution('UEDGEToolBox').version))
-print('# Loading UEDGE...')
-from uedge import *
+"""UEDGEToolBox.
 
-from UEDGESettings import *
-from UEDGESimulation import *    
-from UEDGEDoc import *
-from UEDGEMisc import *       
-from UEDGEBas2Py import *
-from UEDGEIO import *
-from UEDGEMesh import *
+The module UEDGEToolBox is a collection of Python tools to manage and run UEDGE simulations and analyze the results.
+
+A quickstart guide is available through QuickStart().
+
+Module:
+    UEDGESettings contains the class UEDGESettings and UEDGEProjects
+    
+
+Todo:
+    * For module TODOs
+
+"""
+
+from UEDGEToolBox.Launcher import *
+

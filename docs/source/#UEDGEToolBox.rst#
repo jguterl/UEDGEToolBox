@@ -1,0 +1,88 @@
+UEDGEToolBox package
+====================
+
+Submodules
+----------
+
+UEDGEToolBox.Bas2Py module
+--------------------------
+
+.. automodule:: UEDGEToolBox.Bas2Py
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+UEDGEToolBox.Doc module
+-----------------------
+
+.. automodule:: UEDGEToolBox.Doc
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+UEDGEToolBox.Grid module
+------------------------
+
+.. automodule:: UEDGEToolBox.Grid
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+UEDGEToolBox.IO module
+----------------------
+
+.. automodule:: UEDGEToolBox.IO
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+UEDGEToolBox.Launcher module
+----------------------------
+
+.. automodule:: UEDGEToolBox.Launcher
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+UEDGEToolBox.Plot module
+------------------------
+
+.. automodule:: UEDGEToolBox.Plot
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+
+UEDGEToolBox.Settings module
+----------------------------
+
+.. automodule:: UEDGEToolBox.Settings
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+UEDGEToolBox.Simulations module
+-------------------------------
+
+.. automodule:: UEDGEToolBox.Simulations
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+UEDGEToolBox.Utils module
+-------------------------
+
+.. automodule:: UEDGEToolBox.Utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: UEDGEToolBox
+   :members:
+   :undoc-members:
+   :show-inheritance:

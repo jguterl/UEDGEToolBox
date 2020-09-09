@@ -3,15 +3,39 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to UBox's documentation!
+UEDGEToolBox documentation
 ================================
+.. include:: intro.rst
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+
+   intro.rst
+   DataSet
+   Settings
+    
+   
+.... automodule:: UEDGEToolBox.Grid
+   :members:
+   
+..UEDGEToolBox.Launcher
+..=====================   
+.... automodule:: Launcher
+..   :members:
+   
+
+.... automodapi:: UEDGEToolBox.Launcher
 
 
+Modules Reference
+-----------------
 
+
+.... autosummary::
+...   :toctree: 
+
+...   UBoxLauncher
+	
 Indices and tables
 ==================
 

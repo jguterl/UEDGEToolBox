@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to UBox’s documentation! &mdash; UBox 0.0.1 documentation</title>
+  <title>UEDGEToolBox documentation &mdash; UEDGEToolBox 0.0.1 documentation</title>
   
 
   
@@ -33,8 +33,10 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="intro.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -48,7 +50,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> UBox
+            <a href="#" class="icon icon-home"> UEDGEToolBox
           
 
           
@@ -78,12 +80,19 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Welcome to UBox’s documentation!</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#getting-started">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#quickstart">QuickStart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#uedgetoolbox-settings">UEDGEToolBox.Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#initialization-of-uedgetoolbox">Initialization of UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#developping-uedgetoolbox">Developping UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#loading-uedgetoolbox-when-starting-a-python-session">Loading UEDGEToolBox when starting a python session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#documentation">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DataSet.html">UEDGEToolBox.DataSet module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Settings.html">UEDGEToolBox.Settings module</a></li>
 </ul>
-</div>
+
             
           
         </div>
@@ -96,7 +105,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">UBox</a>
+          <a href="#">UEDGEToolBox</a>
         
       </nav>
 
@@ -127,7 +136,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li>Welcome to UBox’s documentation!</li>
+      <li>UEDGEToolBox documentation</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -146,9 +155,119 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-ubox-s-documentation">
-<h1>Welcome to UBox’s documentation!<a class="headerlink" href="#welcome-to-ubox-s-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="uedgetoolbox-documentation">
+<h1>UEDGEToolBox documentation<a class="headerlink" href="#uedgetoolbox-documentation" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>UEDGEToolBox is a python package to pre-process, run and post-process UEDGE simulations developed by ‘J. Guterl &lt;<a class="reference external" href="mailto:guterlj&#37;&#52;&#48;fusion&#46;gat&#46;com">guterlj<span>&#64;</span>fusion<span>&#46;</span>gat<span>&#46;</span>com</a>&gt;`_ at General Atomics. UEDGEToolBox provide the following functionnalities:</p>
+<ul class="simple">
+<li><p>Parsing input scripts</p></li>
+<li><p>Running UEDGE simulations in time-dependent mode with the nksol solver</p></li>
+<li><p>Saving/loading UEDGE simulation data in a structured way</p></li>
+<li><p>Plotting 1D and 2D UEDGE simulation data</p></li>
+<li><p>Comparing data from several UEDGE simulations</p></li>
+<li><p>Converting BAS script into python script</p></li>
+<li><p>Handling of advanced workflows to perform parameter scan and incremental convergence</p></li>
+</ul>
+<p>UEDGEToolBox is an object-oriented package developed for python 3.6 and above. A primer on object-oriented programming in python can be found <a class="reference external" href="https://realpython.com/python3-object-oriented-programming/">here</a> or <a class="reference external" href="https://www.tutorialspoint.com/python/python_classes_objects.htm">here</a>.</p>
+</div>
+<div class="section" id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>UEDGEToolBox requires python version &gt;= 3.6. A list of the dependency  and the package UEDGE. Instructions to install the UEDGE package can be found <a href="#id8"><span class="problematic" id="id9">`here &lt;&gt;`_</span></a>. UEDGEToolBox can be installed through Pypi</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip</span> <span class="n">install</span> <span class="n">UEDGEToolBox</span>
+</pre></div>
+</div>
+<p>or can installed from the source code available in the UEDGEToolBox Git repository <a class="reference external" href="https://github.com/jguterl/UEDGEToolBox/">https://github.com/jguterl/UEDGEToolBox/</a>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">jguterl</span><span class="o">/</span><span class="n">UEDGEToolBox</span><span class="o">/</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="n">UEDGEToolBox</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="quickstart">
+<h1>QuickStart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+<p>Open a python session and import UEDGEToolBox. The UEDGE pakcage is automatically imported by UEDGEToolBox.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">UEDGEToolBox</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>When UEDGEToolBox is imported for the first time, a prompt is displayed to set the default name, email address and affiliation of the local user (see Settings). Upon agreement of the user, a file <cite>.UBoxSettings</cite> will be created in the user’s home folder to store these settings.
+The following message is displayed once UEDGEToolBox have been loaded:</p>
+<p>UEDGEToolBox requires that at least one project is loaded in :py:object:’UBox’ to load and dump UEDGE simulation data (see Projects). To create a new project, a path toward an existing or new project file where projects settings will be stored must first be set with</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SetProjectsFile</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>A new project can then be created with</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">CreateProject</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Once a project has been created, grid and input files can be added to the folder</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UBox</span><span class="o">.</span><span class="n">Inputdir</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>UEDGE simulations can be run.</p>
+</div>
+<div class="section" id="uedgetoolbox-settings">
+<h1>UEDGEToolBox.Settings<a class="headerlink" href="#uedgetoolbox-settings" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="initialization-of-uedgetoolbox">
+<h1>Initialization of UEDGEToolBox<a class="headerlink" href="#initialization-of-uedgetoolbox" title="Permalink to this headline">¶</a></h1>
+<p>The initialization of the UEDGEToolBox is handled by the module <code class="xref py py-mod docutils literal notranslate"><span class="pre">Launcher</span></code>. When the module is imported, an instance <a href="#id2"><span class="problematic" id="id3">:py:object:`UBox`</span></a> of the class <code class="xref py py-class docutils literal notranslate"><span class="pre">UBoxLauncher</span></code> is created</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UBox</span><span class="o">=</span><span class="n">UboxLauncher</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The method Start() is then applied to <a href="#id4"><span class="problematic" id="id5">:py:object:`UBox`</span></a> to create and overload instances of the classes <code class="xref py py-class docutils literal notranslate"><span class="pre">UBoxSettings</span></code> , <code class="xref py py-class docutils literal notranslate"><span class="pre">UBoxProjects</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">UBoxSim</span></code> into <a href="#id6"><span class="problematic" id="id7">:py:object:`UBox`</span></a>. An instance of the class :py:class;UBoxDoc` is also created and returned to the current namespace.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">Doc</span><span class="p">)</span><span class="o">=</span><span class="n">UBox</span><span class="o">.</span><span class="n">Start</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The instantiation of the class <code class="xref py py-class docutils literal notranslate"><span class="pre">UBoxSettings</span></code> requires the existence of the</p>
+</div>
+<div class="section" id="developping-uedgetoolbox">
+<h1>Developping UEDGEToolBox<a class="headerlink" href="#developping-uedgetoolbox" title="Permalink to this headline">¶</a></h1>
+<p>hello</p>
+</div>
+<div class="section" id="loading-uedgetoolbox-when-starting-a-python-session">
+<h1>Loading UEDGEToolBox when starting a python session<a class="headerlink" href="#loading-uedgetoolbox-when-starting-a-python-session" title="Permalink to this headline">¶</a></h1>
+<p>hello</p>
+</div>
+<div class="section" id="documentation">
+<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">make</span> <span class="n">html</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sphinx</span><span class="o">-</span><span class="n">apidoc</span> <span class="o">-</span><span class="n">o</span> <span class="n">source</span> <span class="o">../</span><span class="n">UEDGEToolBox</span>
+</pre></div>
+</div>
 <div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#getting-started">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#quickstart">QuickStart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#uedgetoolbox-settings">UEDGEToolBox.Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#initialization-of-uedgetoolbox">Initialization of UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#developping-uedgetoolbox">Developping UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#loading-uedgetoolbox-when-starting-a-python-session">Loading UEDGEToolBox when starting a python session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#documentation">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DataSet.html">UEDGEToolBox.DataSet module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Settings.html">UEDGEToolBox.Settings module</a></li>
+</ul>
+</div>
+<dl class="simple">
+<dt>…. automodule:: UEDGEToolBox.Grid</dt><dd><dl class="field-list simple">
+<dt class="field-odd">members</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</dd>
+</dl>
+<p>..UEDGEToolBox.Launcher
+..=====================
+…. automodule:: Launcher
+..   :members:</p>
+<p>…. automodapi:: UEDGEToolBox.Launcher</p>
+<div class="section" id="modules-reference">
+<h2>Modules Reference<a class="headerlink" href="#modules-reference" title="Permalink to this headline">¶</a></h2>
+<p>…. autosummary::
+…   :toctree:</p>
+<p>…   UBoxLauncher</p>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
@@ -165,6 +284,13 @@
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="intro.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
   
 
   <hr/>

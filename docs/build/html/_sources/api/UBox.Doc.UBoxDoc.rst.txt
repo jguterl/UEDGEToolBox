@@ -1,0 +1,25 @@
+UBoxDoc
+=======
+
+.. currentmodule:: UBox.Doc
+
+.. autoclass:: UBoxDoc
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~UBoxDoc.Search
+      ~UBoxDoc.SearchDoc
+      ~UBoxDoc.ShowGroup
+      ~UBoxDoc.ShowPackage
+      ~UBoxDoc.ShowVar
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: Search
+   .. automethod:: SearchDoc
+   .. automethod:: ShowGroup
+   .. automethod:: ShowPackage
+   .. automethod:: ShowVar

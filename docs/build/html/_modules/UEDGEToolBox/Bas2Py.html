@@ -1,0 +1,471 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>UEDGEToolBox.Bas2Py &mdash; UEDGEToolBox 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> UEDGEToolBox
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#getting-started">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#quickstart">QuickStart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#uedgetoolbox-settings">UEDGEToolBox.Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#initialization-of-uedgetoolbox">Initialization of UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#developping-uedgetoolbox">Developping UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#loading-uedgetoolbox-when-starting-a-python-session">Loading UEDGEToolBox when starting a python session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#documentation">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../DataSet.html">UEDGEToolBox.DataSet module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Settings.html">UEDGEToolBox.Settings module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">UEDGEToolBox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>UEDGEToolBox.Bas2Py</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for UEDGEToolBox.Bas2Py</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Thu Mar 12 14:06:22 2020</span>
+<span class="sd">@author: jguterl</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">uedge</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<div class="viewcode-block" id="UBoxBas2Py"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Bas2Py.UBoxBas2Py">[docs]</a><span class="k">class</span> <span class="nc">UBoxBas2Py</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">BasFileName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">PyFileName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">Doc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BasFileName</span><span class="o">=</span><span class="n">BasFileName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Verbose</span><span class="o">=</span><span class="n">Verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ActionKeyWord</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;read&#39;</span><span class="p">,</span><span class="s1">&#39;remark&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TypeBas</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;integer&#39;</span><span class="p">,</span><span class="s1">&#39;real&#39;</span><span class="p">,</span><span class="s1">&#39;character&#39;</span><span class="p">,</span><span class="s1">&#39;real8&#39;</span><span class="p">,</span><span class="s1">&#39;integer8&#39;</span><span class="p">]</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Doc</span><span class="o">=</span><span class="n">Doc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">MathSymbols</span><span class="o">=</span><span class="s1">&#39;+-/*&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">BasFileName</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">PyFileName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">PyFileName</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BasFileName</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.py&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">PyFileName</span><span class="o">=</span><span class="n">PyFileName</span>
+            <span class="k">if</span> <span class="n">Verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;## Converting UEDGE bas input file into py input file:&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;## </span><span class="si">{}</span><span class="s1"> -&gt; </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BasFileName</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">PyFileName</span><span class="p">))</span>
+        
+            <span class="bp">self</span><span class="o">.</span><span class="n">ConvertBasFile</span><span class="p">()</span>    
+            
+<div class="viewcode-block" id="UBoxBas2Py.ConvertBasFile"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Bas2Py.UBoxBas2Py.ConvertBasFile">[docs]</a>    <span class="k">def</span> <span class="nf">ConvertBasFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BasFileName</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PyFileName</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="bp">self</span><span class="o">.</span><span class="n">fw</span><span class="p">:</span>
+                <span class="c1">#Lines = f.readlines() </span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Line</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">LineNumber</span><span class="o">=</span><span class="mi">0</span>
+                <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">Line</span><span class="p">:</span>
+                    
+                    <span class="n">Out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__LineParser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Line</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">LineNumber</span><span class="o">+=</span><span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">Out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="n">Out</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">fw</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">L</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Line</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>  </div>
+                    
+    <span class="k">def</span> <span class="nf">__LineParser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Line</span><span class="p">):</span>
+            <span class="n">Out</span><span class="o">=</span><span class="p">[]</span>
+            
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Parsing #</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LineNumber</span><span class="p">,</span><span class="n">Line</span><span class="p">))</span>
+            <span class="c1"># First we ignore all comments in line</span>
+            <span class="n">Comment</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+            <span class="n">Line</span><span class="o">=</span><span class="n">Line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">Line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">):</span>
+                <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Line</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">Out</span>
+            <span class="c1">#Gather cut lines</span>
+            <span class="k">while</span> <span class="n">Line</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">):</span>
+               <span class="n">Lnext</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">)</span>
+               <span class="bp">self</span><span class="o">.</span><span class="n">Line</span><span class="o">=</span><span class="n">Lnext</span>
+               <span class="n">Line</span><span class="o">=</span><span class="n">Line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">Lnext</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+               
+            <span class="k">if</span> <span class="n">Line</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">Comment</span><span class="o">=</span><span class="s1">&#39; #&#39;</span><span class="o">+</span><span class="n">Line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">Line</span><span class="o">=</span><span class="n">Line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            
+            <span class="c1"># Second we look for several commands in one line </span>
+            <span class="k">if</span> <span class="n">Line</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+               <span class="n">Line</span><span class="o">=</span><span class="n">Line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+               <span class="n">Out</span><span class="o">=</span><span class="p">[]</span>
+               <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="n">Line</span><span class="p">:</span>
+                   <span class="n">Out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__LineParser</span><span class="p">(</span><span class="n">L</span><span class="p">))</span> 
+                   <span class="nb">print</span><span class="p">(</span><span class="n">Out</span><span class="p">)</span>
+               <span class="k">return</span> <span class="n">Out</span>       
+            
+            <span class="c1">#Third Let do the special keywords</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">L</span><span class="o">=</span><span class="n">Line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                
+                <span class="k">if</span> <span class="n">L</span> <span class="ow">in</span> <span class="s1">&#39;read&#39;</span><span class="p">:</span>
+                    <span class="n">Arg</span><span class="o">=</span><span class="n">Line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Arg</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                       <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;ReadInput(&quot;&#39;</span><span class="o">+</span><span class="n">Arg</span><span class="o">+</span><span class="s1">&#39;&quot;)&#39;</span><span class="p">)</span>
+                       
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;##&#39;</span><span class="o">+</span><span class="n">Line</span><span class="o">+</span><span class="n">Comment</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">Out</span>
+                    <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">+</span><span class="n">Comment</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">Out</span>
+                
+                <span class="c1">#deal with remark:</span>
+                <span class="k">if</span> <span class="n">L</span> <span class="ow">in</span> <span class="s1">&#39;remark&#39;</span> <span class="ow">or</span> <span class="n">L</span> <span class="ow">in</span> <span class="s1">&#39;&lt;&lt;&#39;</span><span class="p">:</span>
+                    <span class="n">Arg</span><span class="o">=</span><span class="n">Line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Arg</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                       <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;print(&#39;</span><span class="o">+</span><span class="n">Arg</span><span class="o">+</span><span class="s1">&#39;)&#39;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;##&#39;</span><span class="o">+</span><span class="n">Line</span><span class="o">+</span><span class="n">Comment</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">Out</span>
+                
+                    <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">+</span><span class="n">Comment</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">Out</span>
+                
+                <span class="k">if</span> <span class="n">L</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">TypeBas</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;=&#39;</span> <span class="ow">in</span> <span class="n">Line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                        <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">+</span><span class="n">Comment</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="o">+</span><span class="n">Line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">+</span><span class="n">Comment</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">Out</span>
+                
+                <span class="k">if</span> <span class="n">L</span> <span class="ow">in</span> <span class="s1">&#39;call&#39;</span><span class="p">:</span>
+                     <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">+</span><span class="n">Comment</span><span class="p">)</span>
+                     
+                     <span class="k">return</span> <span class="n">Out</span>
+                
+            
+            <span class="k">if</span> <span class="n">Line</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="c1"># not an assignment</span>
+                
+                <span class="n">OutVar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ParseVariable</span><span class="p">(</span><span class="n">Line</span><span class="p">,</span><span class="n">ForceCheck</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                
+                <span class="k">if</span> <span class="n">OutVar</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;##&#39;</span><span class="o">+</span><span class="n">Line</span><span class="o">+</span><span class="n">Comment</span><span class="p">)</span> 
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">OutVar</span><span class="o">+</span><span class="n">Comment</span><span class="p">)</span>
+            
+            <span class="k">else</span><span class="p">:</span>
+                
+                <span class="n">Var</span><span class="o">=</span><span class="n">Line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">Arg</span><span class="o">=</span><span class="n">Line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">Varout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ParseVariable</span><span class="p">(</span><span class="n">Var</span><span class="p">,</span><span class="n">ForceCheck</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">Argout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SubExpo</span><span class="p">(</span><span class="n">Arg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">Varout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Varout</span><span class="o">+</span><span class="s1">&#39;=&#39;</span><span class="o">+</span><span class="n">Argout</span><span class="o">+</span><span class="n">Comment</span><span class="p">)</span>
+            
+            <span class="k">return</span> <span class="n">Out</span>    
+            
+    <span class="k">def</span> <span class="nf">__SubExpo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Arg</span><span class="p">):</span>
+         <span class="n">Out</span><span class="o">=</span><span class="n">Arg</span>
+         <span class="n">Out</span><span class="o">=</span><span class="n">Out</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;D+&#39;</span><span class="p">,</span><span class="s1">&#39;e+&#39;</span><span class="p">)</span>
+         <span class="n">Out</span><span class="o">=</span><span class="n">Out</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;D-&#39;</span><span class="p">,</span><span class="s1">&#39;e-&#39;</span><span class="p">)</span>
+         <span class="n">Out</span><span class="o">=</span><span class="n">Out</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;d+&#39;</span><span class="p">,</span><span class="s1">&#39;e+&#39;</span><span class="p">)</span>
+         <span class="n">Out</span><span class="o">=</span><span class="n">Out</span><span class="o">=</span><span class="n">Out</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;d-&#39;</span><span class="p">,</span><span class="s1">&#39;e-&#39;</span><span class="p">)</span>
+         <span class="n">Out</span><span class="o">=</span><span class="n">Out</span><span class="o">=</span><span class="n">Out</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.D&#39;</span><span class="p">,</span><span class="s1">&#39;.e&#39;</span><span class="p">)</span>
+         <span class="n">Out</span><span class="o">=</span><span class="n">Out</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.d&#39;</span><span class="p">,</span><span class="s1">&#39;.e&#39;</span><span class="p">)</span>
+         <span class="k">return</span> <span class="n">Out</span>
+     
+    <span class="k">def</span> <span class="nf">__GetPackageMethod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">VarName</span><span class="p">):</span>
+        <span class="n">Out</span><span class="o">=</span><span class="kc">None</span>
+        <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Doc</span><span class="o">.</span><span class="n">ListPkg</span><span class="p">:</span>
+            <span class="n">D</span><span class="o">=</span><span class="p">{}</span>
+            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;pkgobj=&#39;</span><span class="o">+</span><span class="n">pkg</span><span class="p">,</span><span class="nb">globals</span><span class="p">(),</span><span class="n">D</span><span class="p">)</span>
+            <span class="n">obj</span><span class="o">=</span><span class="n">D</span><span class="p">[</span><span class="s1">&#39;pkgobj&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="n">VarName</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="n">VarName</span><span class="o">.</span><span class="n">strip</span><span class="p">())):</span>
+                <span class="n">Out</span><span class="o">=</span><span class="n">pkg</span><span class="o">+</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="n">VarName</span><span class="o">+</span><span class="s1">&#39;()&#39;</span>
+        <span class="k">return</span> <span class="n">Out</span>
+    
+    <span class="k">def</span> <span class="nf">__GetPackageVariable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">VarName</span><span class="p">):</span>
+        <span class="n">Info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Doc</span><span class="o">.</span><span class="n">__GetVarInfo</span><span class="p">(</span><span class="n">VarName</span><span class="p">,</span><span class="n">exact</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Info</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;More than one variable name found for </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">VarName</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Info</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">:</span>
+           <span class="c1"># if not a variable of a package, check if this is a package method      </span>
+            <span class="n">Out</span><span class="o">=</span><span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>    
+            <span class="n">Out</span><span class="o">=</span><span class="n">Info</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;Package&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="n">VarName</span>
+        <span class="k">return</span> <span class="n">Out</span>
+    
+    <span class="k">def</span> <span class="nf">__ParseVariable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Var</span><span class="p">,</span><span class="n">ForceCheck</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="c1"># Does Var has dimension?</span>
+        <span class="n">Out</span><span class="o">=</span><span class="kc">None</span>
+        <span class="c1">#print(&#39;#Var:&#39;,Var) </span>
+        <span class="k">if</span> <span class="n">Var</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">():</span>
+            <span class="n">Out</span><span class="o">=</span><span class="n">Var</span>
+        <span class="k">else</span><span class="p">:</span>    
+            <span class="n">Out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ParseVariableName</span><span class="p">(</span><span class="n">Var</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            
+            <span class="k">if</span> <span class="n">Out</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">ForceCheck</span><span class="p">:</span>
+                <span class="n">Out</span><span class="o">=</span><span class="n">Var</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">Out</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ForceCheck</span><span class="p">:</span>
+                <span class="n">Out</span><span class="o">=</span><span class="kc">None</span>
+                <span class="k">return</span> <span class="n">Out</span>
+            
+            <span class="k">if</span> <span class="s1">&#39;(&#39;</span> <span class="ow">in</span> <span class="n">Var</span><span class="p">:</span>
+                <span class="n">il</span><span class="o">=</span><span class="n">Var</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+                <span class="n">ir</span><span class="o">=</span><span class="n">Var</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">)</span>
+                <span class="n">Dim</span><span class="o">=</span><span class="n">Var</span><span class="p">[</span><span class="n">il</span><span class="p">:</span><span class="n">ir</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">Dout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ParseVariableDim</span><span class="p">(</span><span class="n">Dim</span><span class="p">)</span>
+                <span class="c1">#print(Dim,&#39;-&gt;&#39;,Dout)</span>
+                <span class="n">Out</span><span class="o">=</span><span class="n">Out</span><span class="o">+</span><span class="s1">&#39;[&#39;</span><span class="o">+</span><span class="n">Dout</span><span class="o">+</span><span class="s1">&#39;]&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#:&#39;</span><span class="p">,</span><span class="n">Out</span><span class="p">)</span>        
+        <span class="k">return</span> <span class="n">Out</span>        
+                
+    <span class="k">def</span> <span class="nf">__ParseVariableName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">VarName</span><span class="p">):</span>
+        <span class="n">Out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__GetPackageVariable</span><span class="p">(</span><span class="n">VarName</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">Out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__GetPackageMethod</span><span class="p">(</span><span class="n">VarName</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Out</span>
+    
+    <span class="k">def</span> <span class="nf">__ParseMathSymbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Str</span><span class="p">):</span>
+        <span class="n">Out</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">W</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+        
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">Str</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">MathSymbols</span><span class="p">:</span>
+                <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+                <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                <span class="n">W</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">W</span><span class="o">=</span><span class="n">W</span><span class="o">+</span><span class="n">c</span>
+        <span class="n">Out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>    
+        <span class="k">return</span> <span class="n">Out</span>   
+    
+    <span class="k">def</span> <span class="nf">__ParseVariableDim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Dim</span><span class="p">):</span>
+        <span class="n">Dout</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">idl</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">Dim</span><span class="p">,</span><span class="s1">&#39;(&#39;</span><span class="p">)</span>
+        <span class="n">idr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">Dim</span><span class="p">,</span><span class="s1">&#39;)&#39;</span><span class="p">)</span>
+        <span class="n">idc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">Dim</span><span class="p">,</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+        <span class="n">Ind</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">idl</span><span class="p">)</span><span class="o">!=</span><span class="nb">len</span><span class="p">(</span><span class="n">idr</span><span class="p">)):</span>
+        
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot parse expression with incomplete bracket:&#39;</span><span class="p">,</span><span class="n">Dim</span><span class="p">)</span>
+        <span class="n">Ind</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idc</span> <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="kc">False</span> <span class="k">for</span> <span class="p">(</span><span class="n">il</span><span class="p">,</span><span class="n">ir</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">idl</span><span class="p">,</span><span class="n">idr</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span><span class="o">&gt;=</span><span class="n">il</span> <span class="ow">and</span> <span class="n">i</span><span class="o">&lt;=</span><span class="n">ir</span><span class="p">])])</span>
+        <span class="n">DimArgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">Dim</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">Ind</span><span class="p">,</span> <span class="n">Ind</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">+</span><span class="p">[</span><span class="kc">None</span><span class="p">])]</span>
+
+        <span class="c1">#print(&#39;DimArgs:&#39;,DimArgs)</span>
+        <span class="k">for</span> <span class="n">D</span> <span class="ow">in</span> <span class="n">DimArgs</span><span class="p">:</span>
+            <span class="c1">#print(&#39;D:&#39;,D)</span>
+            <span class="n">d</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">d</span><span class="o">!=</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">rout</span><span class="o">=</span><span class="p">[]</span>
+                <span class="n">IsFirst</span><span class="o">=</span><span class="kc">True</span>
+                <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">):</span>
+                    
+                    <span class="n">rr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__ParseMathSymbol</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;rr:&#39;</span><span class="p">,</span><span class="n">rr</span><span class="p">)</span>
+                    <span class="n">outrr</span><span class="o">=</span><span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">rrr</span> <span class="ow">in</span> <span class="n">rr</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">rrr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">MathSymbols</span><span class="p">:</span>
+                            <span class="n">outrr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rrr</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">O</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ParseVariable</span><span class="p">(</span><span class="n">rrr</span><span class="p">,</span><span class="n">ForceCheck</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                            <span class="n">outrr</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">O</span><span class="p">)</span>
+                    <span class="n">routrr</span><span class="o">=</span><span class="n">outrr</span>
+                    <span class="k">if</span> <span class="n">IsFirst</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">routrr</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">routrr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">():</span> 
+                            <span class="n">routrr</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">routrr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">routrr</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="s1">&#39;-1&#39;</span><span class="p">)</span>
+                    <span class="n">IsFirst</span><span class="o">=</span><span class="kc">False</span>        
+                    <span class="n">rout</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">routrr</span><span class="p">))</span>
+                <span class="n">Dout</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rout</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">Dout</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+        <span class="n">Dout</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Dout</span><span class="p">)</span> 
+        <span class="k">return</span> <span class="n">Dout</span>
+    
+<div class="viewcode-block" id="UBoxBas2Py.findall"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Bas2Py.UBoxBas2Py.findall">[docs]</a>    <span class="k">def</span> <span class="nf">findall</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">string</span><span class="p">,</span><span class="n">substring</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function: Returning all the index of substring in a string</span>
+<span class="sd">        Arguments: String and the search string</span>
+<span class="sd">        Return:Returning a list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">substring</span><span class="p">)</span>
+        <span class="n">c</span><span class="o">=</span><span class="mi">0</span>
+        <span class="n">indexes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">string</span><span class="p">[</span><span class="n">c</span><span class="p">:</span><span class="n">c</span><span class="o">+</span><span class="n">length</span><span class="p">]</span> <span class="o">==</span> <span class="n">substring</span><span class="p">:</span>
+                <span class="n">indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span>
+        <span class="k">return</span> <span class="n">indexes</span></div></div>
+<span class="c1"># if __name__== &quot;__main__&quot;:</span>
+<span class="c1">#    UEDGEBas2Py(&#39;/home/jguterl/Dropbox/python/UEDGEInputDir/InputW.bas&#39;,&#39;/home/jguterl/Dropbox/python/UEDGEInputDir/InputW.py&#39;,Verbose=True)</span>
+<span class="c1">#    UEDGEBas2Py(&#39;/home/jguterl/Dropbox/python/UEDGEInputDir/plate2.iter-feat.bas&#39;,&#39;/home/jguterl/Dropbox/python/UEDGEInputDir/plate2.iter-feat.py&#39;,Verbose=True)        </span>
+        
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Jerome Guterl
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+UBoxLaunch
+==========
+
+.. currentmodule:: UEDGEToolBox.Launcher
+
+.. autoclass:: UBoxLaunch
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~UBoxLaunch.Start
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: Start

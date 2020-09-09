@@ -1,7 +1,7 @@
-UBox
-====
+UEDGEToolBox
+============
 
 .. toctree::
    :maxdepth: 4
 
-   UBox
+   UEDGEToolBox

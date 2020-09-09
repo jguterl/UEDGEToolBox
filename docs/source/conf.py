@@ -12,12 +12,12 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../UBox'))
+sys.path.insert(0, os.path.abspath('../../UEDGEToolBox'))
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'UBox'
+project = 'UEDGEToolBox'
 copyright = '2020, Jerome Guterl'
 author = 'Jerome Guterl'
 
@@ -31,7 +31,8 @@ release = '0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 
-extensions = ['sphinx.ext.todo', 'sphinx.ext.viewcode', 'sphinx.ext.autodoc']
+extensions = ['sphinx.ext.napoleon','sphinx.ext.todo', 'sphinx.ext.viewcode', 'sphinx.ext.autodoc', 'sphinx.ext.autosummary','sphinx_automodapi.automodapi']
+autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>UBox &mdash; UBox 0.0.1 documentation</title>
+  <title>UEDGEToolBox &mdash; UEDGEToolBox 0.0.1 documentation</title>
   
 
   
@@ -33,6 +33,7 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
 </head>
@@ -48,7 +49,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> UBox
+            <a href="index.html" class="icon icon-home"> UEDGEToolBox
           
 
           
@@ -78,11 +79,19 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">UBox</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#getting-started">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#quickstart">QuickStart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#uedgetoolbox-settings">UEDGEToolBox.Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#initialization-of-uedgetoolbox">Initialization of UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#developping-uedgetoolbox">Developping UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#loading-uedgetoolbox-when-starting-a-python-session">Loading UEDGEToolBox when starting a python session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#documentation">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DataSet.html">UEDGEToolBox.DataSet module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Settings.html">UEDGEToolBox.Settings module</a></li>
 </ul>
-</div>
+
             
           
         </div>
@@ -95,7 +104,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">UBox</a>
+          <a href="index.html">UEDGEToolBox</a>
         
       </nav>
 
@@ -126,7 +135,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>UBox</li>
+      <li>UEDGEToolBox</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -145,25 +154,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="ubox">
-<h1>UBox<a class="headerlink" href="#ubox" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="uedgetoolbox">
+<h1>UEDGEToolBox<a class="headerlink" href="#uedgetoolbox" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="UBox.html">UBox package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="UBox.html#module-contents">Module contents</a></li>
-<li class="toctree-l2"><a class="reference internal" href="UBox.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="UBox.html#ubox-launchertoolbox-module">UBox.LauncherToolBox module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="UBox.html#ubox-toolboxprojects-module">UBox.ToolBoxProjects module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="UBox.html#ubox-toolboxsettings-module">UBox.ToolBoxSettings module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="UBox.html#ubox-toolboxutils-module">UBox.ToolBoxUtils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="UBox.html#ubox-uboxdoc-module">UBox.UBoxDoc module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="UBox.html#ubox-uedgebas2py-module">UBox.UEDGEBas2Py module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="UBox.html#ubox-uedgedebug-module">UBox.UEDGEDebug module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="UBox.html#ubox-uedgeio-module">UBox.UEDGEIO module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="UBox.html#ubox-uedgemesh-module">UBox.UEDGEMesh module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="UBox.html#ubox-uedgeplot-module">UBox.UEDGEPlot module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="UBox.html#ubox-uedgeproject-module">UBox.UEDGEProject module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="UBox.html#ubox-uedgesimulation-module">UBox.UEDGESimulation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UEDGEToolBox.html">UEDGEToolBox package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="UEDGEToolBox.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UEDGEToolBox.html#module-UEDGEToolBox.Bas2Py">UEDGEToolBox.Bas2Py module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UEDGEToolBox.html#module-UEDGEToolBox.DataSet">UEDGEToolBox.DataSet module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UEDGEToolBox.html#module-UEDGEToolBox.Doc">UEDGEToolBox.Doc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UEDGEToolBox.html#module-UEDGEToolBox.Grid">UEDGEToolBox.Grid module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UEDGEToolBox.html#uedgetoolbox-io-module">UEDGEToolBox.IO module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UEDGEToolBox.html#module-UEDGEToolBox.Launcher">UEDGEToolBox.Launcher module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UEDGEToolBox.html#module-UEDGEToolBox.Plot">UEDGEToolBox.Plot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UEDGEToolBox.html#module-UEDGEToolBox.Projects">UEDGEToolBox.Projects module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UEDGEToolBox.html#module-UEDGEToolBox.Simulations">UEDGEToolBox.Simulations module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UEDGEToolBox.html#module-UEDGEToolBox.Utils">UEDGEToolBox.Utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UEDGEToolBox.html#module-UEDGEToolBox">Module contents</a></li>
 </ul>
 </li>
 </ul>

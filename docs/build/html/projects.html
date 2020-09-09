@@ -1,0 +1,609 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Projects module &mdash; UEDGEToolBox 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> UEDGEToolBox
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#getting-started">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#quickstart">QuickStart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#uedgetoolbox-settings">UEDGEToolBox.Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#initialization-of-uedgetoolbox">Initialization of UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#developping-uedgetoolbox">Developping UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#loading-uedgetoolbox-when-starting-a-python-session">Loading UEDGEToolBox when starting a python session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#documentation">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DataSet.html">UEDGEToolBox.DataSet module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Settings.html">UEDGEToolBox.Settings module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UEDGEToolBox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Projects module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/projects.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="projects-module">
+<h1>Projects module<a class="headerlink" href="#projects-module" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-UEDGEToolBox.Projects">
+<span id="references"></span><h2>References<a class="headerlink" href="#module-UEDGEToolBox.Projects" title="Permalink to this headline">¶</a></h2>
+<p>Created on Fri Jul 31 00:23:14 2020</p>
+<p>&#64;author: jguterl</p>
+<dl class="py class">
+<dt id="UEDGEToolBox.Projects.Project">
+<em class="property">class </em><code class="sig-prename descclassname">UEDGEToolBox.Projects.</code><code class="sig-name descname">Project</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Name</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">RootPath</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Owner</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">Description</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">IsCurrent</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">Parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Create</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">Dic</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/UEDGEToolBox/Projects.html#Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.Projects.Project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.Project.Copy">
+<code class="sig-name descname">Copy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">NewName</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/UEDGEToolBox/Projects.html#Project.Copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.Projects.Project.Copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the project into a new project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>NewName</strong> (<em>Str</em>) – Name of the new project</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.Project.GetDir">
+<code class="sig-name descname">GetDir</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dir</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/UEDGEToolBox/Projects.html#Project.GetDir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.Projects.Project.GetDir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return path toward directory. Example: CurrentProject.GetDir(‘InputDir’) returns /path/to/projects/InputDir.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>Dir</strong> (<em>str</em>) – InputDir or GridDir or SaveDir or RunDir</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Path toward directory</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.Project.GetPath">
+<code class="sig-name descname">GetPath</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">RootPath</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/UEDGEToolBox/Projects.html#Project.GetPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.Projects.Project.GetPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the path of the project folder.</p>
+<p>If no project name or rootpath is provided, name and rootpath are the ones from the instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Name</strong> (<em>str</em><em>, </em><em>optional</em>) – project name, defaults to None</p></li>
+<li><p><strong>RootPath</strong> (<em>str</em><em>, </em><em>optional</em>) – project rootpath, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>path of the project folder.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.Project.GridDir">
+<em class="property">property </em><code class="sig-name descname">GridDir</code><a class="headerlink" href="#UEDGEToolBox.Projects.Project.GridDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.Project.InputDir">
+<em class="property">property </em><code class="sig-name descname">InputDir</code><a class="headerlink" href="#UEDGEToolBox.Projects.Project.InputDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="UEDGEToolBox.Projects.Project.ListDir">
+<code class="sig-name descname">ListDir</code><em class="property"> = ['InputDir', 'SaveDir', 'RunDir', 'GridDir']</em><a class="headerlink" href="#UEDGEToolBox.Projects.Project.ListDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="UEDGEToolBox.Projects.Project.Properties">
+<code class="sig-name descname">Properties</code><em class="property"> = ['Name', 'RootPath', 'Owner', 'IsCurrent', 'Description']</em><a class="headerlink" href="#UEDGEToolBox.Projects.Project.Properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.Project.Rename">
+<code class="sig-name descname">Rename</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">NewName</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/UEDGEToolBox/Projects.html#Project.Rename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.Projects.Project.Rename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.Project.RunDir">
+<em class="property">property </em><code class="sig-name descname">RunDir</code><a class="headerlink" href="#UEDGEToolBox.Projects.Project.RunDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.Project.SaveDir">
+<em class="property">property </em><code class="sig-name descname">SaveDir</code><a class="headerlink" href="#UEDGEToolBox.Projects.Project.SaveDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.Project.Show">
+<code class="sig-name descname">Show</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/UEDGEToolBox/Projects.html#Project.Show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.Projects.Project.Show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the properties of the project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.Project.Summary">
+<code class="sig-name descname">Summary</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/UEDGEToolBox/Projects.html#Project.Summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.Projects.Project.Summary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.Project.from_yaml">
+<em class="property">static </em><code class="sig-name descname">from_yaml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loader</span></em>, <em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/UEDGEToolBox/Projects.html#Project.from_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.Projects.Project.from_yaml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.Project.to_yaml">
+<em class="property">static </em><code class="sig-name descname">to_yaml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dumper</span></em>, <em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/UEDGEToolBox/Projects.html#Project.to_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.Projects.Project.to_yaml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="UEDGEToolBox.Projects.UBoxProjects">
+<em class="property">class </em><code class="sig-prename descclassname">UEDGEToolBox.Projects.</code><code class="sig-name descname">UBoxProjects</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/UEDGEToolBox/Projects.html#UBoxProjects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Settings.html#UEDGEToolBox.Settings.UBoxSettings" title="UEDGEToolBox.Settings.UBoxSettings"><code class="xref py py-class docutils literal notranslate"><span class="pre">UEDGEToolBox.Settings.UBoxSettings</span></code></a></p>
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.AddDataSet">
+<code class="sig-name descname">AddDataSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.AddDataSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.AddDefaultDataSet">
+<code class="sig-name descname">AddDefaultDataSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.AddDefaultDataSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.CopyProject">
+<code class="sig-name descname">CopyProject</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.CopyProject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.CreateProject">
+<code class="sig-name descname">CreateProject</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.CreateProject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.CreateSettingsFile">
+<code class="sig-name descname">CreateSettingsFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.CreateSettingsFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.CurrentProject">
+<em class="property">property </em><code class="sig-name descname">CurrentProject</code><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.CurrentProject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.CurrentProjectGetter">
+<code class="sig-name descname">CurrentProjectGetter</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.CurrentProjectGetter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.DatatoDict">
+<code class="sig-name descname">DatatoDict</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.DatatoDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a list of UEDGE and regular variables into a dictionary (e.g. VarList=[‘ne’] -&gt; Dic[‘ne’]=bbb.ne).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>DataSetName</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – DESCRIPTION. Defaults to None.</p></li>
+<li><p><strong>ExtraVars</strong> (<em>list</em><em>(</em><em>str</em><em>)</em><em>, </em><em>optional</em>) – DESCRIPTION. Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>TYPE</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DESCRIPTION.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.DeleteDataSet">
+<code class="sig-name descname">DeleteDataSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.DeleteDataSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.DeleteProject">
+<code class="sig-name descname">DeleteProject</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.DeleteProject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.GatherData">
+<code class="sig-name descname">GatherData</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.GatherData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of variable names from a data set/or and a list of variable name and return a dictionary with variable names as keys and variable values as values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>DataSetName</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Name of a data set. Defaults to None.</p></li>
+<li><p><strong>ExtraVars</strong> (<em>list</em><em>(</em><em>str</em><em>)</em><em>, </em><em>optional</em>) – List of variable names. Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary dict[variable name]=variable value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.GetDefaultDataSet">
+<code class="sig-name descname">GetDefaultDataSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.GetDefaultDataSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return defaults datasets.</p>
+<blockquote>
+<div><p>DefaultDataSet (dict): dictionary of dataset.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.GetVarList">
+<code class="sig-name descname">GetVarList</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.GetVarList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of variables from a dataset and a list of variable names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>DataSetName</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of a data set. Defaults to None.</p></li>
+<li><p><strong>ExtraVars</strong> (<em>list</em><em>(</em><em>str</em><em>)</em><em>, </em><em>optional</em>) – List of variable names. Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DESCRIPTION.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List (TYPE)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.LoadProjects">
+<code class="sig-name descname">LoadProjects</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.LoadProjects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.LsGridDir">
+<code class="sig-name descname">LsGridDir</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.LsGridDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.LsInputDir">
+<code class="sig-name descname">LsInputDir</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.LsInputDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.LsSaveDir">
+<code class="sig-name descname">LsSaveDir</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.LsSaveDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.Owner">
+<em class="property">property </em><code class="sig-name descname">Owner</code><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.Owner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.Print">
+<code class="sig-name descname">Print</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.Print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print function allowing to print with the UBox prefix.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UBox</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">)</span>
+<span class="go">[UBox] Hello</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.ProcessVarList">
+<code class="sig-name descname">ProcessVarList</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.ProcessVarList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add UEDGE package in front variable names when variable is part of an UEDGE pakage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>VarList</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – DESCRIPTION.</p></li>
+<li><p><strong>Verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – DESCRIPTION. Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ProcessVarList</span><span class="p">(</span><span class="s1">&#39;ne&#39;</span><span class="p">)</span>
+<span class="go">&#39;bbb.ne&#39;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>list(str)</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>DESCRIPTION.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.ProjectExist">
+<code class="sig-name descname">ProjectExist</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.ProjectExist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.RemovePkg">
+<code class="sig-name descname">RemovePkg</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.RemovePkg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove package object in a variable name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>VarName</strong> (<em>str</em>) – Variable name.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">RemovePkg</span><span class="p">(</span><span class="s1">&#39;bbb.ne&#39;</span><span class="p">)</span>
+<span class="go">&#39;ne&#39;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>str</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Variable name without parent object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.SaveDataSet">
+<code class="sig-name descname">SaveDataSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.SaveDataSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dummy method overloaded by an UBoxSettings save method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.SaveProjects">
+<code class="sig-name descname">SaveProjects</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.SaveProjects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.SaveSettings">
+<code class="sig-name descname">SaveSettings</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.SaveSettings" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.ScanFolder">
+<code class="sig-name descname">ScanFolder</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.ScanFolder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.SetCurrentProject">
+<code class="sig-name descname">SetCurrentProject</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.SetCurrentProject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.SetProjectsFile">
+<code class="sig-name descname">SetProjectsFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.SetProjectsFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.SetRootPathProjects">
+<code class="sig-name descname">SetRootPathProjects</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.SetRootPathProjects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.ShowCurrentProject">
+<code class="sig-name descname">ShowCurrentProject</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.ShowCurrentProject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.ShowDataSet">
+<code class="sig-name descname">ShowDataSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.ShowDataSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.ShowProjects">
+<code class="sig-name descname">ShowProjects</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.ShowProjects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.ShowSettings">
+<code class="sig-name descname">ShowSettings</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.ShowSettings" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.from_yaml">
+<code class="sig-name descname">from_yaml</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.from_yaml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="UEDGEToolBox.Projects.UBoxProjects.to_yaml">
+<code class="sig-name descname">to_yaml</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UEDGEToolBox.Projects.UBoxProjects.to_yaml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Jerome Guterl
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

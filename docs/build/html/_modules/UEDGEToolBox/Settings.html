@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>UEDGEToolBox.Settings &mdash; UEDGEToolBox 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> UEDGEToolBox
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#getting-started">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#quickstart">QuickStart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#uedgetoolbox-settings">UEDGEToolBox.Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#initialization-of-uedgetoolbox">Initialization of UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#developping-uedgetoolbox">Developping UEDGEToolBox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#loading-uedgetoolbox-when-starting-a-python-session">Loading UEDGEToolBox when starting a python session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html#documentation">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../DataSet.html">UEDGEToolBox.DataSet module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Settings.html">UEDGEToolBox.Settings module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">UEDGEToolBox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>UEDGEToolBox.Settings</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for UEDGEToolBox.Settings</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Tue Aug 18 16:55:49 2020</span>
+
+<span class="sd">@author: jguterl</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">UEDGEToolBox.Utils</span> <span class="kn">import</span> <span class="n">QueryYesNo</span><span class="p">,</span><span class="n">GetPlatform</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span><span class="nn">os</span><span class="o">,</span><span class="nn">easygui</span><span class="o">,</span><span class="nn">platform</span><span class="o">,</span><span class="nn">inspect</span><span class="o">,</span><span class="nn">configparser</span><span class="o">,</span><span class="nn">getpass</span><span class="o">,</span><span class="nn">errno</span><span class="o">,</span><span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">from</span> <span class="nn">UEDGEToolBox.DataSet</span> <span class="kn">import</span> <span class="n">UBoxDataSet</span>
+    
+<div class="viewcode-block" id="UBoxSettings"><a class="viewcode-back" href="../../Settings.html#UEDGEToolBox.Settings.UBoxSettings">[docs]</a><span class="k">class</span> <span class="nc">UBoxSettings</span><span class="p">(</span><span class="n">UBoxDataSet</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+    <span class="c1"># def __new__(cls, *args, **kwargs):</span>
+    <span class="c1">#     if kwargs.get(&#39;Parent&#39;) is not None:</span>
+    <span class="c1">#     # Settings=None</span>
+    <span class="c1">#     # if Settings is not None:</span>
+    <span class="c1">#          Parent=kwargs.get(&#39;Parent&#39;)</span>
+    <span class="c1">#          Parent.__class__ = UBoxSettings</span>
+    <span class="c1">#          return Parent</span>
+    <span class="c1">#     else:</span>
+    <span class="c1">#         return super(UBoxSettings, cls).__new__(cls,*args, **kwargs)</span>
+   
+    <span class="n">_YAMLTag</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;!setting&#39;</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">Dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+         <span class="bp">self</span><span class="o">.</span><span class="n">_ConfigField</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;UserName&#39;</span><span class="p">,</span><span class="s1">&#39;Email&#39;</span><span class="p">,</span><span class="s1">&#39;Affiliation&#39;</span><span class="p">,</span><span class="s1">&#39;ProjectsFile&#39;</span><span class="p">,</span><span class="s1">&#39;RootPathProjects&#39;</span><span class="p">,</span><span class="s1">&#39;DataSets&#39;</span><span class="p">]</span>
+         <span class="bp">self</span><span class="o">.</span><span class="n">_SettingsFile</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">),</span><span class="s1">&#39;.UBoxSettings.yml&#39;</span><span class="p">)</span>
+         <span class="bp">self</span><span class="o">.</span><span class="n">_UserName</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+         <span class="bp">self</span><span class="o">.</span><span class="n">_Email</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+         <span class="bp">self</span><span class="o">.</span><span class="n">_Affiliation</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+         <span class="bp">self</span><span class="o">.</span><span class="n">_RootPathProjects</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+         <span class="bp">self</span><span class="o">.</span><span class="n">_ProjectsFile</span><span class="o">=</span><span class="kc">None</span>
+         <span class="k">if</span> <span class="n">Dic</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__fromDict</span><span class="p">(</span><span class="n">Dic</span><span class="p">)</span>
+         <span class="k">else</span><span class="p">:</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">PlatForm</span><span class="o">=</span><span class="n">GetPlatform</span><span class="p">()</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">__LoadSettings</span><span class="p">()</span>
+         
+    <span class="k">def</span> <span class="nf">__toDict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Dic</span><span class="o">=</span><span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ConfigField</span><span class="p">:</span>
+                <span class="n">Dic</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Dic</span>
+    
+    <span class="k">def</span> <span class="nf">__fromDict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Dic</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">Dic</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">k</span><span class="p">):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>     
+
+<div class="viewcode-block" id="UBoxSettings.to_yaml"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Settings.UBoxSettings.to_yaml">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="n">dumper</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">dumper</span><span class="o">.</span><span class="n">represent_mapping</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">_YAMLTag</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">__toDict</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="UBoxSettings.from_yaml"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Settings.UBoxSettings.from_yaml">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_yaml</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="n">node_map</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">construct_mapping</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+        <span class="k">return</span> <span class="n">UBoxSettings</span><span class="p">(</span><span class="n">Dic</span><span class="o">=</span><span class="n">node_map</span><span class="p">)</span></div>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">UserName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  
+         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_UserName</span>
+
+    <span class="nd">@UserName</span><span class="o">.</span><span class="n">setter</span> 
+    <span class="k">def</span> <span class="nf">UserName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_UserName</span> <span class="o">=</span> <span class="n">Name</span>
+        <span class="k">if</span> <span class="n">QueryYesNo</span><span class="p">(</span><span class="s1">&#39;Do you want to save the UBox settings?&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SaveSettings</span><span class="p">()</span>
+            
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  
+         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Email</span>
+
+    <span class="nd">@Email</span><span class="o">.</span><span class="n">setter</span> 
+    <span class="k">def</span> <span class="nf">Email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Email</span> <span class="o">=</span> <span class="n">Name</span>
+        <span class="k">if</span> <span class="n">QueryYesNo</span><span class="p">(</span><span class="s1">&#39;Do you want to save the UBox settings?&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SaveSettings</span><span class="p">()</span>
+            
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Affiliation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  
+         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Affiliation</span>
+
+    <span class="nd">@Affiliation</span><span class="o">.</span><span class="n">setter</span> 
+    <span class="k">def</span> <span class="nf">Affiliation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Affiliation</span> <span class="o">=</span> <span class="n">Name</span>
+        <span class="k">if</span> <span class="n">QueryYesNo</span><span class="p">(</span><span class="s1">&#39;Do you want to save the UBox settings?&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SaveSettings</span><span class="p">()</span>
+            
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">RootPathProjects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  
+         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_RootPathProjects</span>
+
+    <span class="nd">@RootPathProjects</span><span class="o">.</span><span class="n">setter</span> 
+    <span class="k">def</span> <span class="nf">RootPathProjects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">Name</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_RootPathProjects</span> <span class="o">=</span> <span class="n">Name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">QueryYesNo</span><span class="p">(</span><span class="s1">&#39;The folder </span><span class="si">{}</span><span class="s1"> does not exist. Do you want to create it?&#39;</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_RootPathProjects</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">QueryYesNo</span><span class="p">(</span><span class="s1">&#39;Do you want to save the UBox settings?&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SaveSettings</span><span class="p">()</span>
+            
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ProjectsFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  
+         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ProjectsFile</span>
+
+    <span class="nd">@ProjectsFile</span><span class="o">.</span><span class="n">setter</span> 
+    <span class="k">def</span> <span class="nf">ProjectsFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ProjectsFile</span> <span class="o">=</span> <span class="n">Name</span>
+        <span class="k">if</span> <span class="n">QueryYesNo</span><span class="p">(</span><span class="s1">&#39;Do you want to save the UBox settings?&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SaveSettings</span><span class="p">()</span>
+            
+    
+    
+<div class="viewcode-block" id="UBoxSettings.SaveDataSet"><a class="viewcode-back" href="../../Settings.html#UEDGEToolBox.Settings.UBoxSettings.SaveDataSet">[docs]</a>    <span class="k">def</span> <span class="nf">SaveDataSet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SaveSettings</span><span class="p">()</span></div>
+        
+    <span class="k">def</span> <span class="nf">__SetConfigFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please select a config file for UEDGE Settings&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_SettingsFile</span><span class="o">=</span><span class="n">easygui</span><span class="o">.</span><span class="n">fileopenbox</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Select config file for UEDGE Settings&#39;</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SettingsFile</span> <span class="ow">is</span>  <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No configuration file set for UEDGE Settings... Type &quot;Settings.SetConfigFile&quot; to create or load one&#39;</span><span class="p">)</span>    
+            <span class="k">return</span> <span class="kc">None</span>
+        
+    <span class="k">def</span> <span class="nf">__ParseField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Str</span><span class="p">):</span>
+        <span class="n">Dic</span><span class="o">=</span><span class="p">{}</span>
+        <span class="k">if</span> <span class="s2">&quot;{&quot;</span> <span class="ow">in</span> <span class="n">Str</span> <span class="ow">and</span> <span class="s2">&quot;}&quot;</span> <span class="ow">in</span> <span class="n">Str</span><span class="p">:</span>
+            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;tmp=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Str</span><span class="p">),</span><span class="n">Dic</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Dic</span><span class="p">[</span><span class="s1">&#39;tmp&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Str</span>
+        
+    <span class="k">def</span> <span class="nf">__ReadSettingsFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_SettingsFile</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">Obj</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">Obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ConfigField</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">Obj</span><span class="p">,</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">k</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">k</span><span class="p">):</span>
+                        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">k</span><span class="p">,</span><span class="nb">getattr</span><span class="p">(</span><span class="n">Obj</span><span class="p">,</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">k</span><span class="p">))</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">__LoadSettings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_SettingsFile</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ReadSettingsFile</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">QueryYesNo</span><span class="p">(</span><span class="s1">&#39;Do you want to create a new configuration file for the UBox?&#39;</span><span class="p">):</span>
+                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__CreateConfigFile</span><span class="p">():</span>
+                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No settings file created for UBox...Run UBox.CreateSettingsFile() to create one&#39;</span><span class="p">)</span>
+                     <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;UBox configuration loaded from </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_SettingsFile</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">True</span>
+            
+
+<div class="viewcode-block" id="UBoxSettings.Print"><a class="viewcode-back" href="../../Settings.html#UEDGEToolBox.Settings.UBoxSettings.Print">[docs]</a>    <span class="k">def</span> <span class="nf">Print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print function allowing to print with the UBox prefix.</span>
+<span class="sd">        </span>
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">            &gt;&gt;&gt; UBox.Print(&#39;Hello&#39;)</span>
+<span class="sd">            [UBox] Hello</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+  
+    
+    <span class="k">def</span> <span class="nf">__WriteConfig</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">UBoxSettings</span><span class="o">.</span><span class="n">__WriteConfigFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Config</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_SettingsFile</span><span class="p">)</span>  
+    
+
+    <span class="k">def</span> <span class="nf">__GetRootPathProjects</span><span class="p">(</span><span class="n">Folder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">Folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please select a folder for UBox projects&#39;</span><span class="p">)</span>
+            <span class="n">Folder</span><span class="o">=</span><span class="n">easygui</span><span class="o">.</span><span class="n">diropenbox</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Please select a folder for UBox projects&#39;</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="s1">&#39;Projects&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">Folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No  folder set for the UBox projects... Setting it to current working directory&#39;</span><span class="p">)</span>
+            <span class="n">Folder</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">Folder</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">QueryYesNo</span><span class="p">(</span><span class="s1">&#39;The folder </span><span class="si">{}</span><span class="s1"> does not exist. Do you want to create it?&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Folder</span><span class="p">)):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">Folder</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No  folder set for the UBox projects... Setting it to current working directory&#39;</span><span class="p">)</span>
+                <span class="n">Folder</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Folder</span>
+    
+                  
+    <span class="k">def</span> <span class="nf">__CreateConfigFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Settings</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">UserName</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter the username (press enter for default system username): &#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">UserName</span> <span class="ow">is</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">UserName</span><span class="o">=</span><span class="n">getpass</span><span class="o">.</span><span class="n">getuser</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">UserName</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_UserName</span><span class="o">=</span><span class="n">UserName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Email</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter the email address:&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Affiliation</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter the institution:&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_RootPathProjects</span><span class="o">=</span><span class="n">UBoxSettings</span><span class="o">.</span><span class="n">__GetRootPathProjects</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ProjectsFile</span><span class="o">=</span><span class="n">UBoxSettings</span><span class="o">.</span><span class="n">__GetProjectsFile</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_DataSets</span><span class="o">=</span><span class="n">UBoxDataSet</span><span class="o">.</span><span class="n">GetDefaultDataSet</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ShowSettings</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">QueryYesNo</span><span class="p">(</span><span class="s1">&#39;Are these settings correct?&#39;</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Creation of the settings config file:&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_SettingsFile</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SaveSettings</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No settings file created ...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_SettingsFile</span><span class="p">))</span> 
+            <span class="k">return</span> <span class="kc">False</span>
+    
+    
+        
+    <span class="nd">@staticmethod</span>        
+    <span class="k">def</span> <span class="nf">__WriteConfigFile</span><span class="p">(</span><span class="n">Config</span><span class="p">,</span><span class="n">FileName</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">FileName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">FileName</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">yaml</span><span class="o">.</span><span class="n">safe_dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span><span class="p">:</span> 
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cannot write the configuration file :&#39;</span> <span class="o">+</span> <span class="n">FileName</span> <span class="o">+</span><span class="s1">&#39;....&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span> 
+        
+    
+        
+
+    <span class="nd">@staticmethod</span> 
+    <span class="k">def</span> <span class="nf">__GetProjectsFile</span><span class="p">(</span><span class="n">FileName</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">FileName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please select a file for the UBox projects&#39;</span><span class="p">)</span>
+                <span class="n">FileName</span><span class="o">=</span><span class="n">easygui</span><span class="o">.</span><span class="n">filesavebox</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Please select a configuration file for the UBox projects&#39;</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="s1">&#39;.UBoxProjects.yml&#39;</span><span class="p">,</span> <span class="n">filetypes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;*.yml&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">FileName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No  file set for the UBox projects...&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">FileName</span><span class="p">):</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">FileName</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="k">pass</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">FileName</span><span class="p">)</span>
+        
+    
+<div class="viewcode-block" id="UBoxSettings.SetRootPathProjects"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Settings.UBoxSettings.SetRootPathProjects">[docs]</a>    <span class="k">def</span> <span class="nf">SetRootPathProjects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Folder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">Folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please select a  folder for the UBox projects&#39;</span><span class="p">)</span>
+            <span class="n">Folder</span><span class="o">=</span><span class="n">easygui</span><span class="o">.</span><span class="n">diropenbox</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Please select a folder for the UBox projects&#39;</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="s1">&#39;Projects&#39;</span><span class="p">))</span>
+            
+        <span class="k">if</span> <span class="n">Folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No  folder set for the UBox projects...&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">Folder</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">QueryYesNo</span><span class="p">(</span><span class="s1">&#39;The folder </span><span class="si">{}</span><span class="s1"> does not exist. Do you want to create it?&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Folder</span><span class="p">)):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">Folder</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_RootPathProjects</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">Folder</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Config</span><span class="p">[</span><span class="s1">&#39;UBox&#39;</span><span class="p">][</span><span class="s1">&#39;RootPathProjects&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">RootPathProjects</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SaveConfig</span><span class="p">()</span>   </div>
+    
+<div class="viewcode-block" id="UBoxSettings.CreateSettingsFile"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Settings.UBoxSettings.CreateSettingsFile">[docs]</a>    <span class="k">def</span> <span class="nf">CreateSettingsFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__CreateConfigFile</span><span class="p">()</span></div>
+        
+<div class="viewcode-block" id="UBoxSettings.SaveSettings"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Settings.UBoxSettings.SaveSettings">[docs]</a>    <span class="k">def</span> <span class="nf">SaveSettings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_SettingsFile</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">safe_dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="UBoxSettings.ShowSettings"><a class="viewcode-back" href="../../UEDGEToolBox.html#UEDGEToolBox.Settings.UBoxSettings.ShowSettings">[docs]</a>    <span class="k">def</span> <span class="nf">ShowSettings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;******** UBox Settings *******************&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Username:&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">UserName</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Affiliation:&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Affiliation</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Email:&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Email</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RootPathProjects:&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">RootPathProjects</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ProjectsFile:&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">ProjectsFile</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;*****************************************</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div></div>
+        
+        
+<span class="n">yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span><span class="n">UBoxSettings</span><span class="p">,</span> <span class="n">UBoxSettings</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">,</span> <span class="n">Dumper</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">SafeDumper</span><span class="p">)</span>
+<span class="n">yaml</span><span class="o">.</span><span class="n">add_constructor</span><span class="p">(</span><span class="n">UBoxSettings</span><span class="o">.</span><span class="n">_YAMLTag</span><span class="p">,</span> <span class="n">UBoxSettings</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">SafeLoader</span><span class="p">)</span>  
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Jerome Guterl
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
