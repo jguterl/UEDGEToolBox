@@ -6,8 +6,11 @@ Created on Thu Mar 12 14:06:22 2020
 """
 import os
 from UEDGEToolBox.Utils.Doc import UBoxDoc
+from UEDGEToolBox.Utils.Misc import LsFolder
+from UEDGEToolBox.ProjectManager.Source import UBoxSource
 from uedge import *
 import re
+from datetime import datetime
 
 class UBoxBas2Py():
     def __init__(self,Verbose=False,VerboseParserVar=False,VerboseArgout=False,Doc=None):
@@ -20,21 +23,27 @@ class UBoxBas2Py():
         self.Doc=UBoxDoc()
         self.MathSymbols=['+','-','/','*']
             
-    def Convert(self,BasFileName,PyFileName=None,ExcludeList=[],Imax=None):
-        
+    def Convert(self,BasFileName,PyFileName=None,ExcludeList=[],Imax=None,Verbose=None):
+        if Verbose is not None:
+            self.Verbose=Verbose
+            self.VerboseArgout=Verbose
+            self.VerboseParserVar=Verbose
         if PyFileName is None:
                 PyFileName=os.path.splitext(BasFileName)[0] + '.py'
 
-        if self.Verbose:
-                print('Converting UEDGE bas input file into py input file:')
-                print('{} -> {}'.format(BasFileName,PyFileName))
-        if self.Verbose:
-            print('Converting Basis file:{} into {}'.format(BasFileName,PyFileName))    
+
+        print('Converting Basis file:{} -> {}'.format(BasFileName,PyFileName))  
+            
         with open(BasFileName,'r') as self.f:
             with open(PyFileName,'w') as self.fw:
                 #Lines = f.readlines() 
                 self.Line=next(self.f,None)
                 self.LineNumber=0
+                self.fw.write('#>>> Produced by UBoxBas2Py. Original file: {}\n'.format(BasFileName))
+                self.fw.write('#>>> Timestamp: {:%Y-%m-%d %H:%M:%S}\n'.format(datetime.now()))
+                self.fw.write('iota=np.array([np.arange(1,i+1) for i in range(1,300)],dtype=np.ndarray)\n')
+                self.fw.write("api.apidir=Source('api',Folder='InputDir')") 
+                self.fw.write("aph.aphdir=Source('aph',Folder='InputDir')")
                 while self.Line:
                     if Imax is not None and self.LineNumber>Imax:
                         break
@@ -134,6 +143,8 @@ class UBoxBas2Py():
                         Arg=Line.split('=')[1].strip()
                         if Var in self.ExcludeList:
                             Out.append('#>> '+Var+'='+Arg)
+                        if Var=='probname':
+                            Out.append('SetCaseName({})'.format(Arg))
                         else:
                             if Var=='del':
                                     Var='delperturb'
@@ -142,9 +153,7 @@ class UBoxBas2Py():
                             Argout=self.__ParseArgout(Arg)
                             
                             if self.Verbose: print('>>>>>>>> Assignment found for "{}" -> {}={}'.format(Line,Varout,Argout))
-                            if Var=='mcfilename':
-                                    Argout="Source({},Folder='InputDir')".format(Argout)
-                                    
+
                             if Varout is not None:
                                 
                                 Out.append(Varout+'='+Argout)
@@ -167,6 +176,7 @@ class UBoxBas2Py():
         else:
             Symbol=self.MathSymbols[SymbolIndex]
         Args=Arg.strip().split(Symbol)
+        CArgs=Arg.strip().count(Symbol)
         if self.VerboseArgout:
             print('Splitting Argout={}, with Symbol "{}":{}'.format(Arg,Symbol,Args))
             
@@ -179,10 +189,8 @@ class UBoxBas2Py():
             Argo=self.__SubExpo(Argo)
             Argo=self.__ParseVariable(Argo,ForceCheck=False)
             Argo=Argo.strip()
-            if Argo.startswith('[') and Argo.endswith(']'):
-                Argo="np.ndarray({})".format(Argo)
-            # if Argo.startswith('[') and Argo.endswith(']'):
-            #     Argo="np.ndarray({})".format(Argo)
+            if CArgs>0 and Argo.startswith('[') and Argo.endswith(']'):
+                Argo="np.array({})".format(Argo)
             Argouts.append(Argo)
         
         return Symbol.join(Argouts)
@@ -203,9 +211,9 @@ class UBoxBas2Py():
                 return Out[0]
             
     
-    def __GetPackageVariable(self,VarName):
+    def __GetPackageVariable(self,VarName,IsDim=False):
         
-        Info=self.Doc._GetVarInfo(VarName,exact=True)
+        Info=self.Doc.Search(VarName,Silent=True,Exact=True)    
         if len(Info)>1:
             raise ValueError('More than one variable name found for {}'.format(VarName))
         if len(Info)<1:
@@ -213,9 +221,11 @@ class UBoxBas2Py():
             Out=None
         else:    
             Out=Info[0]['Package']+'.'+VarName
+            if Info[0].get('Dimension') is not None and '(' in Info[0]['Dimension'] and IsDim:
+                Out=Out+'[0]'
         return Out
     
-    def __ParseVariable(self,Var,ForceCheck=True,ExcludeList=[]):
+    def __ParseVariable(self,Var,ForceCheck=True,ExcludeList=[],IsDim=False):
         
         Var=Var.strip()
         if Var in ExcludeList:
@@ -225,11 +235,18 @@ class UBoxBas2Py():
         if Var.isnumeric() or self.IsFloat(Var):
             return Var
         
-        if Var.startswith('ndarray') or Var.startswith('np.ndarray'):
-                return Var
-        
+        if Var.startswith('array') or Var.startswith('np.array'):
+            return Var
+        if Var.startswith('[') and Var.endswith(']'):
+            return Var
         VarName=Var.strip().split('(')[0].strip()
-        Out=self.__ParseVariableName(VarName)
+        
+        
+        if VarName.endswith('array') or VarName.endswith('np.array'):
+            return Var
+        
+        
+        Out=self.__ParseVariableName(VarName,IsDim=IsDim)
         
         if Out is None: 
             if ForceCheck:
@@ -249,8 +266,8 @@ class UBoxBas2Py():
             print('Parsing variable "{}" -> {}'.format(Var,Out))        
         return Out        
                 
-    def __ParseVariableName(self,VarName):
-        Out=self.__GetPackageVariable(VarName)
+    def __ParseVariableName(self,VarName,IsDim=False):
+        Out=self.__GetPackageVariable(VarName,IsDim=IsDim)
         if Out is None:
             Out=self.__GetPackageMethod(VarName)
         return Out
@@ -291,13 +308,12 @@ class UBoxBas2Py():
                 for r in d.split(':'):
                     
                     rr=self.__ParseMathSymbol(r)
-                    print('rr:',rr)
                     outrr=[]
                     for rrr in rr:
                         if rrr in self.MathSymbols:
                             outrr.append(rrr)
                         else:
-                            O=self.__ParseVariable(rrr,ForceCheck=False)
+                            O=self.__ParseVariable(rrr,ForceCheck=False,IsDim=True)
                             outrr.extend(O)
                     routrr=outrr
                     if IsFirst:
@@ -339,4 +355,20 @@ class UBoxBas2Py():
 #    UEDGEBas2Py('/home/jguterl/Dropbox/python/UEDGEInputDir/InputW.bas','/home/jguterl/Dropbox/python/UEDGEInputDir/InputW.py',Verbose=True)
 #    UEDGEBas2Py('/home/jguterl/Dropbox/python/UEDGEInputDir/plate2.iter-feat.bas','/home/jguterl/Dropbox/python/UEDGEInputDir/plate2.iter-feat.py',Verbose=True)        
         
+def ConvertBas2Py(BasFileName=None,PyFileName=None,Folder=None,**kwargs):
+        if Folder is None:
+            Folder=os.getcwd()
+        if BasFileName is None:
+            BasFileName=LsFolder(Folder,Ext='*')
+        if BasFileName is None:
+            print("No basis file provided... Exiting")
+            return
+
+        FilePath=UBoxSource.Source(BasFileName,None,None,None)
+        # Looking for file
+        if FilePath is not None and os.path.isfile(FilePath):
+            UBoxBas2Py().Convert(FilePath,PyFileName,**kwargs)
+        else:
+            print("Cannot read the file {}... Exiting".format(FilePath))
+
     
