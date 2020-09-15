@@ -16,7 +16,7 @@ import numpy as np
 
 class UBoxPlotter(UBoxPlot2D,UBoxPlot1D,UBoxPlotUtils):
  
-    def __init__(self,Dic={},Verbose=True,**kwargs):
+    def __init__(self,Dic={},Verbose=False,**kwargs):
         self.Grid=kwargs.get('Grid')
         self.Data=kwargs.get('Data')
         self.Indexes=kwargs.get('Indexes')
@@ -75,12 +75,9 @@ class UBoxPlotter(UBoxPlot2D,UBoxPlot1D,UBoxPlotUtils):
     def SetAxProperties(self,**kwargs):
         if self.ax is not None:
             List=MatplotlibKw.Axes()
-            print(List)
-            print(kwargs)
             Dic=dict((k,v) for (k,v) in kwargs.items() if k in List)
             for (k,v) in Dic.items():
                 if hasattr(self.ax,'set_{}'.format(k)):
-                    print('ax attr:',k)
                     getattr(self.ax,'set_'+k)(v)
                     
             

@@ -338,7 +338,7 @@ class UBoxDataParser():
         return(self._SplitDataArray(DataArray,DimSplit), self._SplitIndexes(Indexes,DimSplit))
         
     @ClassInstanceMethod
-    def ParseDataFields(self,DataFields:list or str,IdxSlice=None,DimSlice=None,DimSplit=[2],EnforceDataExist=False,Datas:dict or str or None=None,**kwargs):
+    def ParseDataFields(self,DataFields:list or str,IdxSlice=None,DimSlice=None,DimSplit=[2],EnforceDataExist=False,DataType:dict or str or None='UEDGE',**kwargs):
         """
         
 
@@ -363,8 +363,8 @@ class UBoxDataParser():
                DimSlice=[DimSlice]
            if DimSplit is not None and type(DimSplit)!=list:
                DimSplit=[DimSplit]
-           if Datas is not None:
-               Datas=[Datas]
+           if DataType is not None:
+               DataType=[DataType]
                
         if IdxSlice is None:
             IdxSlice=[None for Field in DataFields]
@@ -372,8 +372,8 @@ class UBoxDataParser():
             DimSlice=[None for Field in DataFields]
         if DimSplit is None:    
            DimSplit=[None for Field in DataFields]
-        if Datas is None:
-           Datas=[None for Field in DataFields] 
+        if DataType is None:
+           DataType=[None for Field in DataFields] 
            
         if type(IdxSlice)==list and len(IdxSlice)==1:
             V=IdxSlice[0]
@@ -384,9 +384,9 @@ class UBoxDataParser():
         if type(DimSplit)==list and len(DimSplit)==1:
             V=DimSplit[0]
             DimSplit=[V for Field in DataFields]    
-        if type(Datas)==list and len(Datas)==1:
-            V=Datas[0]
-            Datas=[V for Field in DataFields]   
+        if type(DataType)==list and len(DataType)==1:
+            V=DataType[0]
+            DataType=[V for Field in DataFields]   
         
         length = len(DataFields)
         if any([len(lst) != length for lst in [DataFields,IdxSlice,DimSlice,DimSplit]]):
@@ -414,23 +414,23 @@ class UBoxDataParser():
         for Field in Fields:
             if Fields.count(Field)>1:
                raise IOError("Duplicate of the field '{}' found. Field names must be unique in DataFields.".format(Field)) 
-        
-        for Field,IndexSet,IdxSl,DimSl,DimSp,Data in zip(Fields,IndexSets,IdxSlice,DimSlice,DimSplit,Datas):
+       
+        for Field,IndexSet,IdxSl,DimSl,DimSp,Data in zip(Fields,IndexSets,IdxSlice,DimSlice,DimSplit,DataType):
             DicOut.update(self.ParseArray(Field,Data,IndexSet,IdxSl,DimSl,DimSp))           
         
         return DicOut
         
     
-    def ParseArray(self,Field,Data,IndexSet,IdxSl,DimSl,DimSp):
+    def ParseArray(self,Field,DataType,IndexSet,IdxSl,DimSl,DimSp):
         DicOut={}
         if self.Verbose:
-            print('Processing field "{}" with IndexSet:"{}"'.format(Field,IndexSet))
+            print('Processing field "{}" with IndexSet:"{}" and DataType:"{}"'.format(Field,IndexSet,DataType))
             
-        if type(Data)==dict:
-            DataArray=Data.get(Field)
+        if type(DataType)==dict:
+            DataArray=DataType.get(Field)
         else:
             if hasattr(self,'GetDataField'):
-                DataArray=self.GetDataField(Field,Data)
+                DataArray=self.GetDataField(Field,DataType)
             else:
                 DataArray=None
                 

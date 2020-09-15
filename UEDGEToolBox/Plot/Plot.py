@@ -14,26 +14,8 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable, axes_size
 import numpy as np
 from mpldatacursor import datacursor
 
-#decorator to set ax or new fig is request
-# def AutoFig(f):
-#     def wrapper_do_twice(*args, **kwargs):
-#         if kwargs.get('ax') is None:
-#             ax=plt.gca()
-#         if kwargs.get('NewFig') is True:
-#             fig,ax
-#         func(*args, **kwargs)
-#         return func(*args, **kwargs)
-#     return wrapper_do_twice
+#
 
-    
-class UBoxPlot1D():
-    def __init__():
-        pass
-    def _Plot(self):
-        
-
-    
-    # high-level plotting function for UEDGE
     
     
     

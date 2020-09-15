@@ -18,9 +18,9 @@ except:
 from colorama import  Back, Style
 from datetime import date,datetime
 from UEDGEToolBox.DataManager.Grid import UBoxGrid
-from UEDGEToolBox.Utils.Misc import LsFolder,GetListPackage,GetPlatform
+from UEDGEToolBox.Utils.Misc import LsFolder,GetListPackage,GetPlatform,GetTimeStamp,ClassInstanceMethod,SetClassArgs
 from UEDGEToolBox.ProjectManager.Projects import UBoxSingleProject
-from UEDGEToolBox.DataManager.DataSet import UBoxDataSet
+from UEDGEToolBox.DataManager.DataSet import UBoxDataSet,UBoxDataFilter
 from UEDGEToolBox.ProjectManager.Source import UBoxSource
 #from UEDGEToolBox.Plot import *
 #from UEDGEToolBox.Projects import *
@@ -40,11 +40,19 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         #     exec('self.' + pkg + '=' + pkg,globals(),locals())
         #self.IO=UBoxIO(self.Verbose)
         self.ExcludeList=['ExcludeList','ListPkg','IO']+self.ListPkg
+        self.CorrectTemp= 1.602176634e-19
         #self.SetVersion()
         
     def PrintTimeStepModif(self,i):
         self.PrintInfo('New time-step = {:.4E}'.format(bbb.dtreal),color=Back.MAGENTA)
-
+    
+    def PrintError(self,E,i,j=None):
+        if j is None:
+            self.PrintInfo('{cn}: Exmain failure i={i}/{imax}              dtreal={dt:.4E}'.format(cn=self.CaseName,i=i,imax=self.Imax, dt=bbb.dtreal),color=Back.RED)       
+        else:
+            self.PrintInfo('{cn}: Exmain failure i={i}/{imax} j={j}/{jmax} dtreal={dt:.4E}'.format(cn=self.CaseName,i=i,imax=self.Imax,j=j,jmax=self.Jmax,dt=bbb.dtreal),color=Back.RED)
+        print("Exception: {}".format(E))
+    
     def PrintCurrentIteration(self,i,j=None):
         if j is None:
             self.PrintInfo('{cn}: Main loop i={i}/{imax}       dtreal={dt:.4E}'.format(cn=self.CaseName,i=i,imax=self.Imax, dt=bbb.dtreal),color=Back.BLUE)
@@ -56,19 +64,19 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         print("{color}{}{reset}".format(Str,color=color,reset=Style.RESET_ALL))
         if Extra: print("*---------------------------------------------------------*")
         
-    def SaveLast(self,DataSetName='regular'):
-        self.Save('last.npy',DataSetName=DataSetName,OverWrite=True)
+    def SaveLast(self,DataSet='regular'):
+        self.Save('last.npy',DataSet=DataSet,DataType='UEDGE',OverWrite=True)
     
-    def SaveFinalState(self,DataSetName='regular'):
-        self.Save('final_state.npy',DataSetName=DataSetName,OverWrite=True)
+    def SaveFinalState(self,DataSet='regular'):
+        self.Save('final_state.npy',DataSet=DataSet,DataType='UEDGE',OverWrite=True)
         
-    def AutoSave(self,DataSetName='regular'):
+    def AutoSave(self,DataSet='regular'):
         self._iSave+=1
         if self._iSave>self.ISave:
             self._iSave=1
-            self.Save('save_{}'.format(GetTimeStamp()),DataSetName=DataSetName)  
+            self.Save('save_{}'.format(GetTimeStamp()),DataSet=DataSet,DataType='UEDGE')  
             
-    def GenerateTag(self)->dict:
+    def GetTag(self)->dict:
         """
         Generate a dictionary containing settings of a UBox instance.
     
@@ -115,37 +123,46 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
     
         return Tag
                                    
-    def Updateftol(self):
-        bbb.ylodt = bbb.yl
-        bbb.pandf1 (-1, -1, 0, bbb.neq, 1., bbb.yl, bbb.yldot)
-        fnrm_old=math.sqrt(sum((bbb.yldot[0:bbb.neq-1]*bbb.sfscal[0:bbb.neq-1])**2))
-        return max(min(bbb.ftol_dt, 0.01*fnrm_old),bbb.ftol_min)
     
-    @staticmethod
-    def Resetftol():
-        bbb.ftol_min=1e-10
-        bbb.ftol_dt=1e-10
-        print("bbb.ftol_dt={};bbb.ftol_min={}".format(bbb.ftol_min,bbb.ftol_dt))
+    @ClassInstanceMethod    
+    def GetData(self,Field:str,DataType:str='UEDGE',CorrectTempUnit=True):
+        """Get data values from data dictionary stored in the instance."""
+        Out=self.CollectData(Field,DataType,RemovePackage=True).get(Field)
+                
+        if Out is not None and Out.size==1 and Out.dtype.char=='S':
+            Out=Out[0].decode().strip()
+        if Out is not None and CorrectTempUnit and any([Field.lower()==L for L in ['tes','tis','tgs','te','ti','tg']]):
+            if not hasattr(self,'CorrectTemp'):
+                self.CorrectTemp= 1.602176634e-19
+            Out=Out/self.CorrectTemp    
     
-    @staticmethod
-    def Changeftol(factor):
-        bbb.ftol_min*=factor
-        bbb.ftol_dt*=factor
-        print("bbb.ftol_dt={};bbb.ftol_min={}".format(bbb.ftol_min,bbb.ftol_dt))
+        return Out
     
-    def GetDataField(self,Field):
-        if type(Field)!=str:
-            raise ValueError('Field must be a string')
-        return self.CollectUEDGEData(Field).get(Field)
-    
-    def GetData(self,Field):
-        if type(Field)==str:
-            Field=(Field,)
-        if type(Field)==list:
-            Field=tuple(Field)
+    @ClassInstanceMethod
+    def GetDataField(self,Field:str or list,DataType:str='UEDGE'):
+        """Get data values from data dictionary stored in the instance."""
+        if DataType is None:
+            DataType='UEDGE'
             
-        Dic=self.CollectUEDGEData(Field)
-        return dict((self.RemovePkg(k),v) for k,v in Dic.items())
+        if type(Field)==str:
+            return self.GetData(Field,DataType)
+        elif type(Field)==list: 
+            return [self.GetData(k,DataType) for k in Field]
+        else:
+            raise IOError('Field must be a string or a list of strings')
+    # # def GetDataField(self,Field):
+    # #     if type(Field)!=str:
+    # #         raise ValueError('Field must be a string')
+    # #     return self.CollectUEDGEData(Field).get(Field)
+    
+    # # def GetData(self,Field):
+    # #     if type(Field)==str:
+    # #         Field=(Field,)
+    # #     if type(Field)==list:
+    # #         Field=tuple(Field)
+            
+    #     Dic=self.CollectUEDGEData(Field)
+    #     return dict((self.RemovePkg(k),v) for k,v in Dic.items())
     
     
         
@@ -195,11 +212,12 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
     #     self.Data=Out
 
     def GetGrid(self):
-        return self.CollectData(DataSet='grid',DataType='UEDGE')
+        return self.CollectDataSet(DataSet='grid',DataType='UEDGE',RemovePackage=True)['UEDGE']
 
     def SetGrid(self):
-        print('Set com.GridFileName and execute bbb.allocate() to load a new grid into uedge')
-
+        Dic=self.CollectDataSet(DataSet='grid',DataType='UEDGE')['UEDGE']
+        self.Grid=dict((self.RemovePkg(k),v) for k,v in Dic.items())
+        
 
 
 
@@ -301,7 +319,57 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
             bbb.uedge_ver=uedge.__version__
         except:
             print('Cannot set Uedge version')
-
+    
+    def Updateftol(self):
+        bbb.ylodt = bbb.yl
+        bbb.pandf1 (-1, -1, 0, bbb.neq, 1., bbb.yl, bbb.yldot)
+        fnrm_old=math.sqrt(sum((bbb.yldot[0:bbb.neq-1]*bbb.sfscal[0:bbb.neq-1])**2))
+        return max(min(bbb.ftol_dt, 0.01*fnrm_old),bbb.ftol_min)
+    
+    @staticmethod
+    def Resetftol():
+        bbb.ftol_min=1e-10
+        bbb.ftol_dt=1e-10
+        print("Reset ftol: bbb.ftol_dt={};bbb.ftol_min={}".format(bbb.ftol_min,bbb.ftol_dt))
+    
+    @staticmethod
+    def Setftol(ftol):
+        bbb.ftol_min=ftol
+        bbb.ftol_dt=ftol
+        print("Set ftol to {}".format(ftol)) 
+    
+    @staticmethod
+    def Changeftol(factor):
+        bbb.ftol_min*=factor
+        bbb.ftol_dt*=factor
+        print("Change ftol by a factor {}: bbb.ftol_dt={};bbb.ftol_min={}".format(factor,bbb.ftol_min,bbb.ftol_dt)) 
+    
+    def Controlftol(self,dtreal_threshold=5e-10,Mult=10):
+        if not hasattr(self,'CftolCount'):
+            self.CftolCount=0
+        if not hasattr(self,'CftolMult'):
+            self.CftolMult=Mult
+        if not hasattr(self,'dtreal_bkp'):
+            self.dtreal_bkp=bbb.dtreal
+        if not hasattr(self,'dtreal_threshold'):
+            self.dtreal_threshold=dtreal_threshold    
+        if bbb.dtreal<self.dtreal_threshold:
+            print('CftolCount:',self.CftolCount)
+            if bbb.dtreal<self.dtreal_bkp:
+                self.Changeftol(self.CftolMult)
+                self.CftolCount+=1
+            else:
+                if self.CftolCount>0:
+                    self.Changeftol(1/self.CftolMult)
+                    self.CftolCount-=1         
+        else:
+            if self.CftolCount>0:
+                    self.Changeftol(1/self.CftolMult)
+                    self.CftolCount-=1
+        
+        self.dtreal_bkp=bbb.dtreal    
+    
+        
 
 
 

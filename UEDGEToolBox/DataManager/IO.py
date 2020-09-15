@@ -241,7 +241,7 @@ class UBoxIO(UBoxDataSet,UBoxLoader):
                     
                         
                 if self.Verbose: print('Set:',Set,Type)        
-                Data.update(self.CollectData(Set,DataType=Type))  
+                Data.update(self.CollectDataSet(Set,DataType=Type))  
             
         (Format,FileName)=self.SetFormat(FileName)
         self.GetIOWorker(Format).WriteData(FileName,Data,Tag)

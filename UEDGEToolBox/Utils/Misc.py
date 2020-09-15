@@ -11,6 +11,7 @@ from typing import Callable
 from datetime import date,datetime
 global ShowPreFix
 import numpy as np
+import fnmatch
 try:
     import uedge
 except:
@@ -386,9 +387,7 @@ def GetPlatform():
                 except:
                     pass
         return PF
-    
-    
-    
+ 
 def LsFolder(Folder,Filter='*',Ext="*.py",LoadMode=True)->None or int:
     import glob
     if type(Ext)==str:
@@ -434,7 +433,51 @@ def LsFolder(Folder,Filter='*',Ext="*.py",LoadMode=True)->None or int:
             return None
         else:
             return Input
+        return None    
+ 
+def GetContentFolder(Folder,Ext="*.py",Filter='*'):
+    import glob
+    if type(Ext)==str:
+        Ext=[Ext]
+    ListFile=[]
+    for E in Ext:
+        ListFile.extend([f for f in glob.glob(os.path.join(Folder,E))])
+    ListFile.extend([f for f in glob.glob(os.path.join(Folder,'*')) if os.path.isdir(f)])
+    ListFile=fnmatch.filter(ListFile,Filter)
+    ListFile=list(dict.fromkeys(ListFile))
+    ListFile.sort(key=str.casefold)
+    return ListFile  
+
+    
+def BrowserFolder(Folder,Filter='*',Ext="*.py",LoadMode=True)->None or int:
+    if Folder is None:
         return None
+    ListFile=GetContentFolder(Folder,Ext,Filter)
+
+    Message='Enter a number to look into a folder or return a path to a file or press r (view parent folder) or q (exit)\n >>>: '
+    Input=None
+    while Input!='q':
+        print('***** Content with extension "{}" matching "{}" in {}:'.format(Ext,Filter,Folder))
+        if ListFile is not None:
+            for i,F in enumerate(ListFile):
+                print(' [{}]: {}'.format(i,os.path.basename(F))) 
+        print('')
+        print('**************************')
+        Input=input(Message)
+        if Input.isnumeric() and ListFile is not None and int(Input) in range(len(ListFile)):
+            if os.path.isfile(ListFile[int(Input)]) and LoadMode:
+                print('File:{}'.format(ListFile[int(Input)]))
+                if LoadMode:
+                    return os.path.abspath(ListFile[int(Input)])
+            elif os.path.isdir(ListFile[int(Input)]):
+                if LoadMode:
+                    return BrowserFolder(os.path.join(Folder,ListFile[int(Input)]),Filter,Ext,LoadMode)
+        elif Input=='r':
+            return BrowserFolder(os.path.dirname(os.path.abspath(Folder)),Filter,Ext,LoadMode)
+        elif Input=='q':
+            return None
+
+    
     
 def GetTimeStamp()->str:
     """

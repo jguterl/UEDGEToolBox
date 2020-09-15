@@ -5,21 +5,23 @@ Created on Tue Aug 25 20:25:20 2020
 
 @author: jguterl
 """
-import os
+import os,sys
 try:
     from uedge import bbb # just for compliance with python IDE rules. Do not do anything
 except:
     pass
+
 from colorama import  Back, Style
 from datetime import date,datetime
 #from UEDGEToolBox.DataManager.Grid import UBoxGrid
-from UEDGEToolBox.Utils.Misc import LsFolder,QueryYesNo,GetTimeStamp
+from UEDGEToolBox.Utils.Misc import BrowserFolder,QueryYesNo,GetTimeStamp
 #from UEDGEToolBox.ProjectManager.Projects import UBoxSingleProject
 from UEDGEToolBox.Simulation.Simulations import UBoxSimUtils
 from UEDGEToolBox.Simulation.Input import UBoxInput
 from UEDGEToolBox.DataManager.IO import UBoxIO
+from UEDGEToolBox.Plot.PlotTest import UBoxPlotTest
 import numpy as np
-class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput):
+class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
     CaseName=None
     Verbose=False
     CurrentProject=None
@@ -35,6 +37,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput):
         self.ISave=10
         self.Imax=500
         self.Jmax=5
+        self.SaveSim=True
         ListAfter=list(self.__dict__.keys())
         self.ListRunSettings=[k for k in ListAfter if k not in ListBefore]
         
@@ -77,14 +80,16 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput):
         
       
         if FileName is None:
-            FilePath=LsFolder(self.Source(None,CaseName=CaseName,Folder=Folder,Project=Project),Filter=Filter,Ext='*.py',LoadMode=True)
+            FilePath=BrowserFolder(self.Source(None,CaseName=CaseName,Folder=Folder,Project=Project),Filter=Filter,Ext='*.py',LoadMode=True)
         else:
             FilePath=self.Source(FileName,CaseName=CaseName,Folder=Folder,Project=Project)
             if FilePath is None:
                 FilePath=self.Source(FileName,CaseName=CaseName,Folder='InputDir',Project=Project)
+            if FilePath is None:
+                FilePath=self.Source(FileName)
                 
         if FilePath is None:
-            print('No file read ... Exiting ...')
+            print('No file read ...')
             return
                 
         # Looking for file
@@ -94,20 +99,21 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput):
         self.ParseInputFile(FilePath,OverWrite,ShowLines)
         if Initialize:
             self.Initialize()
+        return True
             
             
     def Cont(self,**kwargs):
-        self.Run(Restart=True,**kwargs)
-        return self.Run(Verbose=self.Verbose)
+        return self.Run(Restart=True,**kwargs)
     
     def Run(self,Restart=False,**kwargs):
         if Restart:
             bbb.restart=1
         else:
             bbb.restart=0
-        
-        #self.SetParams(**kwargs)
-        return self.RunTime()
+        for k,v in kwargs.items():
+            if hasattr(self,k):
+                setattr(self,k,v)
+        return self.RunTime(**kwargs)
 
         
     
@@ -132,6 +138,11 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput):
             None.
 
         """
+    
+            
+        if not self.SaveSim:
+            return 
+        
         
         Folder='SaveDir'
         
@@ -145,7 +156,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput):
         else:
             Project=None    
         
-        self.Tag=self.GenerateTag()
+        self.Tag=self.GetTag()
         self.Tag.update(ExtraTag)
         FilePath=self.Source(FileName,CaseName,Folder,Project,CreateFolder=True,EnforceExistence=False)
         
@@ -197,7 +208,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput):
             
         
         if FileName is None:
-            FileName=LsFolder(self.Source(None,CaseName,Folder,Project),Ext=Ext)
+            FileName=BrowserFolder(self.Source(None,CaseName,Folder,Project),Ext=Ext)
         if FileName is None:
             print("Cannot read the file {}... Exiting".format(FileName))
             return
@@ -215,10 +226,11 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput):
     
     def Restore(self,FileName:str or None=None,DataSet=['all',''],DataType=['UEDGE','DataStore'],Ext='*.npy',EnforceDim=True,PrintStatus=False,OverWrite:dict={},ShowLines=False):
         """Read an input file, initalize UEDGE main engine and load plasma state variables into UEDGE from last.npy file in Folder SaveDir/Casename."""
-        self.Read(FileName,Initialize=True,OverWrite=OverWrite,ShowLines=ShowLines)
+        self.Read(FileName,Initialize=False,OverWrite=OverWrite,ShowLines=ShowLines)
         self.Load('last.npy',DataSet,DataType,EnforceDim,PrintStatus)
         bbb.restart=1
-        
+        bbb.newgeo=1
+        Initialize()
     def Initialize(self,ftol=1e20,restart=0,dtreal=1e10,SetDefaultNumerics=True):
         """
         Initialize UEDGE simulation
@@ -228,26 +240,36 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput):
             restart (TYPE, optional): Restart status for exmain() (0|1). Defaults to 0.
             dtreal (TYPE, optional): timestep for nksol solver. Defaults to 1e10.
         """
+        dtreal_bkp=bbb.dtreal
+        ftol_bkp=bbb.ftol
         bbb.dtreal=dtreal
         bbb.ftol=ftol
-        bbb.restart=restart
+        
+        
         if (bbb.iterm == 1 and bbb.ijactot>1):
            self.PrintInfo("Initial successful time-step exists",Back.GREEN)
-           if SetDefaultNumerics: self.SetDefaultNumerics()
+           #if SetDefaultNumerics: self.SetDefaultNumerics()
+           bbb.dtreal=dtreal_bkp
+           bbb.ftol=ftol_bkp
            return
         else:
            self.PrintInfo("Taking initial step with Jacobian:",Back.CYAN)
            bbb.icntnunk = 0
            bbb.exmain()
            sys.stdout.flush()
+           
         if (bbb.iterm != 1):
             self.PrintInfo("Error: converge an initial time-step first",Back.RED)
             bbb.exmain_aborted=1
-            if SetDefaultNumerics: self.SetDefaultNumerics()
+            bbb.dtreal=dtreal_bkp
+            bbb.ftol=ftol_bkp
+            #if SetDefaultNumerics: self.SetDefaultNumerics()
             return
         else:
            self.PrintInfo("First initial time-step has converged",Back.GREEN)
-           if SetDefaultNumerics: self.SetDefaultNumerics()
+           #if SetDefaultNumerics: self.SetDefaultNumerics()
+           bbb.dtreal=dtreal_bkp
+           bbb.ftol=ftol_bkp
            return        
     def Itrouble(self):
         ''' Function that displays information on the problematic equation '''
@@ -362,8 +384,8 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput):
         bbb.restart=1
         bbb.iterm=1
         return self.Run()
-
-    def RunTime(self):
+    
+    def RunTime(self,InitJac=False,**kwargs):
         """
 
         Args:
@@ -375,28 +397,33 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput):
         """
 
         bbb.exmain_aborted=0
-
+        self.PrintInfo('----Starting Main Loop ----')
         while bbb.exmain_aborted==0:
 
 
-            self.PrintInfo('----Starting Main Loop ----')
+            
 # Main loop-----------------------------------------------
             for imain in range(self.Imax):
+                
                 self.Status='mainloop'
-
+               
                 bbb.icntnunk = 0
-
+                self.Controlftol()
                 bbb.ftol = self.Updateftol()
-
-                if (bbb.initjac == 0):
-                    bbb.newgeo=0
+                
+                
 
                 self.PrintTimeStepModif(imain)
 
-
+                
                 self.PrintCurrentIteration(imain)
-
-                bbb.exmain() # take a single step at the present bbb.dtreal
+                try:
+                    bbb.exmain() # take a single step at the present bbb.dtreal
+                except Exception as e:
+                    self.PrintError(e,imain)
+                    self.Status='error'
+                    return self.Status
+                bbb.newgeo=0
                 sys.stdout.flush()
 
                 if bbb.exmain_aborted==1:
@@ -407,7 +434,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput):
                     self.SaveLast() # Save data in file SaveDir/CaseName/last.npy
                     bbb.dt_tot += bbb.dtreal
                     self.dt_tot=bbb.dt_tot
-                    self.TimeEvolution()
+                    #self.TimeEvolution()
 
                     if bbb.dt_tot>=bbb.t_stop:
                             bbb.exmain_aborted=1
@@ -419,19 +446,25 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput):
 # Second loop -----------------------------------------------------------------------------------
                     bbb.icntnunk = 1
                     bbb.isdtsfscal = 0
+                    
                     for ii2 in range(self.Jmax): #take ii2max steps at the present time-step
                         if bbb.exmain_aborted==1:
                             break
                         bbb.ftol = self.Updateftol()
                         self.PrintCurrentIteration(imain,ii2)
-                        bbb.exmain()
+                        try:
+                            bbb.exmain() # take a single step at the present bbb.dtreal
+                        except Exception as e:
+                            self.PrintError(e,imain,ii2)
+                            self.Status='error'
+                            return self.Status
                         sys.stdout.flush()
 
                         if bbb.iterm == 1 and bbb.exmain_aborted!=1:
                             self.SaveLast() # Save data in file SaveDir/CaseName/last.npy
                             bbb.dt_tot += bbb.dtreal
                             self.dt_tot=bbb.dt_tot
-                            self.TimeEvolution()
+                            #self.TimeEvolution()
                         else:
                             break
 

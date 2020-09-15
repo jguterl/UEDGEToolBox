@@ -34,6 +34,7 @@ class UBoxExtData(UBoxIO,UBoxSource,UBoxGrid,UBoxPlotTest):#,UBoxPlot):
         self.Data={}
         self.Grid={}
         self.CorrectTemp=1.602176634e-19
+        
         if self.FileName is  not None:
             self.Load(self.FileName,DataSet,DataType)
     
@@ -75,9 +76,9 @@ class UBoxExtData(UBoxIO,UBoxSource,UBoxGrid,UBoxPlotTest):#,UBoxPlot):
         if hasattr(self,DicAttr) and type(getattr(self,DicAttr))==dict:
             Out=getattr(self,DicAttr).get(Field)
             if Out is not None and Out.size==1 and Out.dtype.char=='S':
-                print('Out=',Out[0])
                 Out=Out[0].decode().strip()
-            if CorrectTempUnit and (Field.lower()=='te' or Field.lower()=='ti' or Field.lower()=='tg'):
+                
+            if Out is not None and CorrectTempUnit and any([Field.lower()==L for L in ['tes','tis','tgs','te','ti','tg']]):
                 Out=Out/self.CorrectTemp
                 
             return Out

@@ -9,6 +9,7 @@
 
 
 """
+from UEDGEToolBox.Utils.Misc import ClassInstanceMethod
 import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib
@@ -26,8 +27,9 @@ class UBoxGrid():
     def GetGrid(self):
         return self.Grid
     
-    def SetGrid(self,Grid):
-        self.Grid=Grid
+    def SetGrid(self,Grid=None):
+        if Grid is not None:
+            self.Grid=Grid
     
     def ShowCell(self,ixiy,ax=None,Annotate=True):
         if Grid is not None:
@@ -92,6 +94,7 @@ class UBoxGrid():
         Isn't that what you want?
 
         """
+        self.SetGrid()
         if r is None or z is None:
             if self.Grid is not None:
                 r=self.Grid['rm']
@@ -143,8 +146,8 @@ class UBoxGrid():
                     Dic[p]='ix={},iy={}'.format(i,j)
                     Pos[p]=(r[i,j,0],z[i,j,0])
                     
-        print('xmin:',[np.where(z>0,z,1e10).min(),z.max()])
-        self.ax.set_ylim([np.where(z>0,z,1e10).min(),z.max()])
+        #print('xmin:',[np.where(z>0,z,1e10).min(),z.max()])
+        self.ax.set_ylim([z.min(),z.max()])
         self.ax.set_xlim([np.where(r>0,r,1e10).min(),r.max()])
         annot = self.ax.annotate("", xy=(0,0), xytext=(-20,20),textcoords="offset points",
                             bbox=dict(boxstyle="round", fc="w"),
@@ -170,6 +173,7 @@ class UBoxGrid():
         """
         self.Grid=self.ReadGrid(FileName)
         
+    @ClassInstanceMethod    
     def ReadGrid(self,FileName:str = 'gridue')->dict:
         """
         Read UEDGE grid file and return a dictionary containing the grid.

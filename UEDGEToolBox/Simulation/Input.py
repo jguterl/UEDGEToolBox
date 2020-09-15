@@ -25,8 +25,10 @@ class UBoxInput():
             if not L.strip().startswith('#'):
                 if ShowLines:
                     print('{} : {}'.format(count,L))
-                
-                exec(L,globals(),locals())
+                Dic=globals()
+                if Dic.get('UBox') is None:
+                    Dic['UBox']=self
+                exec(L,Dic,locals())
                 globals().update(OverWrite)
                 if hasattr(self,'InputLines'):
                     self.InputLines.append(L)

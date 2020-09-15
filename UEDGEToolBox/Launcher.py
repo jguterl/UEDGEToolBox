@@ -23,6 +23,7 @@ from UEDGEToolBox.DataManager.ExtData import UBoxExtData
 from UEDGEToolBox.DataManager.Grid import UBoxGrid
 from UEDGEToolBox.Simulation.RunSim import UBoxRun
 from UEDGEToolBox.Simulation.Sim import UBoxSim
+from matplotlib import pyplot as plt 
 #from UEDGEToolBox.Grid import *
 import yaml
 try: 
@@ -88,4 +89,4 @@ yaml.add_representer(UBoxSettings, UBoxLauncher.to_yaml0, Dumper=yaml.SafeDumper
 yaml.add_representer(UBoxLauncher, UBoxLauncher.to_yaml0, Dumper=yaml.SafeDumper)
 yaml.add_constructor(UBoxSettings._YAMLTag, UBoxLauncher.from_yaml0, Loader=yaml.SafeLoader) 
 UBox=UBoxLauncher()    
-#UBox.Launch()
+UBox.Launch()

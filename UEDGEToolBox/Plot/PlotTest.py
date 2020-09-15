@@ -29,10 +29,10 @@ class UBoxPlotTest(UBoxDataParser):
                 raise IOError('Cannot reset DataPlot when no data fields are given')
         
                
-    def AddDataPlot(self,DataFields=[],**kwargs):
+    def AddDataPlot(self,DataFields=[],DataType='UEDGE',**kwargs):
         if not hasattr(self,'DataPlot'):
             self.DataPlot={}
-        Data=self.ParseDataFields(DataFields,**kwargs)
+        Data=self.ParseDataFields(DataFields,DataType=DataType,**kwargs)
         for (Name,Dic) in Data.items():
             self.DataPlot[Name]=UBoxPlotter(Dic=Dic,Grid=self.GetGrid(),Tag=self.GetTag(),**kwargs)
             

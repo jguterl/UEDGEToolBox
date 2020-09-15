@@ -18,7 +18,7 @@ def GetDefaultDataSet()->dict:
         DefaultDataSet['plasmavars']=['te','ti','phi','ng','up','tg','ni']
         DefaultDataSet['plasmavarss']=[V+'s' for V in DefaultDataSet['plasmavars']]
         DefaultDataSet['grid']=['nisp','ngsp','rm','zm','nx','ny','iysptrx','psi','psinormc']
-        DefaultDataSet['run']=['dtreal','dt_tot','ftol_dt','GridFileName','minu','ziin','znuclin']
+        DefaultDataSet['run']=['dtreal','dt_tot','ftol_dt','GridFileName','minu','ziin','znuclin','itermx','incpset','mfnksol','relx']
         DefaultDataSet['regular']=DefaultDataSet['plasmavars']+DefaultDataSet['plasmavarss']+DefaultDataSet['run']+DefaultDataSet['grid']
         DefaultDataSet['plasma']=DefaultDataSet['plasmavars']+DefaultDataSet['plasmavarss']
 
@@ -29,11 +29,11 @@ class UBoxDataFilter():
     """Utility class to handle construction of list of variables."""
     
     @ClassInstanceMethod   
-    def CollectUEDGEData(self,DataSet=None,ExtraVars:list=[])->dict:
-        return self.CollectData(DataSet,DataType='UEDGE',ExtraVars=ExtraVars)['UEDGE']
-    GetDefaultDataSet
+    def CollectUEDGEDataSet(self,DataSet=None,ExtraVars:list=[])->dict:
+        return self.CollectDataSet(DataSet,DataType='UEDGE',ExtraVars=ExtraVars)['UEDGE']
+    
     @ClassInstanceMethod   
-    def CollectData(self,DataSet=None,DataType='UEDGE',ExtraVars:list=[])->dict:
+    def CollectDataSet(self,DataSet=None,DataType='UEDGE',ExtraVars:list=[],RemovePackage=False)->dict:
         """
         Get a list of variable names from a data set/or and a list of variable name and return a dictionary with variable names as keys and variable values as values.  
 
@@ -48,15 +48,23 @@ class UBoxDataFilter():
         if type(DataType)!=str:
             raise ValueError('DataType must be a string')
 
-        VarList=self.MakeVarList(DataSet,ExtraVars)  
+        VarList=self.MakeVarList(DataSet,ExtraVars)
+        Data=self.CollectData(VarList,DataType,RemovePackage)
+        return {DataType:Data}
+    
+    @ClassInstanceMethod
+    def CollectData(self,VarList:str or list,DataType='UEDGE',RemovePackage=False):
+        if type(VarList)!=list:
+            VarList=[VarList]
+        
         VarList=[self.AddPackage(V,DataType) for V in VarList]
         if self.Verbose: print("Varlist to be collected:",VarList)
         
         if DataType=='UEDGE':
-            Data=self.UEDGEDataToDict(VarList)
+            Data=self.UEDGEDataToDict(VarList,RemovePackage=RemovePackage)
         else:
-            Data=self.StoredDataToDict(VarList,DataType)
-        return {DataType:Data}
+            Data=self.StoredDataToDict(VarList,DataType,RemovePackage=RemovePackage)
+        return Data
     
     @ClassInstanceMethod
     def MakeVarList(self,DataSet:str or None or list or tuple=None,ExtraVars:list=[]):
@@ -221,11 +229,14 @@ class UBoxDataFilter():
             return VarName
     
     @ClassInstanceMethod
-    def StoredDataToDict(self,VarList:list,DataType:str)->dict:
+    def StoredDataToDict(self,VarList:list,DataType:str,RemovePackage=False)->dict:
         if DataType=='':
             raise ValueError('DataType cannot be an empty string ...')
         if hasattr(self,DataType) and type(getattr(self,DataType))==dict:
-            Data=dict((DataType+'.'+K,V) for (K,V) in getattr(self,DataType).items() if self.AddPackage(K,DataType) in VarList)
+            if RemovePackage:
+                Data=dict((K,V) for (K,V) in getattr(self,DataType).items() if self.AddPackage(K,DataType) in VarList)
+            else:
+                Data=dict((DataType+'.'+K,V) for (K,V) in getattr(self,DataType).items() if self.AddPackage(K,DataType) in VarList)
             return Data
         else:
             print('Cannot retrieve dictionary "{}" from current object...'.format(DataType))
