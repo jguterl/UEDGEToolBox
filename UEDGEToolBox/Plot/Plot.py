@@ -248,8 +248,10 @@ class UBoxPlotTest():
         if not hasattr(self,'DataPlot'):
             self.DataPlot={}
         Data=self.ParseData(DataFields,**kwargs)
-        for (Name,Dic) in Data.Items():
-            self.DataPlot[Name]=UBoxPlotter(Dic=D,self.GetGrid(),**kwargs)
+        
+            for (Name,Dic) in Data.Items():
+                    if Dic.get(Data) is not None:
+                       self.DataPlot[Name]=UBoxPlotter(Dic=D,self.GetGrid(),**kwargs)
             
     def ShowPlot(self,**kwargs):
         Nplot=len((list(self.DataPlot.keys()))

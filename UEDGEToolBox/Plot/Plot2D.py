@@ -94,7 +94,7 @@ class UBoxPlot2D(UBoxPlotUtils):
     
             
     
-    
+    @ClassInstanceMethod 
     def PlotData2D(self,r,z,data,Label=None,ColorMap='jet',DataLim=None,DataScale='linear',**kwargs):
         """Plot UEDGE grid."""
         if ColorMap not in matplotlib.pyplot.colormaps():

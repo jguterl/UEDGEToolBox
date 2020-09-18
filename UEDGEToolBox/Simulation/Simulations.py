@@ -131,7 +131,11 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
                 
         if Out is not None and Out.size==1 and Out.dtype.char=='S':
             Out=Out[0].decode().strip()
-        if Out is not None and CorrectTempUnit and any([Field.lower()==L for L in ['tes','tis','tgs','te','ti','tg']]):
+            
+        F=Field.lower()
+        if Field.count('.')>0:
+            F=F.split('.')[1]    
+        if Out is not None and CorrectTempUnit and any([F==L for L in ['tes','tis','tgs','te','ti','tg']]):
             if not hasattr(self,'CorrectTemp'):
                 self.CorrectTemp= 1.602176634e-19
             Out=Out/self.CorrectTemp    

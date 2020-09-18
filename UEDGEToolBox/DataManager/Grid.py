@@ -171,10 +171,10 @@ class UBoxGrid():
         :type FileName: str, optional
 
         """
-        self.Grid=self.ReadGrid(FileName)
+        self.Grid=self.ReadGridFile(FileName)
         
     @ClassInstanceMethod    
-    def ReadGrid(self,FileName:str = 'gridue')->dict:
+    def ReadGridFile(self,FileName:str = 'gridue')->dict:
         """
         Read UEDGE grid file and return a dictionary containing the grid.
         

@@ -11,7 +11,7 @@ Created on Wed Apr 29 19:20:36 2020
 import numpy as np
 import os
 import uedge
-from uedge.UEDGEDoc import *
+#from uedge.UEDGEDoc import *
 def DumpData(FileName,DataName):
     com='np.savetxt("{}",{})'.format(FileName,DataName)
     exec(com,globals(),locals())
@@ -102,16 +102,27 @@ def CompareOMPJacobian(Suffixes:list,Folder:str,VarList:list,Verbose=False,Preci
     return Dic
     
 class WriteDebugRoutine():
-    def __init__(self,FileName,ListVariable,Doc):
-        self.ListVariable=self.ListUse=list(dict.fromkeys(ListVariable))
-        self.ListVariable.sort()
+    def __init__(self,FileName,ListVariable,Doc,Verbose=False):
+        
         self.Doc=Doc
+        self.ImportList(ListVariable)
         self.FileName=FileName
         self.ListUse=[]
         self.VarDic={}
+        self.Verbose=Verbose
+        
+    def WriteRoutine(self):
         self.GetVarDoc()
         self.GetListGrp()
         self.WriteFortranSubroutine()
+        
+    def ImportList(self,ListVariable):
+        if type(ListVariable)==str:
+            self.ListVariableFile=os.path.abspath(ListVariable)
+            self.ListVariable=[D.strip() for D in open(self.ListVariableFile,'r').readlines()]
+        self.ListVariable=list(dict.fromkeys(self.ListVariable))
+        self.ListVariable.sort()
+        
     def SetFfile(self):
         """
         Set the ffile attribute, which is the fortran file object.
@@ -141,11 +152,13 @@ class WriteDebugRoutine():
             self.ffile.write('      '+text + '\n')
     def GetVarDoc(self):
         for VarName in self.ListVariable:
-            VarDoc=self.Doc.GetVarInfo(VarName)
+            VarDoc=self.Doc._GetVarInfo(VarName)
+            if self.Verbose:
+                VarName
             if len(VarDoc)<1:
-                raise ValueError('Cannot find variable {}'.format(VarName))
+                print('Cannot find variable {}'.format(VarName))
             elif len(VarDoc)>1:
-                raise ValueError('Found variable {} in two groups'.format(VarName))
+                print('Found variable {} in two groups'.format(VarName))
             else:
                 self.VarDic[VarName]=VarDoc[0]
     def GetListGrp(self):
@@ -203,15 +216,29 @@ class WriteDebugRoutine():
 #ListVariable=DicFile['convert']['convsr_vo']['AssignedNonLocalVars']+DicFile['convert']['convsr_aux']['AssignedNonLocalVars']+DicFile['odepandf']['pandf']['AssignedNonLocalVars']     
 #dbg=WriteDebugRoutine('DebugHelper.F90',ListVariable,Doc)
 #%%
+def CompareDebugDump(FileName1='dumpserial.txt',FileName2='dumpomp.txt',Folder=None):
+    if Folder is None:
+        FileName1=os.path.abspath(FileName1)
+        FileName2=os.path.abspath(FileName2)
+    else:
+        FileName1=os.path.join(os.path.abspath(Folder),FileName1)
+        FileName2=os.path.join(os.path.abspath(Folder),FileName2)
+    VarCheck=CompareDump(FileName1,FileName2)
+    # for V,B in VarCheck.items():
+    #     if not B:
+    #         print('###',V)
+            
 def CompareDump(FileName1,FileName2):
     
     Dic1=ReadDumpFile(FileName1)
     Dic2=ReadDumpFile(FileName2)
+    
     VarCheck={}
+    
     for Var in Dic1.keys():
         VarCheck[Var]=True  
         if len(Dic1[Var])!=len(Dic2[Var]):
-            print(Var)
+            print('##',Var,len(Dic1[Var]),len(Dic2[Var]),)
             VarCheck[Var]=False
             #aise ValueError('dics of different length')
             continue
@@ -220,7 +247,7 @@ def CompareDump(FileName1,FileName2):
             if L1!=L2:
                 VarCheck[Var]=False
                 if isfirst:
-                    print(Var,i)
+                    print(Var,i,L1,L2)
                     isfirst=False
                 
     return VarCheck
@@ -244,12 +271,7 @@ def ReadDumpFile(FileName):
             Dic[VarName].append(float(L))
     return Dic
 
-FileName1='/home/jguterl/Dropbox/python/UEDGERunDir/dumpregular.txt'
-FileName2='/home/jguterl/Dropbox/python/UEDGERunDir/dumpomp.txt'
-VarCheck=CompareDump(FileName1,FileName2)
-for V,B in VarCheck.items():
-    if not B:
-        print(V)        
+     
 def CompareJac(SerialFile='serialjac.dat',ParallelFile='paralleljac.dat',Folder=None):
     if Folder is None:
         SerialFile=os.path.abspath(SerialFile)
@@ -257,8 +279,8 @@ def CompareJac(SerialFile='serialjac.dat',ParallelFile='paralleljac.dat',Folder=
     else:
         SerialFile=os.path.join(Folder,SerialFile)
         ParallelFile=os.path.join(Folder,ParallelFile)
-    array=numpy.loadtxt(SerialFile)
-    array_omp=numpy.loadtxt(ParallelFile)
+    array=np.loadtxt(SerialFile)
+    array_omp=np.loadtxt(ParallelFile)
     neq=int(max(array[:,0]))
     print('Comparing jacobian in {} to jacobian in {} for neq={}'.format(SerialFile,ParallelFile,neq))
     for i in range(0,array.shape[0]):

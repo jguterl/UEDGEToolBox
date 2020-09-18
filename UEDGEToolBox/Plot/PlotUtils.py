@@ -37,7 +37,7 @@ class UBoxPlotUtils(UBoxDataParser):
     @SetClassArgs
     def __init__(self):
         pass
-    
+    @ClassInstanceMethod 
     def GetAx(self,**kwargs):
         ax=kwargs.get('ax')
         if ax is None:

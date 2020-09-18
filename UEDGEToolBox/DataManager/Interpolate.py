@@ -5,37 +5,68 @@ Created on Wed Aug 26 16:28:18 2020
 
 @author: jguterl
 """
-import scipy
 from scipy import interpolate
+import numpy as np
 class UBoxInterpolate():
-     def Interpolate2D(self,r,z,data,rnew,znew):
-        if r.shape!=data.shape or z.shape!=data.shape:
-            print('Mismatch in shape of data and grid:{}:{}/{}'.format(data.shape,r.shape,z.shape))
-            return data
+    def __init__():
+        self.Verbose=False
+    @staticmethod
+    def Interpolate2D(rold,zold,data,rnew,znew,zshift=0.0,rshift=0.0,method='linear',**kwargs):
+        if rold.shape!=data.shape or zold.shape!=data.shape:
+            raise ValueError('Mismatch in shape of data and grid:{}:{}/{}'.format(data.shape,rold.shape,zold.shape))
         else:
-            points = np.array( (r.flatten(), z.flatten()) ).T
+            zold=zold+zshift
+            rold=rold+rshift
+            oldpoints = np.array( [rold.flatten(), zold.flatten()] ).T
+            newpoints = np.array( [rnew.flatten(), znew.flatten()] ).T
+            
             values = data.flatten()
-            return interpolate.griddata(points, values, (rnew,znew), method='nearest', rescale=False)
+            return interpolate.griddata(oldpoints, values, newpoints, method='linear', rescale=False).reshape(rnew.shape)
     
-    def Interpolate2DData(self,Data,OldGrid,NewGrid,VarList=[]):
+    def Interpolate2DData(self,Data,OldGrid,NewGrid,VarList=[],**kwargs):
         r=OldGrid['rm'][:,:,0]
         z=OldGrid['zm'][:,:,0]
         rnew=NewGrid['rm'][:,:,0]
         znew=NewGrid['zm'][:,:,0]
-        if self.Verbose: print('old shape:{}; new shape={}'.format(r,shape,rnew.shape))
+        if VarList==[]:
+            VarList=list(Data.keys())
+            
+        if self.Verbose: print('old shape:{}; new shape={}'.format(r.shape,rnew.shape))
         for (K,data) in Data.items():
             if self.Verbose: print('{}.shape={}'.format(K,data.shape))
             if K in VarList:
                 if len(data.shape)>2:
                     dataout=np.zeros((rnew.shape[0],rnew.shape[1],data.shape[2]))
                     for i in range(data.shape[2]):
-                        out=self.Interpolate2D(r,z,np.squeeze(data[:,:,i]),rnew,znew)
+                        out=self.Interpolate2D(r,z,np.squeeze(data[:,:,i]),rnew,znew,**kwargs)
                         dataout[:,:,i]=out[:,:]
                     Data[K]=dataout
                 else:
-                    Data[K]=self.Interpolate2D(r,z,data,rnew,znew)
+                    Data[K]=self.Interpolate2D(r,z,data,rnew,znew,**kwargs)
                         
         return Data
+    
+    def InterpolateData(self,OldData,OldGrid,NewGrid,DataType='UEDGE',**kwargs):
+        if type(OldGrid)==str:
+            OldGrid=self.ReadGridFile(OldGrid)
+        elif type(OldGrid)!=dict:
+            raise IOError('OldGrid must be a filename or a grid dictionary')
+            
+        if type(NewGrid)==str:
+            NewGrid=self.ReadGridFile(NewGrid)
+        elif type(NewGrid)!=dict:
+            raise IOError('NewGrid must be a filename or a grid dictionary')
+        
+        if type(OldData)==str:
+            (Data,OldTag)=self.LoadData(OldData)
+            if DataType is None:
+                OldData=Data
+            else:
+                OldData=Data[DataType]
+                
+        return self.Interpolate2DData(OldData,OldGrid,NewGrid,**kwargs)
+    
+    
     
     def LoadInterpolate(self,FileName,OldGrid,NewGrid,Format='numpy',LoadList=[],ExcludeList=[],CheckDim=True,Loader='plasma',InterpolateData='plasma'):
         D=UBoxData(FileName,Format='numpy',LoadList=[],ExcludeList=[])

@@ -60,6 +60,7 @@ class UBoxLauncher(UBoxProjects,UBoxRun):
             CreateGlobalAliases(self.Doc,Verbose=self.Verbose)
             CreateGlobalAliases(self,Include=GetMethods(UBoxSim),Verbose=self.Verbose)
             CreateGlobalAliases(self,Include=['SetCaseName','Source','SourceGrid'],Verbose=self.Verbose)
+            CreateGlobalAliases(self,Include=['ReadGridFile'],Verbose=self.Verbose)
                                
     def __CheckUEDGE(self):
         try: 

@@ -2,7 +2,7 @@
 """
 
 # Always prefer setuptools over distutils
-from setuptools import setup, find_packages
+from setuptools import setup,find_packages
 import pathlib
 
 here = pathlib.Path(__file__).parent.resolve()
@@ -18,6 +18,7 @@ setup(
     version_format='{tag}',
     setup_requires=['setuptools-git-version'],
     description='Toolbox for UEDGE',
+    packages=find_packages(),
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/jguterl/UEDGEToolBox/',
@@ -39,7 +40,7 @@ setup(
         'Programming Language :: Python :: 3 :: Only',
     ],
     keywords='sample, setuptools, development',  # Optional
-    packages=['UEDGEToolBox'],
+    #packages=['UEDGEToolBox'],
     python_requires='>=3.5, <4',
     install_requires=['colorama','datetime','numpy','easygui','scipy','mpldatacursor','deepdish'],  # Optional
     #extras_require={  # Optional

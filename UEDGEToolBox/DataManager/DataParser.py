@@ -435,7 +435,7 @@ class UBoxDataParser():
                 DataArray=None
                 
         if DataArray is None:
-                print('Cannot find the field {} in the data dictionary'.format(Field))
+                print('Cannot find the field {} in the data dictionary "{}"'.format(Field,DataType))
                 DicOut[Field]={'Data':None,'Indexes':None,'OriginalShape':None,'Label':Field}
                 return DicOut
                 
