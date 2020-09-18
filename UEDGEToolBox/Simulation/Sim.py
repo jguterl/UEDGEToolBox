@@ -223,7 +223,10 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
             print('Loaded variables:',ListLoadedVar)
         else:
             print("Cannot read the file {}... Exiting".format(FilePath))
-    
+            return
+        
+        bbb.restart=1
+        
     def Restore(self,FileName:str or None=None,DataSet=['all',''],DataType=['UEDGE','DataStore'],Ext='*.npy',EnforceDim=True,PrintStatus=False,OverWrite:dict={},ShowLines=False):
         """Read an input file, initalize UEDGE main engine and load plasma state variables into UEDGE from last.npy file in Folder SaveDir/Casename."""
         self.Read(FileName,Initialize=False,OverWrite=OverWrite,ShowLines=ShowLines)
