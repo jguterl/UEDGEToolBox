@@ -1,6 +1,0 @@
-colorama
-datetime
-numpy
-easygui
-scipy
-mpldatacursor

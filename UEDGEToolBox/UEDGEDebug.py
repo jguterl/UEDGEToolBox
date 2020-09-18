@@ -289,6 +289,20 @@ def CompareJac(SerialFile='serialjac.dat',ParallelFile='paralleljac.dat',Folder=
             print(array[i,:])
             print(array_omp[i,:])
             break
-            
-    
+
+import numpy as np
+def ImportFullJac(FileName):
+    array=numpy.loadtxt(FileName)
+    neq=int(array[:,0].max())
+    Jac=np.zeros((neq,neq))
+    for x in array:
+        i=int(x[0])-1
+        j=int(x[2])-1
+        jac=int(x[3])
+        Jac[i,j]=jac
+    return Jac
+Jac=ImportFullJac('/home/guterlj/serialfulljac.dat')
+np.save('jac.npy',Jac)
+    from scipy.sparse import bsr_matrix
+    sJac=bsr_matrix(Jac)
    

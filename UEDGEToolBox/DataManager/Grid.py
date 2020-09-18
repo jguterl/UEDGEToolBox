@@ -12,7 +12,7 @@
 from UEDGEToolBox.Utils.Misc import ClassInstanceMethod
 import numpy as np
 from matplotlib import pyplot as plt
-import matplotlib
+import matplotlib 
 import os
 
 class UBoxGrid():
