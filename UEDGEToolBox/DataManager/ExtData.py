@@ -13,7 +13,7 @@ from UEDGEToolBox.DataManager.Grid import UBoxGrid
 from UEDGEToolBox.ProjectManager.Source import UBoxSource
 
 #@UBoxPreFix()
-class UBoxExtData(UBoxIO,UBoxSource,UBoxGrid,UBoxPlotTest,UBoxInterpolate):#,UBoxPlot):
+class UBoxExtData(UBoxSource,UBoxPlotTest,UBoxInterpolate):#,UBoxPlot):
     """Class managing loading of UEDGE data saved in files."""
     Verbose=False
     Project=None
@@ -25,21 +25,32 @@ class UBoxExtData(UBoxIO,UBoxSource,UBoxGrid,UBoxPlotTest,UBoxInterpolate):#,UBo
     Grid={}
     
     @SetClassArgs
-    def __init__(self,FileName:str or None=None,CaseName:str or None=None,Project:str or None=None,Folder:str='SaveDir',Grid=None,DataSet=['all'],DataType=['UEDGE'],Verbose=False,*args,**kwargs):
+    def __init__(self,Data:str or None=None,CaseName:str or None=None,Project:str or None=None,Folder:str='SaveDir',Grid=None,DataSet=['all'],DataType=['UEDGE'],Verbose=False,*args,**kwargs):
         self.Verbose=Verbose
         self.Project=Project
         self.CaseName=CaseName
-        self.FileName=FileName
+        if type(Data)==str:
+            self.FileName=Data
+        else:
+            self.FileName=None
+        if type(Data)==dict:
+            self.Data=Data
+        else:
+            self.Data={}
+        
+            
         self.GridFileName=Grid
         self.Folder=Folder
-        self.Data={}
-        self.Grid={}
+        
+        
+        
         self.Tag={}
         self.CorrectTemp=1.602176634e-19
         
         if self.FileName is  not None:
-            self.Load(self.FileName,DataSet,DataType)    
-        self.LoadGrid()
+            self.Load(self.FileName,DataSet,DataType)
+            
+        self.LoadGrid(Grid)
         
         
     @ClassInstanceMethod
@@ -132,20 +143,21 @@ class UBoxExtData(UBoxIO,UBoxSource,UBoxGrid,UBoxPlotTest,UBoxInterpolate):#,UBo
                 self.Grid=dict((k,v) for k,v in Data.items() if k in GridDataSet)
                 
     @ClassInstanceMethod        
-    def LoadGrid(self,FileName=None):
-        if FileName is None:
-            if self.GridFileName is None:
+    def LoadGrid(self,GridFileName=None):
+        if type(GridFileName)==dict:
+            self.Grid=GridFileName
+        else:
+            self.GridFileName=GridFileName
+
+        if self.GridFileName is None:
                 self.GetDataField('GridFileName')
                 self.GridFileName=self.GetDataField('GridFileName')
-        else:
-            self.GridFileName=FileName
-        
         if self.GridFileName is None:
             print('Cannot find a filename for a grid file in instance Data ... Provide a path toward a grid file')
-            return
         else:
             print('Importing grid from {} ...'.format(self.GridFileName))
             self.Grid=self.ReadGridFile(self.GridFileName)
+        
             
     @ClassInstanceMethod        
     def GetTagField(self,TagName:str)->str or None:
@@ -158,7 +170,22 @@ class UBoxExtData(UBoxIO,UBoxSource,UBoxGrid,UBoxPlotTest,UBoxInterpolate):#,UBo
     
     def InterpolateLoad(self,OldData,OldGrid,NewGrid,DataType=None,**kwargs):
         self.Data=self.InterpolateData(OldData,OldGrid,NewGrid,DataType,**kwargs)
+    
         self.SetGrid(NewGrid)
+        
+    def ShowData(self):
+        for A in dir(self):
+            if type(getattr(self,A))==dict and not A.startswith('_'):
+                print('* ',A)
+                ShowDic(getattr(self,A),indent=1)
+                
+def ShowDic(Dic,indent=0):
+       for key, value in Dic.items():
+          print(' ' * indent*5 +'* '+ str(key))
+          if isinstance(value, dict):
+             ShowDic(value, indent+1)
+          else:
+             pass #print('\t' * (indent+1) + str(value))
         
     
             

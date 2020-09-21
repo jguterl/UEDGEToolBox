@@ -7,11 +7,16 @@ Created on Wed Aug 26 16:28:18 2020
 """
 from scipy import interpolate
 import numpy as np
-class UBoxInterpolate():
-    def __init__():
+from UEDGEToolBox.Utils.Misc import ClassInstanceMethod
+from UEDGEToolBox.DataManager.Grid import UBoxGrid
+from UEDGEToolBox.DataManager.IO import UBoxIO
+
+class UBoxInterpolate(UBoxGrid,UBoxIO):
+    def __init__(self):
         self.Verbose=False
+        
     @staticmethod
-    def Interpolate2D(rold,zold,data,rnew,znew,zshift=0.0,rshift=0.0,method='linear',**kwargs):
+    def Interpolate2D(rold,zold,data,rnew,znew,zshift=0.0,rshift=0.0,method='nearest',fill_value=0,**kwargs):
         if rold.shape!=data.shape or zold.shape!=data.shape:
             raise ValueError('Mismatch in shape of data and grid:{}:{}/{}'.format(data.shape,rold.shape,zold.shape))
         else:
@@ -21,8 +26,9 @@ class UBoxInterpolate():
             newpoints = np.array( [rnew.flatten(), znew.flatten()] ).T
             
             values = data.flatten()
-            return interpolate.griddata(oldpoints, values, newpoints, method='linear', rescale=False).reshape(rnew.shape)
-    
+            return interpolate.griddata(oldpoints, values, newpoints, method=method, fill_value=fill_value, rescale=False).reshape(rnew.shape)
+        
+    @ClassInstanceMethod
     def Interpolate2DData(self,Data,OldGrid,NewGrid,VarList=[],**kwargs):
         r=OldGrid['rm'][:,:,0]
         z=OldGrid['zm'][:,:,0]
@@ -46,6 +52,7 @@ class UBoxInterpolate():
                         
         return Data
     
+    @ClassInstanceMethod
     def InterpolateData(self,OldData,OldGrid,NewGrid,DataType='UEDGE',**kwargs):
         if type(OldGrid)==str:
             OldGrid=self.ReadGridFile(OldGrid)
@@ -66,32 +73,62 @@ class UBoxInterpolate():
                 
         return self.Interpolate2DData(OldData,OldGrid,NewGrid,**kwargs)
     
-    
-    
-    def LoadInterpolate(self,FileName,OldGrid,NewGrid,Format='numpy',LoadList=[],ExcludeList=[],CheckDim=True,Loader='plasma',InterpolateData='plasma'):
-        D=UBoxData(FileName,Format='numpy',LoadList=[],ExcludeList=[])
-        VarList=self.SelectVars(Mode=InterpolateData)
+    @ClassInstanceMethod
+    def InterpolateData(self,OldData,OldGrid,NewGrid,DataType='UEDGE',ExcludeList=[],IncludeList=[],**kwargs):
+        if type(OldGrid)==str:
+            OldGrid=self.ReadGridFile(OldGrid)
+        elif type(OldGrid)!=dict:
+            raise IOError('OldGrid must be a filename or a grid dictionary')
+            
+        if type(NewGrid)==str:
+            NewGrid=self.ReadGridFile(NewGrid)
+        elif type(NewGrid)!=dict:
+            raise IOError('NewGrid must be a filename or a grid dictionary')
+        
+        if type(OldData)==str:
+            (Data,OldTag)=self.LoadData(OldData)
+            if DataType is None:
+                OldData=Data
+            else:
+                OldData=Data.get(DataType)
+            if OldData is None:
+                    raise ValueError('Unknow datatype in Data. DataType must be an entry of the dictionary Data. Data entries are read with DataType=None')
+        if IncludeList==[]:
+            IncludeList=list(OldData.keys())
+            
         if self.Verbose:
-            print('Variables to be interpolated:',VarList)
+            print('Entry Old Data:',list(OldData.keys()))
+                  
+        OldData=dict((k,v) for k,v in OldData.items() if k not in ExcludeList and k in IncludeList)
         
-        if self.Verbose: 
-            print('OldGrid',OldGrid)
+        return self.Interpolate2DData(OldData,OldGrid,NewGrid,**kwargs)
+    
+    
+    
+    # def LoadInterpolate(self,FileName,OldGrid,NewGrid,Format='numpy',LoadList=[],ExcludeList=[],CheckDim=True,Loader='plasma',InterpolateData='plasma'):
+    #     D=UBoxData(FileName,Format='numpy',LoadList=[],ExcludeList=[])
+    #     VarList=self.SelectVars(Mode=InterpolateData)
+    #     if self.Verbose:
+    #         print('Variables to be interpolated:',VarList)
         
-        if OldGrid=='loaded':
-            OldGrid=D.Grid
-        elif type(OldGrid)==str:
-            OldGrid=UBoxGrid().ReadGrid(OldGrid)
+    #     if self.Verbose: 
+    #         print('OldGrid',OldGrid)
         
-        if type(OldGrid)!=dict:
-            print('OldGrid must be of type grid')
-        if not OldGrid:
-            print('OldGrid is empty')
-            return (D.Data,D.Tag)
-        D.Data=self.Interpolate2DData(D.Data,OldGrid,NewGrid,VarList)
-        Enforce=True
-        D.Data=self.ImportData(D.Data,LoadList,ExcludeList,CheckDim,Enforce,Loader)
+    #     if OldGrid=='loaded':
+    #         OldGrid=D.Grid
+    #     elif type(OldGrid)==str:
+    #         OldGrid=UBoxGrid().ReadGrid(OldGrid)
         
-        return (D.Data,D.Tag)     
+    #     if type(OldGrid)!=dict:
+    #         print('OldGrid must be of type grid')
+    #     if not OldGrid:
+    #         print('OldGrid is empty')
+    #         return (D.Data,D.Tag)
+    #     D.Data=self.Interpolate2DData(D.Data,OldGrid,NewGrid,VarList)
+    #     Enforce=True
+    #     D.Data=self.ImportData(D.Data,LoadList,ExcludeList,CheckDim,Enforce,Loader)
+        
+    #     return (D.Data,D.Tag)     
     
     
         # def LoadInterp(self,FileName,OldGrid='loaded',NewGrid=None,CaseName=None,Folder='SaveDir',LoadPackage='plasma',InterpolateData='plasma',LoadList=[],ExcludeList=[],Format=None,CheckDim=True,Verbose=False):

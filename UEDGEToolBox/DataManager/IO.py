@@ -249,6 +249,7 @@ class UBoxIO(UBoxDataSet,UBoxLoader):
     @ClassInstanceMethod   
     def LoadData(self,FileName):
         """Return a dictionary of data read from a file."""
+        
         if FileName is not None and os.path.exists(FileName):
             Format=self.GetFormat(FileName)
             (Data,Tag)=self.GetIOWorker(Format).ReadData(FileName)
@@ -268,6 +269,22 @@ class UBoxIO(UBoxDataSet,UBoxLoader):
             print("Cannot open the file {}...".format(FileName))
             return ({},{})
         
+    @ClassInstanceMethod   
+    def ExtractData(self,FileName,DataType='UEDGE'):
+        """Plot variable names and pkg from a file."""
+        (Data,Tag)=self.LoadData(FileName)
+        if DataType is None:
+            return Data
+        else:
+            return Data.get(DataType)
+        
+    @ClassInstanceMethod
+    def ExtractTag(self,FileName):
+        """Plot variable names and pkg from a file."""
+        (Data,Tag)=self.LoadData(FileName)
+        return Tag
+    
+    
     @ClassInstanceMethod    
     def DisplayTag(self,FileName):
         (Data,Tag)=self.LoadData(FileName)

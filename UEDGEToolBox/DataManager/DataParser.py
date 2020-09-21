@@ -420,7 +420,7 @@ class UBoxDataParser():
         
         return DicOut
         
-    
+    @ClassInstanceMethod
     def ParseArray(self,Field,DataType,IndexSet,IdxSl,DimSl,DimSp):
         DicOut={}
         if self.Verbose:

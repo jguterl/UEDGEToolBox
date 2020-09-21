@@ -14,9 +14,10 @@ import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib 
 import os
+import itertools
 
 class UBoxGrid():
-    
+    Grid={}
     def __init__(self,FileName=None,Verbose=False):
         self.Grid=None
         if FileName is not None:
@@ -27,9 +28,14 @@ class UBoxGrid():
     def GetGrid(self):
         return self.Grid
     
+    @ClassInstanceMethod
     def SetGrid(self,Grid=None):
-        if Grid is not None:
+        print('Setting grid:',Grid)
+        if type(Grid)==dict:
             self.Grid=Grid
+        elif type(Grid)==str:
+            self.ImportGrid(Grid)
+        
     
     def ShowCell(self,ixiy,ax=None,Annotate=True):
         if Grid is not None:
@@ -79,9 +85,19 @@ class UBoxGrid():
                  annot=self.ax.annotate("ix={},iy={}".format(ix,iy), xy=(r,z), xytext=(-20,20),textcoords="offset points",
                             bbox=dict(boxstyle="round", fc="w"),
                             arrowprops=dict(arrowstyle="->"))
-    
-    
-    def PlotGrid(self,r:np.array or None=None,z:np.array or None =None,ax:plt.Axes or None=None,edgecolor:str='black',Title:str='')->None:
+    @ClassInstanceMethod 
+    def PlotGrid(self,Grid=None,edgecolor='black',zshift=[],**kwargs):
+        if type(Grid)!=list:
+            Grid=[Grid]
+        if type(edgecolor)!=list:
+            edgecolor=[edgecolor]
+        if type(zshift)!=list:
+            zshift=[zshift]
+        for G,ec,zs in  itertools.zip_longest(Grid,edgecolor,zshift,fillvalue=None):
+            self.PlotterGrid(Grid=G,edgecolor=ec,zshift=zs,**kwargs)
+        self.ax=None
+    @ClassInstanceMethod     
+    def PlotterGrid(self,r:np.array or None=None,z:np.array or None =None,ax:plt.Axes or None=None,zshift=None,Grid=None,edgecolor:str=None,Title:str='',NewFig=True)->None:
         """Get the foobar.
 
         This really should have a full function definition, but I am too lazy.
@@ -94,7 +110,9 @@ class UBoxGrid():
         Isn't that what you want?
 
         """
-        self.SetGrid()
+    
+        self.SetGrid(Grid)
+        
         if r is None or z is None:
             if self.Grid is not None:
                 r=self.Grid['rm']
@@ -103,11 +121,18 @@ class UBoxGrid():
                 print("No grid loaded ... Use GetGrid() or SetGrid() to load a grid.")
                 return
                 
-
+        if zshift is not None:
+            z=z+zshift
+        
         if ax is not None:
             self.ax=ax
+        
         if not hasattr(self,'ax') or self.ax is None:
-            self.ax=plt.gca()
+            if NewFig:
+                fig,ax=plt.subplots()
+                self.ax=ax
+            else:
+                self.ax=plt.gca()
         
         def onpick(evt):
             if evt.artist in Pos.keys():
@@ -147,22 +172,24 @@ class UBoxGrid():
                     Pos[p]=(r[i,j,0],z[i,j,0])
                     
         #print('xmin:',[np.where(z>0,z,1e10).min(),z.max()])
-        self.ax.set_ylim([z.min(),z.max()])
-        self.ax.set_xlim([np.where(r>0,r,1e10).min(),r.max()])
+        #self.ax.set_ylim([z.min(),z.max()])
+        #self.ax.set_xlim([np.where(r>0,r,1e10).min(),r.max()])
+        self.ax.set_aspect('equal','datalim')
         annot = self.ax.annotate("", xy=(0,0), xytext=(-20,20),textcoords="offset points",
                             bbox=dict(boxstyle="round", fc="w"),
                             arrowprops=dict(arrowstyle="->"))
         annot.set_visible(False)
+        self.ax.autoscale_view()
         self.ax.figure.canvas.mpl_connect('pick_event', onpick)
         plt.show()
-    
+   
         
     
     # def ShowGrid(self,ax=None,Verbose=False,edgecolor='black',Title=''):
     #     self.Grid=self.GetGrid()
     #     UboxGrid.PlotGrid(self.Grid['rm'],self.Grid['zm'],ax,Verbose,edgecolor,Title)     
          
-
+    @ClassInstanceMethod
     def ImportGrid(self,FileName:str = 'gridue')->None:
         """
         Read UEDGE grid file and import it into the class instance.
