@@ -127,8 +127,9 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
     @ClassInstanceMethod    
     def GetData(self,Field:str,DataType:str='UEDGE',CorrectTempUnit=True):
         """Get data values from data dictionary stored in the instance."""
-        Out=self.CollectData(Field,DataType,RemovePackage=True).get(Field)
-                
+        Out=self.CollectData(Field,DataType,RemovePackage=True)
+        if self.Verbose:print('GetData:',Out)      
+        Out=Out.get(Field)  
         if Out is not None and Out.size==1 and Out.dtype.char=='S':
             Out=Out[0].decode().strip()
             
@@ -218,9 +219,13 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
     def GetGrid(self):
         return self.CollectDataSet(DataSet='grid',DataType='UEDGE',RemovePackage=True)['UEDGE']
 
-    def SetGrid(self):
-        Dic=self.CollectDataSet(DataSet='grid',DataType='UEDGE')['UEDGE']
-        self.Grid=dict((self.RemovePkg(k),v) for k,v in Dic.items())
+    def SetGrid(self,Grid=None):
+        if Grid is None:
+            Dic=self.CollectDataSet(DataSet='grid',DataType='UEDGE')['UEDGE']
+            self.Grid=dict((self.RemovePkg(k),v) for k,v in Dic.items())
+        else:
+            self.Grid=Grid
+        
         
 
 

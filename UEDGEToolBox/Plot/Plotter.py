@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
+""" 
 Created on Tue Sep  1 21:37:32 2020
-
+ 
 @author: jguterl
 """
-from UEDGEToolBox.Utils.Misc import ClassInstanceMethod,SetClassArgs  
+from UEDGEToolBox.Utils.Misc import ClassInstanceMethod,SetClassArgs 
 from UEDGEToolBox.Plot.PlotUtils import UBoxPlotUtils,MatplotlibKw
 from UEDGEToolBox.Plot.Plot1D import UBoxPlot1D
 from UEDGEToolBox.Plot.Plot2D import UBoxPlot2D
@@ -13,7 +13,7 @@ import matplotlib
 from matplotlib import pyplot as plt
 import numpy as np
 
-
+#@UBoxPreFix()   
 class UBoxPlotter(UBoxPlot2D,UBoxPlot1D,UBoxPlotUtils):
  
     def __init__(self,Dic={},Verbose=False,**kwargs):
@@ -24,7 +24,7 @@ class UBoxPlotter(UBoxPlot2D,UBoxPlot1D,UBoxPlotUtils):
         self.Label=kwargs.get('Tag')
         self.OriginalShape=kwargs.get('OriginalShape')
         self.ax=kwargs.get('ax')
-        self.Verbose=kwargs.get('Verbose')
+        self.Verbose=kwargs.get('Verbose') 
         self.XType=kwargs.get('XType')
         self.LabelPlot=''
         self.ImportDic(Dic)
@@ -167,7 +167,7 @@ class UBoxPlotter(UBoxPlot2D,UBoxPlot1D,UBoxPlotUtils):
         
         (r,z)=self.PreparePlot2DGrid(**kwargs)
         if r is None or z is None:
-            print('Problem with the grid in plotter')
+            print('Problem with the grid in plotter. Grid:',self.Grid)
         else:
             self.PlotHandle=self.PlotData2D(r,z,self.Data,**kwargs)
             self.SetPlotLabel(**kwargs)

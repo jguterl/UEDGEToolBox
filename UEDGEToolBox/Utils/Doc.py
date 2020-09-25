@@ -138,7 +138,7 @@ class UBoxDoc():
         for pkg in self.ListPkg:
             Dic=self.DocPkg[pkg]
             for k in Dic.keys():
-                    if Str in Dic[k]['Doc']: 
+                    if Dic[k].get('Doc') is not None and Str in Dic[k]['Doc']: 
                         self.__PrintVarInfo(Dic[k],False)
                     
     def Search(self,Str:str,Exact:bool=False,OnlyVar:bool=False,Silent:bool=False):

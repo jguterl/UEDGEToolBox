@@ -249,7 +249,7 @@ yaml.add_constructor(UBoxSingleProject._YAMLTag, UBoxSingleProject.from_yaml, Lo
 ####################################################################################################
 
         
-@UBoxPreFix()
+#@UBoxPreFix()
 class UBoxProjects(UBoxSettings):
     """Manager for UBox projects."""
     
