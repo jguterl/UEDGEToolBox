@@ -17,6 +17,8 @@ class UBoxPDB2Py():
         Dic=ReadPDBFile(PDBFileName)
         #assume variable  name format: XXX_bbb 
         #Out=dict(('bbb.'+k.split('_')[0],self.SwapAxis(v)) for k,v in Dic.items())
+        if type(Dic)!=dict:
+            raise ValueError('Something went wrong when reading the basis file:{}',PDBFileName)
         Out=dict(('bbb.'+k.split('_')[0],v.transpose()) for k,v in Dic.items())
         Tag={'Description':'Converted from PDB file {}'.format(PDBFileName)}
         if SaveFileName is None:

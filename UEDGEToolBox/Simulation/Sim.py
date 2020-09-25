@@ -258,8 +258,21 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         else:
            self.PrintInfo("Taking initial step with Jacobian:",Back.CYAN)
            bbb.icntnunk = 0
+           
+           ResetNewGeo=bbb.newgeo
+           bbb.newgeo=1
+           try:
+            resetpandf=com.OMPParallelPandf1
+            com.OMPParallelPandf1=0
+           except:
+               pass
            bbb.exmain()
+           try:
+             com.OMPParallelPandf1=resetpandf
+           except:
+               pass
            sys.stdout.flush()
+           bbb.newgeo=ResetNewGeo
            
         if (bbb.iterm != 1):
             self.PrintInfo("Error: converge an initial time-step first",Back.RED)
@@ -382,11 +395,8 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         print(" ")
         
     def Restart(self,**kwargs):
-        self.dtreal/=self.mult_dt_fwd
-        self.SetParams(**kwargs)
-        bbb.restart=1
-        bbb.iterm=1
-        return self.Run()
+        UBox.Restore(**kwargs)
+        return self.Cont()
     
     def RunTime(self,InitJac=False,**kwargs):
         """
