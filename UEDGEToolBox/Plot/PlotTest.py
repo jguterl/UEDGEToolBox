@@ -66,7 +66,7 @@ class UBoxPlotTest(UBoxDataParser):
             
         if Tag is None:
             if hasattr(self,'GetTag'):
-                Grid=self.GetTag()
+                Tag=self.GetTag()
             else:
                 Tag={}
         

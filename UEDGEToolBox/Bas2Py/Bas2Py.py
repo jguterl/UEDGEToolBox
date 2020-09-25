@@ -258,7 +258,7 @@ class UBoxBas2Py():
                 il=Var.find('(')+1
                 ir=Var.rfind(')')
                 Dim=Var[il:ir].strip()
-                Dout=self.__ParseVariableDim(Dim)
+                Dout=self.__ParseVariableDim(Dim,VarName)
                 #print(Dim,'->',Dout)
                 Out=Out+'['+Dout+']'    
         
@@ -284,14 +284,69 @@ class UBoxBas2Py():
             else:
                 W=W+c
         Out.append(W)    
-        return Out   
+        return Out 
     
-    def __ParseVariableDim(self,Dim):
+    def ParseDimDoc(S):
+    OffsetStartList=[]
+    OffsetEndList=[]
+    
+    if S is None or S.count('(')<1:
+        return (None,None)
+    else:
+        OffsetStartList=[]
+        OffsetEndList=[]
+        if S.count('(')!=S.count(')'):
+            raise ValueError('Mismatch # of brackets in parsing Dimension Doc:{}'.format(S))
+        Str=S.split('(')[1].split(')')[0]
+        for D in Str.split(','):
+            if D.count(':')>0:
+                istart=D.split(':')[0]
+                if istart.isnumeric():
+                    if int(istart)==0:
+                        OffsetStart=0
+                        OffsetEnd=1
+                    elif int(istart)==1:
+                        OffsetStart=-1
+                        OffsetEnd=0
+                    else:
+                        raise ValueError('Mismatch # of brackets in parsing Dimension Doc:{}'.format(S))
+                else:
+                    OffsetStart=-1
+                    OffsetEnd=0
+            else:
+                OffsetStart=-1
+                OffsetEnd=0
+            OffsetStartList.append(OffsetStart)
+            OffsetEndList.append(OffsetEnd)
+        return (OffsetStartList,OffsetEndList)
+    
+    
+    def GetOffsetDim(self,VarName):
+        Dic=self.Doc.Search(Exact=True,Silent=True)[0]
+        if Dic is None:
+            raise ValueError('Cannot find variable {} in UEDGE'.format(VarName))
+        return ParseDocDic(Dic.get('Dimension'))
+            
+    def __ParseVariableDim(self,Dim,VarName=None):
         Dout=[]
         idl=self.findall(Dim,'(')
         idr=self.findall(Dim,')')
         idc=self.findall(Dim,',')
+        
         Ind=[-1]
+        OffsetStart=None
+        OffsetEnd=None
+        
+        if VarName is not None:
+            (OffsetStart,OffsetEnd)=self.GetOffsetDim(VarName)
+        if OffsetStart is None:
+            OffsetStart=[-1 for i in idc]
+        
+        if OffsetEnd is None:
+         OffsetEnd=[0 for i in idc]
+          
+        
+        
         if (len(idl)!=len(idr)):
         
             raise ValueError('Cannot parse expression with incomplete bracket:',Dim)
@@ -318,9 +373,9 @@ class UBoxBas2Py():
                     routrr=outrr
                     if IsFirst:
                         if len(routrr)==1 and routrr[0].isnumeric(): 
-                            routrr=[str(int(routrr[0])-1)]
+                            routrr=[str(int(routrr[0])+OffsetStart)]
                         else:
-                            routrr.extend('-1')
+                            routrr.extend(str(OffsetEnd))
                     IsFirst=False        
                     rout.append(''.join(routrr))
                 Dout.append(':'.join(rout))
@@ -371,4 +426,4 @@ def ConvertBas2Py(BasFileName=None,PyFileName=None,Folder=None,**kwargs):
         else:
             print("Cannot read the file {}... Exiting".format(FilePath))
 
-    
+  

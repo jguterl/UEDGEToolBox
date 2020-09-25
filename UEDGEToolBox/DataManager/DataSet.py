@@ -61,9 +61,9 @@ class UBoxDataFilter():
         if self.Verbose: print("Varlist to be collected:",VarList)
         
         if DataType=='UEDGE':
-            Data=self.UEDGEDataToDict(VarList,RemovePackage=RemovePackage)
+            Data=self.UEDGEDataToDict(VarList,RemovePackage=RemovePackage,Verbose=self.Verbose)
         else:
-            Data=self.StoredDataToDict(VarList,DataType,RemovePackage=RemovePackage)
+            Data=self.StoredDataToDict(VarList,DataType,RemovePackage=RemovePackage,Verbose=self.Verbose)
         return Data
     
     @ClassInstanceMethod
@@ -256,10 +256,11 @@ class UBoxDataFilter():
             TYPE: DESCRIPTION.
     
         """
-        Data={}    
+           
         for pkg in GetListPackage():
             exec('from uedge import '+pkg)
-        Dic=locals() 
+        Dic=locals()
+        Dic['Data']={} 
         for V in VarList:
             if Verbose:print('Preparing data {}'.format(V))
             if RemovePackage:
@@ -270,9 +271,11 @@ class UBoxDataFilter():
                         VV=V
             else:
                 VV=V
-            try:    
+            try: 
+                if Verbose: print('Executing: ',"Data['{}']={}".format(VV,V))
                 exec("Data['{}']={}".format(VV,V),globals(),Dic)
-            except:
+            except Exception as e:
+                if Verbose: print('Error:',repr(e))
                 print('Unable to collect data "{}" from UEDGE package "{}"'.format(V,VV))
         
         if Dic.get('Data') is None:

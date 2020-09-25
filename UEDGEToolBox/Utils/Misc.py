@@ -16,44 +16,42 @@ try:
     import uedge
 except:
     pass
-class AddUBoxPrefix():
+# class AddUBoxPrefix():
 
-    def __init__(self,Method,PreFix='test'):
-        self.PreFix = PreFix
-        self.Method=Method
+#     def __init__(self,PreFix='test'):
+#         self.PreFix = PreFix
         
-    def GetDecorator(self):
-        """
-        If there are decorator arguments, __call__() is only called
-        once, as part of the decoration process! You can only give
-        it a single argument, which is the function object.
-        """
-        print("Inside __call__()")
-        def DecoratorFunc(*args, **kwargs):
-         old = builtins.print
-         # if hasattr(args[0],'PrintPrefix'):
-         #     if not getattr(args[0],'PrintPrefix'):
-         #         _PreFix=''
-         _PreFix=self.PreFix
-        
-             
-         if _PreFix!='':
-             PreFix='[{}]'.format(_PreFix)
-             s=io.StringIO()
-             old('test',file=s)
-             if PreFix not in s:
-             #if not isinstance(old, types.LambdaType):
-                 builtins.print = lambda x, *args, **kwargs:  old(PreFix, x, *args, **kwargs)
-         
-         try:
-             result = self.Method(*args, **kwargs)
-         except Exception as e:
-             raise e
-         finally:
-             builtins.print = old
-         return result
+#     def GetDecorator(self,Method):
+#         """
+#         If there are decorator arguments, __call__() is only called
+#         once, as part of the decoration process! You can only give
+#         it a single argument, which is the function object.
+#         """
+#         def DecoratorFunc(*args, **kwargs):
+#              old = builtins.print
+#              # if hasattr(args[0],'PrintPrefix'):
+#              #     if not getattr(args[0],'PrintPrefix'):
+#              #         _PreFix=''
+#              _PreFix=self.PreFix
+            
+#              if _PreFix!='' and hasattr(Method,'__self__') and hasattr(Method.__self__,'VerbosePrefix') and getattr(Method.__self__,'VerbosePrefix'):
+#                  PreFix='[{}]'.format(_PreFix)
+#                  s=io.StringIO()
+#                  old('test',file=s)
+#                  if PreFix not in s:
+#                  #if not isinstance(old, types.LambdaType):
+#                      builtins.print = lambda x, *args, **kwargs:  old(PreFix, x, *args, **kwargs)
+              
+#              try:
+#                  result = Method(*args, **kwargs)
+#              except Exception as e:
+#                  print(repr(e))
+#                  raise e
+#              finally:
+#                  builtins.print = old
+#              return result
      
-        return DecoratorFunc
+#         return DecoratorFunc
     
 # def AddUBoxPrefix(orig_func,_PreFix=''):
 #     """
@@ -112,11 +110,11 @@ def UBoxPreFix():
     
     def DecoratorClass(cls,_PreFix=''):
         for name, method in inspect.getmembers(cls):
-              if (inspect.ismethod(method) or inspect.isfunction(method))and not inspect.isbuiltin(method):
-                  if cls.__name__ in method.__qualname__.split('.')[0]:
-                      pass
-                   # _PreFix=ProcessPreFix(_PreFix,cls.__qualname__,"UBox")
-                   # setattr(cls, name, AddUBoxPrefix(method,_PreFix).GetDecorator())
+              if (inspect.ismethod(method) or inspect.isfunction(method))and not inspect.isbuiltin(method) and not name.startswith('_'):
+                #  if cls.__name__ in method.__qualname__.split('.')[0]:
+                _PreFix=ProcessPreFix(_PreFix,cls.__qualname__,"UBox")
+                print("Adding Prefix '{}' to {} for class '{}'".format(_PreFix,name,cls.__name__))
+                setattr(cls, name, AddUBoxPrefix(_PreFix).GetDecorator(method))
         return cls
     
     return DecoratorClass

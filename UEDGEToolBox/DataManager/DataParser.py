@@ -1,6 +1,7 @@
 import numpy as np
-from UEDGEToolBox.Utils.Misc import GetListPackage, ClassInstanceMethod,SetClassArgs
+from UEDGEToolBox.Utils.Misc import GetListPackage, ClassInstanceMethod,SetClassArgs,UBoxPreFix
 
+#@UBoxPreFix()
 class UBoxDataParser():
     """
     Some useful method:
