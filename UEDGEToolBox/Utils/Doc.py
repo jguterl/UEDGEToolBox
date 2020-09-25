@@ -242,14 +242,16 @@ class UBoxDoc():
 
         
     #---------------------------------------------------------------------------                    
-    def _GetVarInfo(self,Str,exact=True):
+    def _GetVarInfo(self,Str,exact=True,MatchCase=True):
         L=[]
         for pkg in self.ListPkg:
             Dic=self.DocPkg[pkg]
             for k in Dic.keys():
                 if exact:
-                    if Str==k:
+                    if MatchCase and Str==k:
                      L.append(Dic[k])
+                    if not MatchCase and Str.lower()==k.lower():
+                     L.append(Dic[k])  
                 else:
                     if Str in k: 
                      L.append(Dic[k])

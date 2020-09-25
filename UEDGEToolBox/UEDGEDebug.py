@@ -301,8 +301,8 @@ def ImportFullJac(FileName):
         jac=int(x[3])
         Jac[i,j]=jac
     return Jac
-Jac=ImportFullJac('/home/guterlj/serialfulljac.dat')
-np.save('jac.npy',Jac)
-    from scipy.sparse import bsr_matrix
-    sJac=bsr_matrix(Jac)
+# Jac=ImportFullJac('/home/guterlj/serialfulljac.dat')
+# np.save('jac.npy',Jac)
+# from scipy.sparse import bsr_matrix
+# sJac=bsr_matrix(Jac)
    
