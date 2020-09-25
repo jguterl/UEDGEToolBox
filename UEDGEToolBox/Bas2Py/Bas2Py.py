@@ -42,8 +42,8 @@ class UBoxBas2Py():
                 self.fw.write('#>>> Produced by UBoxBas2Py. Original file: {}\n'.format(BasFileName))
                 self.fw.write('#>>> Timestamp: {:%Y-%m-%d %H:%M:%S}\n'.format(datetime.now()))
                 self.fw.write('iota=np.array([np.arange(1,i+1) for i in range(1,300)],dtype=np.ndarray)\n')
-                self.fw.write("api.apidir=Source('api',Folder='InputDir')") 
-                self.fw.write("aph.aphdir=Source('aph',Folder='InputDir')")
+                self.fw.write("api.apidir=Source('api',Folder='InputDir')\n") 
+                self.fw.write("aph.aphdir=Source('aph',Folder='InputDir')\n")
                 while self.Line:
                     if Imax is not None and self.LineNumber>Imax:
                         break
@@ -286,46 +286,47 @@ class UBoxBas2Py():
         Out.append(W)    
         return Out 
     
-    def ParseDimDoc(S):
-    OffsetStartList=[]
-    OffsetEndList=[]
-    
-    if S is None or S.count('(')<1:
-        return (None,None)
-    else:
+    def ParseDimDoc(self,S):
         OffsetStartList=[]
         OffsetEndList=[]
-        if S.count('(')!=S.count(')'):
-            raise ValueError('Mismatch # of brackets in parsing Dimension Doc:{}'.format(S))
-        Str=S.split('(')[1].split(')')[0]
-        for D in Str.split(','):
-            if D.count(':')>0:
-                istart=D.split(':')[0]
-                if istart.isnumeric():
-                    if int(istart)==0:
-                        OffsetStart=0
-                        OffsetEnd=1
-                    elif int(istart)==1:
+        
+        if S is None or S.count('(')<1:
+            return (None,None)
+        else:
+            OffsetStartList=[]
+            OffsetEndList=[]
+            if S.count('(')!=S.count(')'):
+                raise ValueError('Mismatch # of brackets in parsing Dimension Doc:{}'.format(S))
+            Str=S.split('(')[1].split(')')[0]
+            for D in Str.split(','):
+                if D.count(':')>0:
+                    istart=D.split(':')[0]
+                    if istart.isnumeric():
+                        if int(istart)==0:
+                            OffsetStart=0
+                            OffsetEnd=1
+                        elif int(istart)==1:
+                            OffsetStart=-1
+                            OffsetEnd=0
+                        else:
+                            raise ValueError('Mismatch # of brackets in parsing Dimension Doc:{}'.format(S))
+                    else:
                         OffsetStart=-1
                         OffsetEnd=0
-                    else:
-                        raise ValueError('Mismatch # of brackets in parsing Dimension Doc:{}'.format(S))
                 else:
                     OffsetStart=-1
                     OffsetEnd=0
-            else:
-                OffsetStart=-1
-                OffsetEnd=0
-            OffsetStartList.append(OffsetStart)
-            OffsetEndList.append(OffsetEnd)
-        return (OffsetStartList,OffsetEndList)
+                OffsetStartList.append(OffsetStart)
+                OffsetEndList.append(OffsetEnd)
+            return (OffsetStartList,OffsetEndList)
     
     
     def GetOffsetDim(self,VarName):
-        Dic=self.Doc.Search(Exact=True,Silent=True)[0]
-        if Dic is None:
-            raise ValueError('Cannot find variable {} in UEDGE'.format(VarName))
-        return ParseDocDic(Dic.get('Dimension'))
+        Dic=self.Doc.Search(VarName,Exact=True,Silent=True)
+        if Dic==[]:
+            return (None,None)
+        else:
+            return self.ParseDimDoc(Dic[0].get('Dimension'))
             
     def __ParseVariableDim(self,Dim,VarName=None):
         Dout=[]
@@ -334,18 +335,20 @@ class UBoxBas2Py():
         idc=self.findall(Dim,',')
         
         Ind=[-1]
-        OffsetStart=None
-        OffsetEnd=None
+        OffsetsStart=None
+        OffsetsEnd=None
         
         if VarName is not None:
-            (OffsetStart,OffsetEnd)=self.GetOffsetDim(VarName)
-        if OffsetStart is None:
-            OffsetStart=[-1 for i in idc]
+            (OffsetsStart,OffsetsEnd)=self.GetOffsetDim(VarName)
+        if OffsetsStart is None:
+            OffsetsStart=[-1 for i in idc]
         
-        if OffsetEnd is None:
-         OffsetEnd=[0 for i in idc]
+        if OffsetsEnd is None:
+         OffsetsEnd=[0 for i in idc]
           
-        
+        if self.Verbose and VarName is not None:
+            print('Offsets::: VarName:{}; OffsetStart:{}; OffsetEnd:{}'.format(VarName,OffsetsStart,OffsetsEnd))
+            
         
         if (len(idl)!=len(idr)):
         
@@ -354,7 +357,12 @@ class UBoxBas2Py():
         DimArgs = [Dim[i+1:j] for i,j in zip(Ind, Ind[1:]+[None])]
 
         #print('DimArgs:',DimArgs)
-        for D in DimArgs:
+        if len(DimArgs)>len(OffsetsEnd):
+            print('VarName:{} :: # of elements in DimArgs:{} > # of elements in OffsetsEnd:{}'.format(VarName,DimArgs,OffsetsEnd))
+            OffsetsEnd=[0 for d in DimArgs]
+            OffsetsStart=[-1 for d in DimArgs]
+    
+        for (D,OffsetStart,OffsetEnd) in zip(DimArgs,OffsetsStart,OffsetsEnd):
             #print('D:',D)
             d=D.strip()
             if d!='':
@@ -375,7 +383,19 @@ class UBoxBas2Py():
                         if len(routrr)==1 and routrr[0].isnumeric(): 
                             routrr=[str(int(routrr[0])+OffsetStart)]
                         else:
-                            routrr.extend(str(OffsetEnd))
+                            if OffsetStart>0:
+                                routrr.extend('+'+str(OffsetStart))
+                            elif OffsetStart<0:
+                                routrr.extend(str(OffsetStart))
+                    else:
+                        if len(routrr)==1 and routrr[0].isnumeric(): 
+                            routrr=[str(int(routrr[0])+OffsetEnd)]
+                        else:
+                            #if OffsetEnd!=0:
+                            if OffsetEnd>0:    
+                                routrr.extend('+'+str(OffsetEnd))
+                            elif OffsetEnd<0:
+                                routrr.extend(str(OffsetEnd))
                     IsFirst=False        
                     rout.append(''.join(routrr))
                 Dout.append(':'.join(rout))
