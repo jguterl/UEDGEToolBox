@@ -1,6 +1,8 @@
 __pycache__/
 *.py[cod]
+*pyc
 */__pycache__/
+UEDGEToolBox/ProjectManager/__pycache__
 # C extensions
 *.so
 *~
