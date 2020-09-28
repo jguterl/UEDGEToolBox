@@ -233,7 +233,8 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         self.Load('last.npy',DataSet,DataType,EnforceDim,PrintStatus)
         bbb.restart=1
         bbb.newgeo=1
-        Initialize()
+        self.Init()
+        bbb.newgeo=0
     def Initialize(self,ftol=1e20,restart=0,dtreal=1e10,SetDefaultNumerics=True):
         """
         Initialize UEDGE simulation
@@ -286,7 +287,20 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
            #if SetDefaultNumerics: self.SetDefaultNumerics()
            bbb.dtreal=dtreal_bkp
            bbb.ftol=ftol_bkp
-           return        
+           return  
+       
+        
+    def Init(self):
+        """
+        Initialize UEDGE simulation
+
+        Args:
+            ftol (TYPE, optional): tolerance for nksol solver. Defaults to 1e20.
+            restart (TYPE, optional): Restart status for exmain() (0|1). Defaults to 0.
+            dtreal (TYPE, optional): timestep for nksol solver. Defaults to 1e10.
+        """
+        bbb.ueinit()
+        
     def Itrouble(self):
         ''' Function that displays information on the problematic equation '''
         from numpy import mod,argmax

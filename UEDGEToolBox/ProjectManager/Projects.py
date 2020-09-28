@@ -191,8 +191,11 @@ class UBoxSingleProject(UBoxFileHelper):
         :return: Path toward directory
         :rtype: str
 
-        """   
-        return os.path.abspath(self.GetPath()+'/'+Dir)
+        """ 
+        if Dir=="RootDir":
+            return os.path.abspath(self.GetPath())
+        else:
+            return os.path.abspath(self.GetPath()+'/'+Dir)
     
     def __CopyFolder(self,Path):
         shutil.copytree(self.GetPath(),Path,ignore=None)
