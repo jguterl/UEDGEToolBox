@@ -29,7 +29,7 @@ class UBoxSource():
                 return os.path.abspath(Folder)
     @ClassInstanceMethod            
     def Source(self,FileName=None,CaseName=None,Folder=None,Project=None,EnforceExistence=True,CreateFolder=False):
-        if Folder in UBoxSingleProject.ListDir:
+        if Folder in UBoxSingleProject.ListDir or Folder=='RootDir':
             if Project is None:
                 if hasattr(self,'CurrentProject'):
                     Project=self.CurrentProject

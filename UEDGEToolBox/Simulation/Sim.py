@@ -234,7 +234,8 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         self.Load('last.npy',DataSet,DataType,EnforceDim,PrintStatus)
         bbb.restart=1
         bbb.newgeo=1
-        Initialize()
+        self.Init()
+        bbb.newgeo=0
     def Initialize(self,ftol=1e20,restart=0,dtreal=1e10,SetDefaultNumerics=True):
         """
         Initialize UEDGE simulation
@@ -259,8 +260,21 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         else:
            self.PrintInfo("Taking initial step with Jacobian:",Back.CYAN)
            bbb.icntnunk = 0
+           
+           ResetNewGeo=bbb.newgeo
+           bbb.newgeo=1
+           try:
+            resetpandf=com.OMPParallelPandf1
+            com.OMPParallelPandf1=0
+           except:
+               pass
            bbb.exmain()
+           try:
+             com.OMPParallelPandf1=resetpandf
+           except:
+               pass
            sys.stdout.flush()
+           bbb.newgeo=ResetNewGeo
            
         if (bbb.iterm != 1):
             self.PrintInfo("Error: converge an initial time-step first",Back.RED)
@@ -274,7 +288,20 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
            #if SetDefaultNumerics: self.SetDefaultNumerics()
            bbb.dtreal=dtreal_bkp
            bbb.ftol=ftol_bkp
-           return        
+           return  
+       
+        
+    def Init(self):
+        """
+        Initialize UEDGE simulation
+
+        Args:
+            ftol (TYPE, optional): tolerance for nksol solver. Defaults to 1e20.
+            restart (TYPE, optional): Restart status for exmain() (0|1). Defaults to 0.
+            dtreal (TYPE, optional): timestep for nksol solver. Defaults to 1e10.
+        """
+        bbb.ueinit()
+        
     def Itrouble(self):
         ''' Function that displays information on the problematic equation '''
         from numpy import mod,argmax
@@ -383,11 +410,8 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         print(" ")
         
     def Restart(self,**kwargs):
-        self.dtreal/=self.mult_dt_fwd
-        self.SetParams(**kwargs)
-        bbb.restart=1
-        bbb.iterm=1
-        return self.Run()
+        UBox.Restore(**kwargs)
+        return self.Cont()
     
     def RunTime(self,InitJac=False,**kwargs):
         """
