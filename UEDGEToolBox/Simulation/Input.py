@@ -11,7 +11,7 @@ from colorama import  Back, Style
 class UBoxInput():
     
     @ClassInstanceMethod     
-    def ParseInputFile(self,FilePath:str,OverWrite:dict={},ShowLines:bool=False):
+    def ParseInputFile(self,FilePath:str,OverWrite:dict={},ShowLines:bool=False,Vars:dict={}):
         try: 
             for pkg in GetListPackage():
                 exec('from uedge import '+pkg,globals(),locals())
@@ -27,6 +27,7 @@ class UBoxInput():
                     if ShowLines:
                         print('{} : {}'.format(count,L))
                     Dic=globals()
+                    DicLocal=locals().update(Vars)
                     if Dic.get('UBox') is None:
                         Dic['UBox']=self
                     exec(L,Dic,locals())

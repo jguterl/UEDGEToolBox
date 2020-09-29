@@ -7,7 +7,7 @@ class UBoxDataParser():
     Some useful method:
         ParseDataField: 
     """
-    Verbose=True
+    Verbose=False
     @SetClassArgs
     def __init__(self,Verbose=False):
         self.Verbose=Verbose
@@ -214,7 +214,7 @@ class UBoxDataParser():
         
     @staticmethod     
     def _ConcatSliceIndexes(Indexes:list,IdxSlice:np.array or list,DimSlice:int):
-
+        
         if type(IdxSlice)==list or type(IdxSlice)==range:
             IdxSlice=np.array(IdxSlice)
             
@@ -355,7 +355,9 @@ class UBoxDataParser():
             OriginalShape (TYPE): DESCRIPTION.
 
         """
-        
+        if kwargs.get('Verbose') is not None:
+            self.Verbose=kwargs.get('Verbose')
+            
         if type(DataFields)==str:
            DataFields=[DataFields]
            if IdxSlice is not None:   
@@ -364,8 +366,11 @@ class UBoxDataParser():
                DimSlice=[DimSlice]
            if DimSplit is not None and type(DimSplit)!=list:
                DimSplit=[DimSplit]
-           if DataType is not None:
-               DataType=[DataType]
+               
+        if type(DataType)!=list:
+            DataType=[DataType]
+            
+            
                
         if IdxSlice is None:
             IdxSlice=[None for Field in DataFields]
@@ -386,8 +391,7 @@ class UBoxDataParser():
             V=DimSplit[0]
             DimSplit=[V for Field in DataFields]    
         if type(DataType)==list and len(DataType)==1:
-            V=DataType[0]
-            DataType=[V for Field in DataFields]   
+            DataType=[DataType[0] for Field in DataFields]   
         
         length = len(DataFields)
         if any([len(lst) != length for lst in [DataFields,IdxSlice,DimSlice,DimSplit]]):
@@ -398,10 +402,9 @@ class UBoxDataParser():
         
         if self.Verbose:
             print('IdxSlice:',IdxSlice)
-        if self.Verbose:
             print('DimSlice:',DimSlice)  
-        if self.Verbose:
             print('DimSplit:',DimSplit) 
+            print('DataType:',DataType) 
         
         
         DicOut={}

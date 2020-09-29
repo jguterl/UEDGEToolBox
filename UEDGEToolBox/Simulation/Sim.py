@@ -41,7 +41,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         ListAfter=list(self.__dict__.keys())
         self.ListRunSettings=[k for k in ListAfter if k not in ListBefore]
         
-    def Read(self,FileName=None,Initialize=False,Filter:str='*',OverWrite:dict={},ShowLines=False)->None:
+    def Read(self,FileName=None,Initialize=False,Filter:str='*',OverWrite:dict={},ShowLines=False,Vars={},**kwargs)->None:
         """
         Parse and execute sequentialy a python script input file (*.py).
 
@@ -96,7 +96,8 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         
         print('Reading file {} '.format(FilePath))
         self.CurrentInputFile=FilePath
-        self.ParseInputFile(FilePath,OverWrite,ShowLines)
+        
+        self.ParseInputFile(FilePath,OverWrite,ShowLines,Vars)
         if Initialize:
             self.Initialize()
         return True

@@ -16,15 +16,20 @@ import numpy as np
 #@UBoxPreFix()   
 class UBoxPlotter(UBoxPlot2D,UBoxPlot1D,UBoxPlotUtils):
  
-    def __init__(self,Dic={},Verbose=False,**kwargs):
+    def __init__(self,Dic={},**kwargs):
         self.Grid=kwargs.get('Grid')
         self.Data=kwargs.get('Data')
+        self.zshift=kwargs.get('zshift')
+        self.rshift=kwargs.get('rshift')
         self.Indexes=kwargs.get('Indexes')
         self.Label=kwargs.get('Label')
         self.Label=kwargs.get('Tag')
         self.OriginalShape=kwargs.get('OriginalShape')
         self.ax=kwargs.get('ax')
-        self.Verbose=kwargs.get('Verbose') 
+        if kwargs.get('Verbose') is None:
+            self.Verbose=False
+        else:
+            self.Verbose=kwargs.get('Verbose')
         self.XType=kwargs.get('XType')
         self.LabelPlot=''
         self.ImportDic(Dic)
@@ -84,8 +89,6 @@ class UBoxPlotter(UBoxPlot2D,UBoxPlot1D,UBoxPlotUtils):
             
     def Plot(self,**kwargs):
         
-        
-        XType=kwargs.get('XType')
             
         if self.Grid is None:
             return 'No grid loaded in plotter object. Cannot plot'
@@ -95,7 +98,7 @@ class UBoxPlotter(UBoxPlot2D,UBoxPlot1D,UBoxPlotUtils):
         DataDim=self.GetDim(self.Data)
         if self.Verbose: print('PlotData:DataDim:{}, Label:{},Data:{} Grid:{}' .format(DataDim,self.Label,self.Data.shape,self.Grid['rm'].shape))
         if DataDim==1:
-            self.Plotter1D(XType=XType,**kwargs)
+            self.Plotter1D(**kwargs)
         elif DataDim==2:
             self.Plotter2D(**kwargs)
         elif DataDim>2:
@@ -154,8 +157,15 @@ class UBoxPlotter(UBoxPlot2D,UBoxPlot1D,UBoxPlotUtils):
         if XType=='ixiy':
             pass
         else:
+            
             r=self.Grid.get('rm')
             z=self.Grid.get('zm')
+            
+            if self.zshift is not None:
+                z=z+self.zshift
+            if self.rshift is not None:
+                r=r+self.rshift
+                
             if z is None or r is None:
                 return (None,None)
             else:

@@ -42,7 +42,14 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         self.ExcludeList=['ExcludeList','ListPkg','IO']+self.ListPkg
         self.CorrectTemp= 1.602176634e-19
         #self.SetVersion()
-        
+    @staticmethod
+    def InitPlasma():
+        bbb.ngs=1e14; bbb.ng=1e14
+        bbb.nis=1e20; bbb.ni=1e20 
+        bbb.ups=0.0;  bbb.up=0.0
+        bbb.tes=bbb.ev;   bbb.te=bbb.ev
+        bbb.tis=bbb.ev;   bbb.ti=bbb.ev
+        bbb.phis=0;bbb.phi=0
     def PrintTimeStepModif(self,i):
         self.PrintInfo('New time-step = {:.4E}'.format(bbb.dtreal),color=Back.MAGENTA)
     

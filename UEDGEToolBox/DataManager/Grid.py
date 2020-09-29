@@ -199,6 +199,20 @@ class UBoxGrid():
 
         """
         self.Grid=self.ReadGridFile(FileName)
+    @ClassInstanceMethod
+    def SetPsinc(self,psinc=None):
+        if psinc is not None:
+            self.Grid['psinc']=psinc
+        else:
+            self.Grid['psinc']=None
+            if self.Grid.get('psi') is not None:
+                if self.Grid.get('simagxs') is not None:
+                    simagxs=self.Grid.get('simagxs')
+                    if self.Grid.get('sibdrys') is not None:
+                        sibdrys=self.Grid.get('sibdrys')        
+                        if simagxs!=sibdrys:
+                            self.Grid['psinc']=np.squeeze((self.Grid['psi'][0,:,0]-simagxs) / (sibdrys-simagxs))
+                        
         
     @ClassInstanceMethod    
     def ReadGridFile(self,FileName:str = 'gridue')->dict:
@@ -211,18 +225,17 @@ class UBoxGrid():
         :rtype: dict
 
         """
+            
+            
         try:
             f= open(FileName, mode = 'r')
             
             Values = [x for x in next(f).split()]
+            HeaderItems = {'nxm':int, 'nym':int, 'ixpt1':int, 'ixpt2':int, 'iyseptrx1':int,'simagxs':float,'sibdrys':float}
             
-            HeaderItems = ['nxm', 'nym', 'ixpt1', 'ixpt2', 'iyseptrx1']
-            if len(Values)>len(HeaderItems):
-                Values=[int(x) for x in Values[0:len(HeaderItems)]]
-            else:
-                Values=[int(x) for x in Values]
+            Values=[v(x) for x,v in zip(Values,HeaderItems.values())]
                 
-            gridue_params=dict(zip(HeaderItems, Values))
+            gridue_params=dict(zip(HeaderItems.keys(), Values))
             next(f)
             BodyItems = ['rm', 'zm', 'psi', 'br', 'bz', 'bpol', 'bphi', 'b']
             Str={ i : [] for i in BodyItems }
@@ -236,7 +249,7 @@ class UBoxGrid():
                         Key=next(k)
                     except:
                         continue
-                    print(Key)
+                    #print(Key)
                 else:
                     Str[Key].append(line)
             f.close()

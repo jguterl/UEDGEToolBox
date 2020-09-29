@@ -102,15 +102,16 @@ class UBoxPlot2D(UBoxPlotUtils):
             print('ColorMap must be chosen in the following list:')
             print(matplotlib.pyplot.colormaps())
             return
-        print(kwargs.get('ax'))
+        #print(kwargs.get('ax'))
         ax=self.GetAx(**kwargs)
-        print(kwargs.get('ax'))
+        #print(kwargs.get('ax'))
+          
         (Collec,Dic,Pos,Obj)=self.CreatePatchCollection(r,z,data,Label,DataLim,DataScale,ColorMap)
         
         if Collec is not None:
             
             def onpick(evt):
-                if isinstance(evt.artist,matplotlib.collections.PatchCollection):
+                if evt.artist==Collec:
                     print(evt.artist.get_array()[evt.ind[0]])
                 if evt.artist in Pos.keys():  
                     annot.set_visible(False)
@@ -122,7 +123,7 @@ class UBoxPlot2D(UBoxPlotUtils):
                 if evt.mouseevent.button == 3:
                     annot.set_visible(False)    
 
-            print(kwargs.get('ax'))
+            #print(kwargs.get('ax'))
             ax.add_collection(Collec)
         
             ax.set_ylim(z.min(),z.max())

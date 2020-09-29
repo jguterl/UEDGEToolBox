@@ -16,7 +16,7 @@ class UBoxInterpolate(UBoxGrid,UBoxIO):
         self.Verbose=False
         
     @staticmethod
-    def Interpolate2D(rold,zold,data,rnew,znew,zshift=0.0,rshift=0.0,method='nearest',fill_value=0,**kwargs):
+    def Interpolate2D(rold,zold,data,rnew,znew,zshift=0.0,rshift=0.0,method='nearest',fill_value=0,SmoothGuardCells=True,**kwargs):
         if rold.shape!=data.shape or zold.shape!=data.shape:
             raise ValueError('Mismatch in shape of data and grid:{}:{}/{}'.format(data.shape,rold.shape,zold.shape))
         else:
@@ -24,12 +24,32 @@ class UBoxInterpolate(UBoxGrid,UBoxIO):
             rold=rold+rshift
             oldpoints = np.array( [rold.flatten(), zold.flatten()] ).T
             newpoints = np.array( [rnew.flatten(), znew.flatten()] ).T
-            
+            if SmoothGuardCells:
+                data[0,:]=data[1,:]
+                data[-1,:]=data[-2,:]
+                data[:,0]=data[:,1]
+                data[:,-1]=data[:,-2]
+                
             values = data.flatten()
+            
+            
             return interpolate.griddata(oldpoints, values, newpoints, method=method, fill_value=fill_value, rescale=False).reshape(rnew.shape)
+
+
+    @staticmethod    
+    def Interpolate1D(xold,data,xnew,xshift=0.0,method='nearest',**kwargs):
+        # if xold.shape!=data.shape:
+        #     print(xold)
+        #     print(data)
+        #     raise ValueError('Mismatch in shape of x and data:{}:{}'.format(xold.shape,data.shape))
+        # else:
+        
+            xold=xold+xshift
+            return numpy.interp(xnew,xold,data)
+        
         
     @ClassInstanceMethod
-    def Interpolate2DData(self,Data,OldGrid,NewGrid,VarList=[],**kwargs):
+    def _Interpolate2DData(self,Data,OldGrid,NewGrid,VarList=[],**kwargs):
         r=OldGrid['rm'][:,:,0]
         z=OldGrid['zm'][:,:,0]
         rnew=NewGrid['rm'][:,:,0]
@@ -53,7 +73,7 @@ class UBoxInterpolate(UBoxGrid,UBoxIO):
         return Data
     
     @ClassInstanceMethod
-    def InterpolateData(self,OldData,OldGrid,NewGrid,DataType='UEDGE',**kwargs):
+    def Interpolate2DData(self,OldData,OldGrid,NewGrid,DataType='UEDGE',**kwargs):
         if type(OldGrid)==str:
             OldGrid=self.ReadGridFile(OldGrid)
         elif type(OldGrid)!=dict:
@@ -71,7 +91,7 @@ class UBoxInterpolate(UBoxGrid,UBoxIO):
             else:
                 OldData=Data[DataType]
                 
-        return self.Interpolate2DData(OldData,OldGrid,NewGrid,**kwargs)
+        return self._Interpolate2DData(OldData,OldGrid,NewGrid,**kwargs)
     
     @ClassInstanceMethod
     def InterpolateData(self,OldData,OldGrid,NewGrid,DataType='UEDGE',ExcludeList=[],IncludeList=[],**kwargs):
