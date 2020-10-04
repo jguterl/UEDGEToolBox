@@ -89,8 +89,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
                 FilePath=self.Source(FileName)
                 
         if FilePath is None:
-            print('No file read ...')
-            return
+            raise IOError('No file read ...')
                 
         # Looking for file
         
@@ -177,7 +176,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
     #     self.Tag.update(Tag)
     #     FilePath=Source(FileName,Folder=Folder,Enforce=False,Verbose=self.Verbose,CaseName=self.CaseName,CheckExistence=False,CreateFolder=True)
     #     self.IO.SaveLog(FilePath,Str,self.Tag)
-    def Load(self,FileName=None,DataSet=['all',''],DataType=['UEDGE','DataStore'],Ext='*.npy',EnforceDim=True,PrintStatus=False):
+    def Load(self,FileName=None,DataSet=['all',''],DataType=['UEDGE','DataStore'],Ext='*.npy',EnforceDim=True,PrintStatus=False,Folder='SaveDir'):
         """
         Wrapper method to load UEDGE simulation data
         See Load method of UEDGEIO class
@@ -195,7 +194,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
             None.
 
         """
-        Folder='SaveDir'
+        
         
         if hasattr(self,'CaseName'):
             CaseName=self.CaseName
@@ -211,20 +210,19 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         if FileName is None:
             FileName=BrowserFolder(self.Source(None,CaseName,Folder,Project),Ext=Ext)
         if FileName is None:
-            print("Cannot read the file {}... Exiting".format(FileName))
-            return
+            raise IOError("Cannot read the file {}... Exiting".format(FileName))
+           
 
         FilePath=self.Source(FileName,CaseName,Folder,Project)
-        if self.Verbose:
-            print("Loading data from file:{}".format(FilePath))
+        print("Loading data from file:{}".format(FilePath))
         # Looking for file
         if FilePath is not None and os.path.isfile(FilePath):
             (Data,Tag)=self.LoadData(FilePath)
             ListLoadedVar=self.ImportData(Data,DataSet,DataType,EnforceDim,PrintStatus,ReturnList=True)
             print('Loaded variables:',ListLoadedVar)
         else:
-            print("Cannot read the file {}... Exiting".format(FilePath))
-            return
+            raise IOError("Cannot read the file '{}'... Exiting".format(FileName))
+
         
         bbb.restart=1
         
@@ -420,7 +418,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         UBox.Restore(**kwargs)
         return self.Cont()
     
-    def RunTime(self,InitJac=False,**kwargs):
+    def RunTime(self,**kwargs):
         """
 
         Args:

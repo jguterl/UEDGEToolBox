@@ -41,6 +41,7 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         #self.IO=UBoxIO(self.Verbose)
         self.ExcludeList=['ExcludeList','ListPkg','IO']+self.ListPkg
         self.CorrectTemp= 1.602176634e-19
+        self.Adjustftol=False
         #self.SetVersion()
     @staticmethod
     def InitPlasma():
@@ -94,7 +95,15 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
             Dictionary with 
     
         """
-        from uedge import __version__,GitHash
+        try:
+            from uedge import __version__
+        except:
+            __version__=None
+        try:
+            from uedge import GitHash
+        except:
+            GitHash=None
+                
         today = date.today()
         now = datetime.now()
         Tag={}
@@ -367,29 +376,30 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         print("Change ftol by a factor {}: bbb.ftol_dt={};bbb.ftol_min={}".format(factor,bbb.ftol_min,bbb.ftol_dt)) 
     
     def Controlftol(self,dtreal_threshold=5e-10,Mult=10):
-        if not hasattr(self,'CftolCount'):
-            self.CftolCount=0
-        if not hasattr(self,'CftolMult'):
-            self.CftolMult=Mult
-        if not hasattr(self,'dtreal_bkp'):
-            self.dtreal_bkp=bbb.dtreal
-        if not hasattr(self,'dtreal_threshold'):
-            self.dtreal_threshold=dtreal_threshold    
-        if bbb.dtreal<self.dtreal_threshold:
-            print('CftolCount:',self.CftolCount)
-            if bbb.dtreal<self.dtreal_bkp:
-                self.Changeftol(self.CftolMult)
-                self.CftolCount+=1
+        if self.Adjustftol:
+            if not hasattr(self,'CftolCount'):
+                self.CftolCount=0
+            if not hasattr(self,'CftolMult'):
+                self.CftolMult=Mult
+            if not hasattr(self,'dtreal_bkp'):
+                self.dtreal_bkp=bbb.dtreal
+            if not hasattr(self,'dtreal_threshold'):
+                self.dtreal_threshold=dtreal_threshold    
+            if bbb.dtreal<self.dtreal_threshold:
+                print('CftolCount:',self.CftolCount)
+                if bbb.dtreal<self.dtreal_bkp:
+                    self.Changeftol(self.CftolMult)
+                    self.CftolCount+=1
+                else:
+                    if self.CftolCount>0:
+                        self.Changeftol(1/self.CftolMult)
+                        self.CftolCount-=1         
             else:
                 if self.CftolCount>0:
-                    self.Changeftol(1/self.CftolMult)
-                    self.CftolCount-=1         
-        else:
-            if self.CftolCount>0:
-                    self.Changeftol(1/self.CftolMult)
-                    self.CftolCount-=1
-        
-        self.dtreal_bkp=bbb.dtreal    
+                        self.Changeftol(1/self.CftolMult)
+                        self.CftolCount-=1
+            
+            self.dtreal_bkp=bbb.dtreal    
     
         
 
