@@ -39,7 +39,7 @@ class UBoxSource():
             else:
                 ObjectDir=os.path.abspath(Folder)
                 
-            if CaseName is not None:
+            if CaseName is not None and Folder!='RootDir':
                 ObjectDir=os.path.join(ObjectDir,CaseName)
             
             
