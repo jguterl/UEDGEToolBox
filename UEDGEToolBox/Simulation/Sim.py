@@ -40,8 +40,8 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         self.SaveSim=True
         ListAfter=list(self.__dict__.keys())
         self.ListRunSettings=[k for k in ListAfter if k not in ListBefore]
-        
-    def Read(self,FileName=None,Initialize=False,Filter:str='*',OverWrite:dict={},ShowLines=False,Vars={},**kwargs)->None:
+         
+    def Read(self,FileName=None,Initialize=False,Filter:str='*',OverWrite:dict={},ShowLines=False,Vars={},DicG=globals(),**kwargs)->None:
         """
         Parse and execute sequentialy a python script input file (*.py).
 
@@ -97,7 +97,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         print('Reading file {} '.format(FilePath))
         self.CurrentInputFile=FilePath
         
-        self.ParseInputFile(FilePath,OverWrite,ShowLines,Vars)
+        self.ParseInputFile(FilePath,OverWrite,ShowLines,Vars,DicG)
         if Initialize:
             self.Initialize()
         return True
@@ -228,14 +228,21 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         
         bbb.restart=1
         
-    def Restore(self,FileName:str or None=None,DataSet=['all',''],DataType=['UEDGE','DataStore'],Ext='*.npy',EnforceDim=True,PrintStatus=False,OverWrite:dict={},ShowLines=False):
+    def Restore(self,FileName:str or None=None,DataSet=['all',''],DataType=['UEDGE','DataStore'],EnforceDim=True,PrintStatus=False,OverWrite:dict={},ShowLines=False):
         """Read an input file, initalize UEDGE main engine and load plasma state variables into UEDGE from last.npy file in Folder SaveDir/Casename."""
         self.Read(FileName,Initialize=False,OverWrite=OverWrite,ShowLines=ShowLines)
         self.Load('last.npy',DataSet,DataType,EnforceDim,PrintStatus)
         bbb.restart=1
+        self.Init()
+        
+    def RestoreLast(self,DataSet=['all',''],DataType=['UEDGE','DataStore'],EnforceDim=True,PrintStatus=False):
+        """Read an input file, initalize UEDGE main engine and load plasma state variables into UEDGE from last.npy file in Folder SaveDir/Casename."""
+        self.Load('last.npy',DataSet,DataType,EnforceDim,PrintStatus)
+        bbb.restart=1
         bbb.newgeo=1
         self.Init()
-        bbb.newgeo=0
+        bbb.newgeo=0    
+        
     def Initialize(self,ftol=1e20,restart=0,dtreal=1e10,SetDefaultNumerics=True):
         """
         Initialize UEDGE simulation

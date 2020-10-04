@@ -45,7 +45,7 @@ class UBoxInterpolate(UBoxGrid,UBoxIO):
         # else:
         
             xold=xold+xshift
-            return numpy.interp(xnew,xold,data)
+            return np.interp(xnew,xold,data)
         
         
     @ClassInstanceMethod

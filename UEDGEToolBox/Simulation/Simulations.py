@@ -224,7 +224,8 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
     #     self.Data=Out
 
     def GetGrid(self):
-        return self.CollectDataSet(DataSet='grid',DataType='UEDGE',RemovePackage=True)['UEDGE']
+        self.SetGrid()
+        return self.Grid
 
     def SetGrid(self,Grid=None):
         if Grid is None:
@@ -232,6 +233,8 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
             self.Grid=dict((self.RemovePkg(k),v) for k,v in Dic.items())
         else:
             self.Grid=Grid
+        if hasattr(self,'SetPsinc'):
+                   self.SetPsinc()
         
         
 
@@ -335,7 +338,10 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
             bbb.uedge_ver=uedge.__version__
         except:
             print('Cannot set Uedge version')
-    
+    @staticmethod
+    def Pandf():
+        bbb.pandf1 (-1, -1, 0, bbb.neq, 1., bbb.yl, bbb.yldot)
+        
     def Updateftol(self):
         bbb.ylodt = bbb.yl
         bbb.pandf1 (-1, -1, 0, bbb.neq, 1., bbb.yl, bbb.yldot)

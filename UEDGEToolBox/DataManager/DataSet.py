@@ -17,8 +17,8 @@ def GetDefaultDataSet()->dict:
         DefaultDataSet={}
         DefaultDataSet['plasmavars']=['te','ti','phi','ng','up','tg','ni']
         DefaultDataSet['plasmavarss']=[V+'s' for V in DefaultDataSet['plasmavars']]
-        DefaultDataSet['grid']=['nisp','ngsp','rm','zm','nx','ny','iysptrx','psi','psinormc']
-        DefaultDataSet['run']=['dtreal','dt_tot','ftol_dt','GridFileName','minu','ziin','znuclin','itermx','incpset','mfnksol','relx']
+        DefaultDataSet['grid']=['nisp','ngsp','rm','zm','nx','ny','iysptrx','psi','psinormc','simagxs','sibdrys']
+        DefaultDataSet['run']=['dtreal','dt_tot','ftol_dt','GridFileName','minu','ziin','znuclin','itermx','incpset','mfnksol']
         DefaultDataSet['regular']=DefaultDataSet['plasmavars']+DefaultDataSet['plasmavarss']+DefaultDataSet['run']+DefaultDataSet['grid']
         DefaultDataSet['plasma']=DefaultDataSet['plasmavars']+DefaultDataSet['plasmavarss']
 

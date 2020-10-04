@@ -197,14 +197,20 @@ class UBoxPlotUtils(UBoxDataParser):
         
         if XType.lower()=='psi':
                 if Grid.get('psinorm') is not None:
-                    XData=Grid['psinorm']  
+                    XData=Grid['psinorm'] 
+                elif Grid.get('psinc') is not None:
+                    XData=Grid['psinc'] 
                 else:
                     return None
-        
-        if Indexes is not None and XData is not None:        
-            XData=self._SliceDataArray(XData,Indexes[0:2])
+        if self.Verbose:print('XData:',XData,'Indexes:',Indexes)
+        if Indexes is not None and XData is not None: 
+            if XType.lower()=='psi':
+                XData=XData[Indexes[1]]
+            else:
+                XData=self._SliceDataArray(XData,Indexes[0:2])
+                XData=XData[...,Idx]
             
-        XData=XData[...,Idx]
+        
         return XData
 
     def CompactStr(self,array):

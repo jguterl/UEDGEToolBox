@@ -6,12 +6,13 @@ Created on Thu Sep 17 22:48:20 2020
 @author: jguterl
 """
 from UEDGEToolBox.DataManager.ExtData import UBoxExtData
+from UEDGEToolBox.DataManager.DataParser import UBoxDataParser
 from UEDGEToolBox.DataManager.Interpolate import UBoxInterpolate
 
 from UEDGEToolBox.Plot.PlotTest import UBoxPlotTest
 from UEDGEToolBox.DataManager.Grid import UBoxGrid
 
-
+#%%
 
 #Compare two grids
 NewGrid='/home/jguterl/Dropbox/python/Grids/base_174270_2500'
@@ -19,19 +20,59 @@ OldGrid='/home/jguterl/Dropbox/python/Grids/gridue_d3d_174270_2500'
 OldData='/home/jguterl/Dropbox/python/Grids/svpfb_nf_2019_nc57_ln4.npy'
 UBoxGrid.PlotGrid([OldGrid,NewGrid],edgecolor=['b'],zshift=[-1.6])
 
-OldD=UBoxInterpolate.ExtractData(OldData,'UEDGE')
+OldD=UBoxInterpolate.ExtractData(OldData,None)
 NewData=UBoxInterpolate.InterpolateData(OldData,OldGrid,NewGrid,DataType=None,zshift=-1.6)
-UBoxPlotTest.Plot('bbb.nis',DataType=[NewData,OldData],Grid=NewGrid)
-UBoxInterpolate.SaveData('svpfb_nf_2019_nc57_ln4_newgrid.npy',NewData)
-
-
-
-OldCoeff='/home/jguterl/Dropbox/python/Grids/transport_coeff.npy'
-NewCoeff=UBoxInterpolate.InterpolateData(OldCoeff,OldGrid,NewGrid,DataType='UEDGE',zshift=-1.6,ExcludeList=['bbb.difni'])
-UBoxInterpolate.SaveData('svpfb_nf_2019_nc57_ln4_transportcoeff_newgrid.npy',NewCoeff)
 UBoxPlotTest.ResetPlot()
+UBoxPlotTest.AddPlot('bbb.nis',DataType=OldD,Grid=OldGrid)
+UBoxPlotTest.Plot('bbb.nis',DataType=NewData,Grid=NewGrid,Refresh=False,Nrow=2)
 
-UBoxPlotTest.Plot('bbb.kye_use',DataType=OldC,Grid=OldGrid)
+UBoxInterpolate.SaveData('/home/jguterl/Dropbox/python/Grids/svpfb_nf_2019_nc57_ln4_newgrid.npy',NewData)
+#%%
+OldCoeff='/home/jguterl/Dropbox/python/Grids/transport_coeff.npy'
+OldC=UBoxInterpolate.ExtractData(OldCoeff,'UEDGE')
+NewCoeff=UBoxInterpolate.InterpolateData(OldCoeff,OldGrid,NewGrid,DataType='UEDGE',zshift=-1.6,ExcludeList=['bbb.difni'])
+UBoxInterpolate.SaveData('/home/jguterl/Dropbox/python/Grids/svpfb_nf_2019_nc57_ln4_transportcoeff_newgrid.npy',NewCoeff)
+
+UBoxPlotTest.ResetPlot()
+UBoxPlotTest.AddPlot(['bbb.kye_use','bbb.kyi_use'],DataType=OldC,Grid=OldGrid,Verbose=True,zshift=-1.6)
+UBoxPlotTest.Plot(['bbb.kye_use','bbb.kyi_use'],DataType=NewCoeff,Grid=NewGrid,Refresh=False,Nrow=2)
+
+#%%
+Data=np.loadtxt('/home/jguterl/Dropbox/python/Grids/psi_table_174270_2500.dat')
+iy=Data[:,0]
+OldPsic=Data[:,-1]
+OldPsic=np.insert(OldPsic,-1,1.16)
+OldPsic=np.insert(OldPsic,1,0.9904)
+NewG=UBoxGrid(NewGrid)
+NewG.SetPsin()
+NewPsic=NewG.Grid['psinc']
+def Interp1DTranspCoeff(OldC,OldPsic,NewPsic,idx=20):
+    Dic={}
+    for k,v in OldC.items():
+        if len(v.shape)==3:
+            Data=UBoxDataParser._SplitDataArray(v,2)
+            Data=[np.squeeze(D[idx,:]) for D in Data]
+            Name=[k+'_'+str(i) for i,d in enumerate(Data)]
+        elif len(v.shape)==2:
+            Data=[np.squeeze(v[idx,:])]
+            Name=[k]
+        else:
+            Data=[v]
+            Name=[k]
+        for kk,vv in zip(Name,Data):
+            print(kk)
+            print(vv)
+            Dic[kk]=UBoxInterpolate.Interpolate1D(OldPsic,vv,NewPsic,Verbose=True)
+    return Dic
+
+Transp1Dcoeff=Interp1DTranspCoeff(OldC,OldPsic,NewPsic,20)
+UBoxInterpolate.SaveData('/home/jguterl/Dropbox/python/Grids/svpfb_nf_2019_nc57_ln4_1Dtransportcoeff_newgrid.npy',Transp1Dcoeff)
+
+
+        
+        
+    if dif_use=OldC['bbb.dif_use'][20,1:-1,0]
+dif_use=
 # NewGrid_=ReadGridFile(NewGrid)
 # OldGrid_=ReadGridFile(OldGrid)
 # rold=OldGrid_['rm'][:,:,0]

@@ -133,7 +133,7 @@ class UBoxGrid():
                 self.ax=ax
             else:
                 self.ax=plt.gca()
-        
+        axx=self.ax
         def onpick(evt):
             if evt.artist in Pos.keys():
                 if old_artist.get('current') is not None:
@@ -152,7 +152,7 @@ class UBoxGrid():
             if evt.mouseevent.button == 3:
                 annot.set_visible(False)
                 
-            self.ax.figure.canvas.draw_idle()
+            axx.figure.canvas.draw_idle()
         old_artist={}
         Nx=len(r)
         Ny=len(r[0])
@@ -211,8 +211,9 @@ class UBoxGrid():
                     if self.Grid.get('sibdrys') is not None:
                         sibdrys=self.Grid.get('sibdrys')        
                         if simagxs!=sibdrys:
-                            self.Grid['psinc']=np.squeeze((self.Grid['psi'][0,:,0]-simagxs) / (sibdrys-simagxs))
-                        
+                            self.Grid['psincdiv']=np.squeeze((self.Grid['psi'][0,:,0]-simagxs) / (sibdrys-simagxs))
+                            nx=self.Grid['psi'].shape[0]
+                            self.Grid['psinc']=np.squeeze((self.Grid['psi'][int(nx/2),:,0]-simagxs) / (sibdrys-simagxs))
         
     @ClassInstanceMethod    
     def ReadGridFile(self,FileName:str = 'gridue')->dict:

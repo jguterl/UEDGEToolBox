@@ -11,7 +11,7 @@ from colorama import  Back, Style
 class UBoxInput():
     
     @ClassInstanceMethod     
-    def ParseInputFile(self,FilePath:str,OverWrite:dict={},ShowLines:bool=False,Vars:dict={}):
+    def ParseInputFile(self,FilePath:str,OverWrite:dict={},ShowLines:bool=False,Vars:dict={},DicG=globals()):
         try: 
             for pkg in GetListPackage():
                 exec('from uedge import '+pkg,globals(),locals())
@@ -38,5 +38,6 @@ class UBoxInput():
         except Exception as e:
             print('\n {color}>>>>>> Last line executed: {}{reset}\n'.format(L,color=Back.RED,reset=Style.RESET_ALL))
             raise e
+        DicG.update(locals())
         
         

@@ -89,5 +89,6 @@ class UBoxLauncher(UBoxProjects,UBoxRun):
 yaml.add_representer(UBoxSettings, UBoxLauncher.to_yaml0, Dumper=yaml.SafeDumper)
 yaml.add_representer(UBoxLauncher, UBoxLauncher.to_yaml0, Dumper=yaml.SafeDumper)
 yaml.add_constructor(UBoxSettings._YAMLTag, UBoxLauncher.from_yaml0, Loader=yaml.SafeLoader) 
-UBox=UBoxLauncher()    
+UBox=UBoxLauncher() 
+UBox.DicG=globals()   
 UBox.Launch()
