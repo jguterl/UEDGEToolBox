@@ -380,24 +380,29 @@ def CompareListVar(File1,File2):
 
     
 
-def MakeVarList(FileName='ListVariableThreadPrivate_final.txt',UEDGESourcePath='UEDGE/src',Verbose=False,PrintTree=False):
-#UEDGESourcePath='/home/jguterl/Dropbox/UEDGE/src'
+def MakeVarList(FileName='ListVariableThreadPrivate.txt',UEDGESourcePath='.',Verbose=False,PrintTree=False):
     Parser=UBoxParserFortran(Verbose)
-    Parser.GetFortranTree(UEDGESourcePath,ExcludeList=['grdcomp.F','comutil2.F'])
-    Parser.AnalyzeTree(IgnoreCall=['sendbdry','recvbdry','SROTMhG','b2vahl','b1vahl','intrhv'])
-    
-    IgnoreExternal=['gettime','xermshg','b2vahl','b1vahl','tick','tock']
-    IgnoreFunction=['gettime','tick','tock']
-    IgnoreCall=['xerrab','remark','freeus','gchange','system','exmain','store_neutrals','run_neutrals','run_uedge','run_eirene','run_degas2','writemcnfile','writemcnbkgd','readmcnsor','convertmcnsor','update_neutrals','scale_mcnsor','SROTMhG','xermshg','sscal','sgesl','b1vahl','intrhv','mombal','tick','tock','system_clock']
-    IgnoreVariable=[]               
-    
-    
-    Parser.Explore(EntryPoint=['oderhs','pandf1'],IgnoreCall=IgnoreCall,IgnoreExternal=IgnoreExternal,IgnoreFunction=IgnoreFunction,IgnoreVariable=IgnoreVariable)
-    if PrintTree:
-        Parser.PrintCallTree(EntryPoint=['oderhs','pandf1'],ShowVariable=True,ShowArgs=False)
-    Parser.CleanUpAssignedDic()
-    Parser.WriteListAssignedVars(FileName,ExcludeList=['dtreal','rhseval','tarvis','parvis'],AdditionalVariables=['yinc','impradloc', 'yldot_pert'])
-    return Parser
+    try:
+        Parser.GetFortranTree(UEDGESourcePath,ExcludeList=['grdcomp.F','SROTMhG.F'])
+        Parser.AnalyzeTree(IgnoreCall=['sendbdry','recvbdry','SROTMhG','b2vahl','b1vahl','intrhv'])
+        
+        IgnoreExternal=['gettime','xermshg','b2vahl','b1vahl','tick','tock','sdot']
+        IgnoreFunction=['gettime','tick','tock']
+        IgnoreCall=['xerrab','remark','freeus','gchange','system','exmain','store_neutrals','run_neutrals','run_uedge','run_eirene','run_degas2','writemcnfile','writemcnbkgd','readmcnsor','convertmcnsor','update_neutrals','scale_mcnsor','SROTMhG','xermshg','sscal','sgesl','b1vahl','intrhv','mombal','tick','tock','system_clock']
+        IgnoreVariable=[]               
+        
+        
+        Parser.Explore(EntryPoint=['oderhs','pandf1'],IgnoreCall=IgnoreCall,IgnoreExternal=IgnoreExternal,IgnoreFunction=IgnoreFunction,IgnoreVariable=IgnoreVariable)
+        if PrintTree:
+            Parser.PrintCallTree(EntryPoint=['oderhs','pandf1'],ShowVariable=True,ShowArgs=False)
+        Parser.CleanUpAssignedDic()
+        ExcludeList=['dtreal','rhseval','travis','parvis']+['yl', 'yldot00', 'ml', 'mu', 'wk','nnzmx', 'jac', 'ja', 'ia']
+        Parser.WriteListAssignedVars(FileName,ExcludeList=ExcludeList,AdditionalVariables=['yinc','impradloc', 'yldot_pert'])
+    except Exception as e:
+        print('Error:',repr(e))
+        raise e 
+    finally:
+        return Parser
 
 
           

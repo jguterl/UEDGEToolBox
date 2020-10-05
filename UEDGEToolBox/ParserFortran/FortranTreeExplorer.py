@@ -92,6 +92,8 @@ class UBoxFortranTreeExplorer(UBoxPrintFortranTree):
              self.IgnoreVariable=IgnoreVariable
          
          ParentFortranObject=self.GetParentFortranObject(EntryPoint)
+         if self.Verbose:
+             print('ParentFortranObject[CallObject]:',ParentFortranObject['CallObject'].keys())
          for CallName,CallObject in ParentFortranObject['CallObject'].items():
              if CallName not in self.IgnoreCall:
                  if self.Verbose:
@@ -119,14 +121,17 @@ class UBoxFortranTreeExplorer(UBoxPrintFortranTree):
                  self.DicAssigned['Use'].extend(ExternalObject['Use'])
                  self.Explore(ExternalObject)
                      
-    def WriteListAssignedVars(self,FileName,ExcludeList=[],AdditionalVariables=[]):               
+    def WriteListAssignedVars(self,FileName,ExcludeList=[],AdditionalVariables=[],RaiseError=False):               
         f= open(FileName,"w")
         count=1
         ListVar=[V for V in self.DicAssigned['AssignedVars'] if V not in ExcludeList]
         for VarName in ListVar:
             VarDoc=self.Doc._GetVarInfo(VarName,MatchCase=False)
             if len(VarDoc)<1:
-                raise ValueError('Cannot find variable {} in Doc'.format(VarName))
+                if RaiseError:
+                    raise ValueError('Cannot find variable {} in Doc'.format(VarName))
+                else:
+                    print('Cannot find variable {} in Doc'.format(VarName))
                 continue
             elif len(VarDoc)>1:
                  raise ValueError('Variable {} found twice in Doc'.format(VarName))
@@ -140,9 +145,8 @@ class UBoxFortranTreeExplorer(UBoxPrintFortranTree):
             count=count+1
         for VarName in AdditionalVariables:
             f.write('{}\n'.format(VarName))
-            
+            count=count+1
         f.close()
         print('List Package:',self.ListPkgVar)
         print('Number of variables:',count-1)
-        
         
