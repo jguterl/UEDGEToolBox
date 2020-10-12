@@ -5,7 +5,7 @@ Created on Wed Sep  9 15:18:16 2020
 
 @author: guterlj
 """
-
+import os,glob
 from pdb2py.readpdb import ReadPDBFile
 from UEDGEToolBox.DataManager.IO import UBoxIO
 import numpy
@@ -49,5 +49,8 @@ class UBoxPDB2Py():
                 raise ValueError('Swapping of axis for arrays of dimension >3 not implemented')
    
         return DataArray
+    
+def ConvertPDB2Py(PDBFileName,SaveFileName=None):
+     UBoxPDB2Py.PDB2Py(PDBFileName,SaveFileName)
     
     

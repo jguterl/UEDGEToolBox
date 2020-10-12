@@ -10,7 +10,7 @@ from UEDGEToolBox.DataManager.Grid import UBoxGrid
 from UEDGEToolBox.Utils.Misc import ClassInstanceMethod
 from UEDGEToolBox.Plot.Plotter import UBoxPlotter
 
-import matplotlib
+
 from matplotlib import pyplot as plt
 import numpy as np
 class UBoxPlotTest(UBoxDataParser):

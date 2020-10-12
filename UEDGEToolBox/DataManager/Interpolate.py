@@ -16,7 +16,8 @@ class UBoxInterpolate(UBoxGrid,UBoxIO):
         self.Verbose=False
         
     @staticmethod
-    def Interpolate2D(rold,zold,data,rnew,znew,zshift=0.0,rshift=0.0,method='nearest',fill_value=0,SmoothGuardCells=True,**kwargs):
+    def Interpolate2D(rold,zold,data,rnew,znew,zshift=0.0,rshift=0.0,method='nearest',\
+                      fill_value=0,SmoothGuardCells=True,**kwargs):
         if rold.shape!=data.shape or zold.shape!=data.shape:
             raise ValueError('Mismatch in shape of data and grid:{}:{}/{}'.format(data.shape,rold.shape,zold.shape))
         else:

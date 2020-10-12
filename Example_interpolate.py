@@ -12,12 +12,10 @@ from UEDGEToolBox.DataManager.Interpolate import UBoxInterpolate
 from UEDGEToolBox.Plot.PlotTest import UBoxPlotTest
 from UEDGEToolBox.DataManager.Grid import UBoxGrid
 
-#%%
-
 #Compare two grids
-NewGrid='/home/jguterl/Dropbox/python/Grids/base_174270_2500'
-OldGrid='/home/jguterl/Dropbox/python/Grids/gridue_d3d_174270_2500'
-OldData='/home/jguterl/Dropbox/python/Grids/svpfb_nf_2019_nc57_ln4.npy'
+NewGrid='/home/guterlj/simulations/UEDGE/NFBaseline/GridDir/base_174270_2500_balance'
+OldGrid='/home/guterlj/simulations/UEDGE/NFBaseline/GridDir/gridue_d3d_174270_2500'
+OldData='/home/guterlj/simulations/UEDGE/d3d_174270_2500/bas/svpfb_nf_2019_nc57_ln4_V784.npy'
 UBoxGrid.PlotGrid([OldGrid,NewGrid],edgecolor=['b'],zshift=[-1.6])
 
 OldD=UBoxInterpolate.ExtractData(OldData,None)
@@ -26,7 +24,7 @@ UBoxPlotTest.ResetPlot()
 UBoxPlotTest.AddPlot('bbb.nis',DataType=OldD,Grid=OldGrid)
 UBoxPlotTest.Plot('bbb.nis',DataType=NewData,Grid=NewGrid,Refresh=False,Nrow=2)
 
-UBoxInterpolate.SaveData('/home/jguterl/Dropbox/python/Grids/svpfb_nf_2019_nc57_ln4_newgrid.npy',NewData)
+UBoxInterpolate.SaveData('/home/guterlj/simulations/UEDGE/NFBaseline/svpfb_nf_2019_nc57_ln4_V784_base_174270_2500_balance.npy',NewData)
 #%%
 OldCoeff='/home/jguterl/Dropbox/python/Grids/transport_coeff.npy'
 OldC=UBoxInterpolate.ExtractData(OldCoeff,'UEDGE')
