@@ -332,6 +332,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
     def WhichEq(self,itrouble):
         ''' Function that displays information on the problematic equation '''
         from uedge import bbb
+        from numpy import mod
         print(">>>> Trouble making equation is for Fortran:iv={} | for python:iv={}".format(itrouble,itrouble-1))
         print(">>>> yldot={} and sfscal={} for trouble making equation".format(bbb.yldot[itrouble-1],bbb.sfscal[itrouble-1]))
         
