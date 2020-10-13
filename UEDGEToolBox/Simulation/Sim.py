@@ -11,7 +11,7 @@ try:
 except:
     pass
 
-from colorama import  Back, Style
+from colorama import  Back, Style,Fore
 from datetime import date,datetime
 #from UEDGEToolBox.DataManager.Grid import UBoxGrid
 from UEDGEToolBox.Utils.Misc import BrowserFolder,QueryYesNo,GetTimeStamp
@@ -313,106 +313,60 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         from uedge import bbb
         # Set scaling factor
         scalfac = bbb.sfscal
+        ydmax = max(abs(bbb.yldot*scalfac))
         if (bbb.svrpkg[0].decode('UTF-8').strip() != "nksol"): scalfac = 1/(bbb.yl + 1.e-30)  # for time-dep calc.
 
         # Find the fortran index of the troublemaking equation
-        itrouble=argmax(abs(bbb.yldot[:bbb.neq]))+1
-        print("** Fortran index of trouble making equation is:")
-        print(itrouble)
+        itrouble=argmax(abs(bbb.yldot[0:bbb.neq]*scalfac[0:bbb.neq]))+1
+        
+        self.WhichEq(itrouble)
+        
+        itroublenext=np.flip(np.argsort(abs(bbb.yldot[0:bbb.neq]*scalfac[0:bbb.neq])))[0:5]+1
+        print("----------------- Next trouble makers -------------------")
+        for i in itroublenext:
+            self.WhichEq(i)
+        
 
-        # Print equation information
-        print("** Number of equations solved per cell:")
-        print("numvar = {}".format(bbb.numvar))
-        print(" ")
-        iv_t = mod(itrouble-1,bbb.numvar) + 1 # Use basis indexing for equation number
-        print("** Troublemaker equation is:")
-        # Verbose troublemaker equation
-        if abs(bbb.idxte-itrouble).min()==0:
-            print('Electron energy equation: iv_t={}'.format(iv_t))
-        elif abs(bbb.idxti-itrouble).min()==0:
-            print('Ion energy equation: iv_t={}'.format(iv_t))
-        elif abs(bbb.idxphi-itrouble).min()==0:
-            print('Potential equation: iv_t={}'.format(iv_t))
-        elif abs(bbb.idxu-itrouble).min()==0:
-            for species in range(bbb.idxu.shape[2]):
-                if abs(bbb.idxu[:,:,species]-itrouble).min()==0:
-                    print('Ion momentum equation of species {}: iv_t={}'.format(species, iv_t))
-        elif abs(bbb.idxn-itrouble).min()==0:
-            for species in range(bbb.idxn.shape[2]):
-                if abs(bbb.idxn[:,:,species]-itrouble).min()==0:
-                    print('Ion density equation of species {}: iv_t={}'.format(species, iv_t))
-        elif abs(bbb.idxg-itrouble).min()==0:
-            for species in range(bbb.idxg.shape[2]):
-                if abs(bbb.idxg[:,:,species]-itrouble).min()==0:
-                    print('Gas density equation of species {}: iv_t={}'.format(species, iv_t))
-        elif abs(bbb.idxtg-itrouble).min()==0:
-            for species in range(bbb.idxtg.shape[2]):
-                if abs(bbb.idxtg[:,:,species]-itrouble).min()==0:
-                    print('Gas temperature equation of species {}: iv_t={}'.format(species, iv_t))
-        # Display additional information about troublemaker cell
-        print(" ")
-        print("** Troublemaker cell (ix,iy) is:")
-        print(bbb.igyl[itrouble-1,])
-        print(" ")
-        print("** Timestep for troublemaker equation:")
-        print(bbb.dtuse[itrouble-1])
-        print(" ")
-        print("** yl for troublemaker equation:")
-        print(bbb.yl[itrouble-1])
-        print(" ")
+
 
     def WhichEq(self,itrouble):
         ''' Function that displays information on the problematic equation '''
-        from numpy import mod,argmax
         from uedge import bbb
-        # Set scaling factor
-        scalfac = bbb.sfscal
-        if (bbb.svrpkg[0].decode('UTF-8').strip() != "nksol"): scalfac = 1/(bbb.yl + 1.e-30)  # for time-dep calc.
-
-        # Find the fortran index of the troublemaking equation
-        print("** Fortran index of trouble making equation is:")
-        print(itrouble)
-
+        print(">>>> Trouble making equation is for Fortran:iv={} | for python:iv={}".format(itrouble,itrouble-1))
+        print(">>>> yldot={} and sfscal={} for trouble making equation".format(bbb.yldot[itrouble-1],bbb.sfscal[itrouble-1]))
+        
         # Print equation information
-        print("** Number of equations solved per cell:")
-        print("numvar = {}".format(bbb.numvar))
-        print(" ")
+        print(">>>> Number of equations solved per cell:numvar = {}".format(bbb.numvar))
         iv_t = mod(itrouble-1,bbb.numvar) + 1 # Use basis indexing for equation number
-        print("** Troublemaker equation is:")
+        
         # Verbose troublemaker equation
         if abs(bbb.idxte-itrouble).min()==0:
-            print('Electron energy equation: iv_t={}'.format(iv_t))
+            Str='Electron energy equation [iv_t={}]'.format(iv_t)
         elif abs(bbb.idxti-itrouble).min()==0:
-            print('Ion energy equation: iv_t={}'.format(iv_t))
+            Str='Ion energy equation [iv_t={}]'.format(iv_t)
         elif abs(bbb.idxphi-itrouble).min()==0:
-            print('Potential equation: iv_t={}'.format(iv_t))
+            Str='Potential equation  [iv_t={}]'.format(iv_t)
         elif abs(bbb.idxu-itrouble).min()==0:
             for species in range(bbb.idxu.shape[2]):
                 if abs(bbb.idxu[:,:,species]-itrouble).min()==0:
-                    print('Ion momentum equation of species {}: iv_t={}'.format(species, iv_t))
+                    Str='Ion momentum equation of species Fortran:{} | python:{} [iv_t={}]'.format(species+1,species, iv_t)
         elif abs(bbb.idxn-itrouble).min()==0:
             for species in range(bbb.idxn.shape[2]):
                 if abs(bbb.idxn[:,:,species]-itrouble).min()==0:
-                    print('Ion density equation of species {}: iv_t={}'.format(species, iv_t))
+                    Str='Ion density equation of species Fortran:{} | python:{} [iv_t={]}'.format(species+1, species,iv_t)
         elif abs(bbb.idxg-itrouble).min()==0:
             for species in range(bbb.idxg.shape[2]):
                 if abs(bbb.idxg[:,:,species]-itrouble).min()==0:
-                    print('Gas density equation of species {}: iv_t={}'.format(species, iv_t))
+                    Str='Gas density equation of species Fortran:{} | python:{} [iv_t={}]'.format(species+1,species, iv_t)
         elif abs(bbb.idxtg-itrouble).min()==0:
             for species in range(bbb.idxtg.shape[2]):
                 if abs(bbb.idxtg[:,:,species]-itrouble).min()==0:
-                    print('Gas temperature equation of species {}: iv_t={}'.format(species, iv_t))
+                    Str='Gas temperature equation of species Fortran:{} | python:{} [iv_t={}]'.format(species+1,species, iv_t)
         # Display additional information about troublemaker cell
-        print(" ")
-        print("** Troublemaker cell (ix,iy) is:")
-        print(bbb.igyl[itrouble-1,])
-        print(" ")
-        print("** Timestep for troublemaker equation:")
-        print(bbb.dtuse[itrouble-1])
-        print(" ")
-        print("** yl for troublemaker equation:")
-        print(bbb.yl[itrouble-1])
-        print(" ")
+        print(">>>> Troublemaker equation is: \n           {style}{color}{}{reset}".format(Str,style=Style.BRIGHT,color=Fore.GREEN,reset=Style.RESET_ALL))
+        print(">>>> Troublemaker cell (ix,iy) is: Fortran:{} | python:{} \n".format(bbb.igyl[itrouble-1,],bbb.igyl[itrouble-1,]))
+        print(">>>> Timestep for troublemaker equation:".format(bbb.dtuse[itrouble-1]))
+        print(">>>> yl for troublemaker equation:{}\n".format(bbb.yl[itrouble-1]))
         
     def Restart(self,**kwargs):
         UBox.Restore(**kwargs)
@@ -475,38 +429,38 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
                             self.Status='tstop'
                             return self.Status
 
-
+                    if (bbb.ijactot>1):
 # Second loop -----------------------------------------------------------------------------------
-                    bbb.icntnunk = 1
-                    bbb.isdtsfscal = 0
-                    
-                    for ii2 in range(self.Jmax): #take ii2max steps at the present time-step
-                        if bbb.exmain_aborted==1:
-                            break
-                        bbb.ftol = self.Updateftol()
-                        self.PrintCurrentIteration(imain,ii2)
-                        try:
-                            bbb.exmain() # take a single step at the present bbb.dtreal
-                        except Exception as e:
-                            self.PrintError(e,imain,ii2)
-                            self.Status='error'
-                            return self.Status
-                        sys.stdout.flush()
-
-                        if bbb.iterm == 1 and bbb.exmain_aborted!=1:
-                            self.SaveLast() # Save data in file SaveDir/CaseName/last.npy
-                            bbb.dt_tot += bbb.dtreal
-                            self.dt_tot=bbb.dt_tot
-                            #self.TimeEvolution()
-                        else:
-                            break
-
-                        if bbb.dt_tot>=bbb.t_stop:
-                            self.PrintInfo('SUCCESS: dt_tot >= t_stop')
-                            self.SaveFinalState()
-                            self.Status='tstop'
-                            return self.Status
-# End Second loop -----------------------------------------------------------------------------------
+                        bbb.icntnunk = 1
+                        bbb.isdtsfscal = 0
+                        
+                        for ii2 in range(self.Jmax): #take ii2max steps at the present time-step
+                            if bbb.exmain_aborted==1:
+                                break
+                            bbb.ftol = self.Updateftol()
+                            self.PrintCurrentIteration(imain,ii2)
+                            try:
+                                bbb.exmain() # take a single step at the present bbb.dtreal
+                            except Exception as e:
+                                self.PrintError(e,imain,ii2)
+                                self.Status='error'
+                                return self.Status
+                            sys.stdout.flush()
+    
+                            if bbb.iterm == 1 and bbb.exmain_aborted!=1:
+                                self.SaveLast() # Save data in file SaveDir/CaseName/last.npy
+                                bbb.dt_tot += bbb.dtreal
+                                self.dt_tot=bbb.dt_tot
+                                #self.TimeEvolution()
+                            else:
+                                break
+    
+                            if bbb.dt_tot>=bbb.t_stop:
+                                self.PrintInfo('SUCCESS: dt_tot >= t_stop')
+                                self.SaveFinalState()
+                                self.Status='tstop'
+                                return self.Status
+    # End Second loop -----------------------------------------------------------------------------------
 
                 if bbb.exmain_aborted==1:
                     break

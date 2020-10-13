@@ -42,6 +42,7 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         self.ExcludeList=['ExcludeList','ListPkg','IO']+self.ListPkg
         self.CorrectTemp= 1.602176634e-19
         self.Adjustftol=False
+        self.dt_threshold=5e-10
         #self.SetVersion()
     @staticmethod
     def InitPlasma():
@@ -355,8 +356,23 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         bbb.ylodt = bbb.yl
         bbb.pandf1 (-1, -1, 0, bbb.neq, 1., bbb.yl, bbb.yldot)
         fnrm_old=math.sqrt(sum((bbb.yldot[0:bbb.neq-1]*bbb.sfscal[0:bbb.neq-1])**2))
-        return max(min(bbb.ftol_dt, 0.01*fnrm_old),bbb.ftol_min)
+        ftol_dt=bbb.ftol_dt*self.AdjustFtolTime(bbb.dtreal,self.dt_threshold)
+        if ftol_dt!=bbb.ftol_dt:
+            self.PrintInfo('Increasing ftol_dt: ftol_dt={} | bbb.ftol_dt={}'.format(ftol_dt,bbb.ftol_dt))
+        return max(min(ftol_dt, 0.01*fnrm_old),bbb.ftol_min)
     
+    @staticmethod 
+    def AdjustFtolTime(dt,dt0=5e-11,p=2.5):
+        if type(dt)!=np.ndarray:
+            if dt>dt0:
+                return 1.0
+            else:
+                return  (dt0/dt)**p       
+        else:
+                f=(dt0/dt)**p
+                f[(dt>dt0)]=1.0
+                return f
+
     @staticmethod
     def Resetftol():
         bbb.ftol_min=1e-10
