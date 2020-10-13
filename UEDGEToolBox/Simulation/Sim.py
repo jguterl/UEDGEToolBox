@@ -307,7 +307,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         """
         bbb.ueinit()
         
-    def Itrouble(self):
+    def Itrouble(self,OtherTrouble=False):
         ''' Function that displays information on the problematic equation '''
         from numpy import mod,argmax
         from uedge import bbb
@@ -320,11 +320,11 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         itrouble=argmax(abs(bbb.yldot[0:bbb.neq]*scalfac[0:bbb.neq]))+1
         
         self.WhichEq(itrouble)
-        
-        itroublenext=np.flip(np.argsort(abs(bbb.yldot[0:bbb.neq]*scalfac[0:bbb.neq])))[0:5]+1
-        print("----------------- Next trouble makers -------------------")
-        for i in itroublenext:
-            self.WhichEq(i)
+        if OtherTrouble:
+            itroublenext=np.flip(np.argsort(abs(bbb.yldot[0:bbb.neq]*scalfac[0:bbb.neq])))[0:5]+1
+            print("----------------- Next trouble makers -------------------")
+            for i in itroublenext:
+                self.WhichEq(i)
         
 
 
@@ -333,11 +333,11 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         ''' Function that displays information on the problematic equation '''
         from uedge import bbb
         from numpy import mod
-        print(">>>> Trouble making equation is for Fortran:iv={} | for python:iv={}".format(itrouble,itrouble-1))
-        print(">>>> yldot={} and sfscal={} for trouble making equation".format(bbb.yldot[itrouble-1],bbb.sfscal[itrouble-1]))
+        
+
         
         # Print equation information
-        print(">>>> Number of equations solved per cell:numvar = {}".format(bbb.numvar))
+        
         iv_t = mod(itrouble-1,bbb.numvar) + 1 # Use basis indexing for equation number
         
         # Verbose troublemaker equation
@@ -354,7 +354,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         elif abs(bbb.idxn-itrouble).min()==0:
             for species in range(bbb.idxn.shape[2]):
                 if abs(bbb.idxn[:,:,species]-itrouble).min()==0:
-                    Str='Ion density equation of species Fortran:{} | python:{} [iv_t={]}'.format(species+1, species,iv_t)
+                    Str='Ion density equation of species Fortran:{} | python:{} [iv_t={}]'.format(species+1, species,iv_t)
         elif abs(bbb.idxg-itrouble).min()==0:
             for species in range(bbb.idxg.shape[2]):
                 if abs(bbb.idxg[:,:,species]-itrouble).min()==0:
@@ -364,10 +364,14 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
                 if abs(bbb.idxtg[:,:,species]-itrouble).min()==0:
                     Str='Gas temperature equation of species Fortran:{} | python:{} [iv_t={}]'.format(species+1,species, iv_t)
         # Display additional information about troublemaker cell
-        print(">>>> Troublemaker equation is: \n           {style}{color}{}{reset}".format(Str,style=Style.BRIGHT,color=Fore.GREEN,reset=Style.RESET_ALL))
-        print(">>>> Troublemaker cell (ix,iy) is: Fortran:{} | python:{} \n".format(bbb.igyl[itrouble-1,],bbb.igyl[itrouble-1,]))
-        print(">>>> Timestep for troublemaker equation:".format(bbb.dtuse[itrouble-1]))
+        idx=bbb.igyl[itrouble-1,]
+        print(">>>> Troublemaker equation is: \n           {style}{color}{} at ix={}; iy={}{reset}\n".format(Str,idx[0],idx[1],style=Style.BRIGHT,color=Fore.GREEN,reset=Style.RESET_ALL))
+        print(">>>> Trouble making equation for Fortran:iv={} | for python:iv={}".format(itrouble,itrouble-1))
+        print(">>>> Timestep for troublemaker equation: {}".format(bbb.dtuse[itrouble-1]))
         print(">>>> yl for troublemaker equation:{}\n".format(bbb.yl[itrouble-1]))
+        print(">>>> yldot={} and sfscal={} for trouble making equation".format(bbb.yldot[itrouble-1],bbb.sfscal[itrouble-1]))
+        print(">>>> Number of equations solved per cell:numvar = {}".format(bbb.numvar))
+        
         
     def Restart(self,**kwargs):
         UBox.Restore(**kwargs)
