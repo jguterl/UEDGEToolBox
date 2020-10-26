@@ -233,6 +233,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         bbb.restart=1
         self.Init()
         
+        
     def RestoreLast(self,DataSet=['all',''],DataType=['UEDGE','DataStore'],EnforceDim=True,PrintStatus=False):
         """Read an input file, initalize UEDGE main engine and load plasma state variables into UEDGE from last.npy file in Folder SaveDir/Casename."""
         self.Load('last.npy',DataSet,DataType,EnforceDim,PrintStatus)
@@ -374,7 +375,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         
         
     def Restart(self,**kwargs):
-        UBox.Restore(**kwargs)
+        self.Restore(**kwargs)
         return self.Cont()
     
     def RunTime(self,**kwargs):

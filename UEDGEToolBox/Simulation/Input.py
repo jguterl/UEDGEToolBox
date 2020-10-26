@@ -40,4 +40,7 @@ class UBoxInput():
             raise e
         DicG.update(locals())
         
+    def WriteInput():
+        pass
+        
         
