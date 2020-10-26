@@ -94,15 +94,20 @@ class UBoxDataFilter():
         List=ExtraVars.copy()
         if DataSet is None:
             List.extend(self.GetDataSet(DataSet))
-        else:    
-            if type(DataSet)==tuple:
-                List.extend(self.GetDataSet(DataSet))
-            else:
+        elif type(DataSet)==tuple:
+                List.extend([v for v in DataSet])
+        else:
                 if type(DataSet)==str:
                     DataSet=[DataSet]
-                for Set in DataSet:
-                    List.extend(self.GetDataSet(Set))
-          
+                if type(DataSet)==list:
+                    for Set in DataSet:
+                        if type(Set)==tuple:
+                            List.extend(list(Set))
+                        else:
+                            List.extend(self.GetDataSet(Set))
+                
+                if type(DataSet)==tuple:
+                          List.extend(list(DataSet))                      
         List=list(dict.fromkeys(List))
         List.sort()
         if self.Verbose: print('Output MakeVarList for DataSet "{}" : {} with ExtraVars:{}'.format(DataSet,List,ExtraVars))
@@ -144,13 +149,15 @@ class UBoxDataFilter():
     @ClassInstanceMethod    
     def SelectData(self,Data:dict,DataSet=None,DataType='UEDGE')->dict:
         """Return a subset of a dictionary with keys set by a loader."""
-        if  type(DataType)!=str:
-            raise ValueError('DataType must be a string')
 
         if DataType=='' or DataType is None:
-            return {}
+            D=Data
+        else:
+            D=Data.get(DataType)
+            
+            
         
-        D=Data.get(DataType)
+        
         if D is not None and type(D)==dict: # Check if a DataType entry is present and if it is a dictionary and get variables with a packagename 
             DataOut=dict((k,v) for (k,v) in D.items() if type(v)!=dict)
         else:
@@ -198,14 +205,18 @@ class UBoxDataFilter():
            >>> AddPackage('ccc.te')
            'ccc.te'
         """
-        if VarName.count('.')>0:
-            return VarName
-        if DataType=='' or DataType is None:
-            return VarName
-        elif DataType=='UEDGE':
-            return self.AddUEDGEPackage(VarName)
-        elif DataType!='':
-            return '{}.{}'.format(DataType,VarName)
+        if type(VarName)==list:
+            return [self.AddPackage(V,DataType) for V in VarName]
+        else:
+            if VarName.count('.')>0:
+                return VarName
+            if DataType=='' or DataType is None:
+                return VarName
+            elif DataType=='UEDGE':
+                return self.AddUEDGEPackage(VarName)
+            elif DataType!='':
+                return '{}.{}'.format(DataType,VarName)
+        
         
     @ClassInstanceMethod                      
     def AddUEDGEPackage(self,VarName:str or list,Verbose:bool=False)->list:
@@ -386,7 +397,7 @@ class UBoxDataSet(UBoxDataFilter):
 
         """ 
         if self.Verbose:
-            print('Getting DataSet:',DataSet)
+            print('Getting DataSet:',DataSet,type(DataSet))
         if DataSet is None:
             L=self._DataSets.get(self.DefaultDataSetName)
             if L is None:

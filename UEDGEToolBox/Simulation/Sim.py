@@ -176,7 +176,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
     #     self.Tag.update(Tag)
     #     FilePath=Source(FileName,Folder=Folder,Enforce=False,Verbose=self.Verbose,CaseName=self.CaseName,CheckExistence=False,CreateFolder=True)
     #     self.IO.SaveLog(FilePath,Str,self.Tag)
-    def Load(self,FileName=None,DataSet=['all',''],DataType=['UEDGE','DataStore'],Ext='*.npy',EnforceDim=True,PrintStatus=False,Folder='SaveDir'):
+    def Load(self,FileName=None,DataSet=['all'],DataType=['UEDGE'],Ext='*.npy',EnforceDim=True,PrintStatus=False,Folder='SaveDir'):
         """
         Wrapper method to load UEDGE simulation data
         See Load method of UEDGEIO class
@@ -232,6 +232,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         self.Load('last.npy',DataSet,DataType,EnforceDim,PrintStatus)
         bbb.restart=1
         self.Init()
+        
         
     def RestoreLast(self,DataSet=['all',''],DataType=['UEDGE','DataStore'],EnforceDim=True,PrintStatus=False):
         """Read an input file, initalize UEDGE main engine and load plasma state variables into UEDGE from last.npy file in Folder SaveDir/Casename."""
@@ -374,7 +375,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         
         
     def Restart(self,**kwargs):
-        UBox.Restore(**kwargs)
+        self.Restore(**kwargs)
         return self.Cont()
     
     def RunTime(self,**kwargs):
