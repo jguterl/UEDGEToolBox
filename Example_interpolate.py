@@ -21,8 +21,8 @@ UBoxGrid.PlotGrid([OldGrid,NewGrid],edgecolor=['b'],zshift=[-1.6])
 OldD=UBoxInterpolate.ExtractData(OldData,None)
 NewData=UBoxInterpolate.InterpolateData(OldData,OldGrid,NewGrid,DataType=None,zshift=-1.6)
 UBoxPlotTest.ResetPlot()
-UBoxPlotTest.AddPlot('bbb.nis',DataType=OldD,Grid=OldGrid)
-UBoxPlotTest.Plot('bbb.nis',DataType=NewData,Grid=NewGrid,Refresh=False,Nrow=2)
+UBoxPlotTest.AddPlot('bbb.tes',DataType=OldD,Grid=OldGrid)
+UBoxPlotTest.Plot('bbb.tes',DataType=NewData,Grid=NewGrid,Refresh=False,Nrow=2)
 
 UBoxInterpolate.SaveData('/home/guterlj/simulations/UEDGE/NFBaseline/svpfb_nf_2019_nc57_ln4_V784_base_174270_2500_balance.npy',NewData)
 #%%
