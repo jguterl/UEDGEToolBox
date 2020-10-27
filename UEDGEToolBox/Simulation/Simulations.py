@@ -492,4 +492,68 @@ class UBoxSimExt():
                 irun+=1
             else:
                 print('Exiting ramp... Need to add a routine to restart after dtkill')
-                return    
+                return 
+            
+            
+            
+            
+    def RestartRamp(self,FileName=None,RampVariable:dict,RampValue:list or np.array,dtreal_start:float=1e-8,tstop:float=10):
+        """
+
+        Args:
+            Data (dict): ebbb.g. Dic={'ncore[0]':np.linspace(1e19,1e20,10),'pcoree':np.linspace(0.5e6,5e6,10)}
+            Istart (int, optional): DESCRIPTION. Defaults to 0.
+            dtreal_start (float, optional): DESCRIPTION. Defaults to 1e-8.
+            tstop (float, optional): DESCRIPTION. Defaults to 10.
+
+        Returns:
+            None.
+
+        """
+        self.Read(FileName)
+        BaseCaseName=self.CaseName
+        for i in RampValue:
+            StrParams=['{}_{:2.2e}'.format(RampVariable.split('[')[0],RampValue)]
+            self.CaseName=BaseCaseName+'_'.join(StrParams)
+            self.SetPackageParams(Params)
+            FileName='final_state_ramp_'+'_'.join(ListValueParams)
+            FilePath=UEDGEToolBox.Source(FileName,Folder='SaveDir',Enforce=False,Verbose=Verbose,CaseName=self.CaseName,CheckExistence=False)
+            if CheckFileExist(FilePath):
+                print('File {} exists. Skipping this ramp step...'.format(FilePath))
+                continue
+            if self.Load(FileName)
+        #Check if all data arrays have the same length
+        List=[v.shape for (k,v) in Data.items()]
+        if not all(L == List[0] for L in List):
+            print('Arrays of different size... Cannot proceed...')
+            return
+        Istop=List[0][0]
+        if Istart>=Istop:
+            print('Istart={} >= Istop={}: cannot proceed...'.format(Istart,Istop))
+        irun=Istart
+        # Loop over data
+
+        BaseCaseName=self.CaseName
+        while irun <Istop:
+
+            # 1) Set data in uedge packages
+            Params=dict((k,v[irun]) for (k,v) in Data.items())
+            ListParams=['{}:{}'.format(k,v) for k,v in Params.items()]
+            StrParams=['{}_{:2.2e}'.format(k.split('[')[0],v) for k,v in Params.items()]
+
+            self.CaseName=BaseCaseName+'_'.join(StrParams)
+            self.SetPackageParams(Params)
+
+            # 2) Run until completion
+            self.PrintInfo('RAMP i={}/{} : '.format(irun,Istop)+','.join(ListParams),color=Back.MAGENTA)
+            
+
+            Status=self.Cont(dt_tot=0,dtreal=dtreal_start,t_stop=tstop)
+            if Status=='tstop':
+                ListValueParams=['{:2.2e}'.format(v) for k,v in Params.items()]
+                self.Save('final_state_ramp_'+'_'.join(ListValueParams))
+                self.SaveLog('logramp','{}:{}::'.format(self.Tag['Date'],self.Tag['Time'])+';'.join(ListParams))
+                irun+=1
+            else:
+                print('Exiting ramp... Need to add a routine to restart after dtkill')
+                return  

@@ -6,6 +6,7 @@ Created on Wed Sep  2 00:22:26 2020
 @author: jguterl
 """
 from UEDGEToolBox.Utils.Misc import ClassInstanceMethod,SetClassArgs
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 from UEDGEToolBox.Plot.PlotUtils import UBoxPlotUtils
 import matplotlib
 from matplotlib import pyplot as plt
@@ -95,7 +96,7 @@ class UBoxPlot2D(UBoxPlotUtils):
             
     
     @ClassInstanceMethod 
-    def PlotData2D(self,r,z,data,Label=None,ColorMap='jet',DataLim=None,DataScale='linear',**kwargs):
+    def PlotData2D(self,r,z,data,Label=None,ColorMap='jet',DataLim=None,DataScale='linear',ScaleFactor=1.0,ColorBar=True,**kwargs):
         """Plot UEDGE grid."""
         if ColorMap not in matplotlib.pyplot.colormaps():
             print('ColorMap {} not defined in matplotlib...')
@@ -104,8 +105,9 @@ class UBoxPlot2D(UBoxPlotUtils):
             return
         #print(kwargs.get('ax'))
         ax=self.GetAx(**kwargs)
+        #cax=self.GetCAx(**kwargs)
         #print(kwargs.get('ax'))
-          
+        data=ScaleFactor*data  
         (Collec,Dic,Pos,Obj)=self.CreatePatchCollection(r,z,data,Label,DataLim,DataScale,ColorMap)
         
         if Collec is not None:
@@ -124,7 +126,7 @@ class UBoxPlot2D(UBoxPlotUtils):
                     annot.set_visible(False)    
 
             #print(kwargs.get('ax'))
-            ax.add_collection(Collec)
+            PlotHandle=ax.add_collection(Collec)
         
             ax.set_ylim(z.min(),z.max())
             ax.set_xlim(r.min(),r.max())
@@ -132,18 +134,20 @@ class UBoxPlot2D(UBoxPlotUtils):
                                 bbox=dict(boxstyle="round", fc="w"),
                                 arrowprops=dict(arrowstyle="->"))
             annot.set_visible(False)
-             
-            ax.figure.canvas.mpl_connect('pick_event', onpick)   
+            ax.set_aspect('equal') 
+            ax.figure.canvas.mpl_connect('pick_event', onpick)
+            if ColorBar:
+                self.AddColorBar(Collec,ax,**kwargs)
+                
+            return PlotHandle 
+        else:
+            return None
             
     @ClassInstanceMethod     
-    def AddColorBar(self,Collec):
-        aspect = 20
-        pad_fraction = 0.5
+    def AddColorBar(self,Collec,ax,LocationColorBar='right',SizeColorBar='5%',PadColorBar=0.3,**kwargs):
         divider = make_axes_locatable(ax)
-        width = axes_size.AxesY(ax, aspect=1./aspect)
-        pad = axes_size.Fraction(pad_fraction, width)
-        cax = divider.append_axes("right", size=width, pad=pad)
-        plt.colorbar(Collec,ax=cax,norm=norm)  
+        cax = divider.append_axes(LocationColorBar, SizeColorBar, PadColorBar)
+        ax.figure.colorbar(Collec,cax=cax)
         
     @ClassInstanceMethod 
     def SetAx(self):

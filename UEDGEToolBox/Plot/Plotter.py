@@ -16,56 +16,31 @@ import numpy as np
 #@UBoxPreFix()   
 class UBoxPlotter(UBoxPlot2D,UBoxPlot1D,UBoxPlotUtils):
  
-    def __init__(self,Dic={},**kwargs):
+    def __init__(self,**kwargs):
         self.Grid=kwargs.get('Grid')
         self.Data=kwargs.get('Data')
         self.zshift=kwargs.get('zshift')
         self.rshift=kwargs.get('rshift')
         self.Indexes=kwargs.get('Indexes')
+        self.DataPlotName=kwargs.get('DataPlotName')
+        self.DataName=kwargs.get('DataName')
         self.Label=kwargs.get('Label')
-        self.Label=kwargs.get('Tag')
+        self.Tag=kwargs.get('Tag')
         self.OriginalShape=kwargs.get('OriginalShape')
         self.ax=kwargs.get('ax')
+        self.cax=kwargs.get('cax')
         if kwargs.get('Verbose') is None:
             self.Verbose=False
         else:
             self.Verbose=kwargs.get('Verbose')
         self.XType=kwargs.get('XType')
-        self.LabelPlot=''
-        self.ImportDic(Dic)
-        
-        # for (k,v) in kwargs.items():
-        #     if hasattr(self,k):
-        #         set(self,k,v)
+        self.PlotLabel=kwargs.get('PlotLabel')
+        self.PlotTitle=kwargs.get('PlotTitle')
+        self.PlotType=None
+        self.XLabel=None
+        self.YLabel=None
            
-        
-    def ImportDic(self,Dic):
-        
-        if type(Dic)==dict:
-            Data=Dic.get('Data')
-            Indexes=Dic.get('Indexes')
-            OriginalShape=Dic.get('OriginalShape')
-            Label=Dic.get('Label')
-            
-            if Data is not None:
-                self.Data=Data
-            else:
-                self.Data=None
-                
-            if Indexes is not None:
-                self.Indexes=Indexes
-            else:
-                self.Indexes=None
-                
-            if OriginalShape is not None:
-                self.OriginalShape=OriginalShape
-            else:
-                self.OriginalShape=None
-                
-            if Label is not None:
-                self.Label=Label
-            else:
-                self.Label=None
+    
 
    
     def CheckDataDim(self,Data):
@@ -94,19 +69,27 @@ class UBoxPlotter(UBoxPlot2D,UBoxPlot1D,UBoxPlotUtils):
             return 'No grid loaded in plotter object. Cannot plot'
         
         
-        self.BuildLabelPlot(**kwargs)
+        #self.BuildLabelPlot(**kwargs)
         DataDim=self.GetDim(self.Data)
         if self.Verbose: print('PlotData:DataDim:{}, Label:{},Data:{} Grid:{}' .format(DataDim,self.Label,self.Data.shape,self.Grid['rm'].shape))
         if DataDim==1:
-            self.Plotter1D(**kwargs)
+            self.PlotHandle = self.Plotter1D(**kwargs)
+            self.PlotType ='1D'
         elif DataDim==2:
-            self.Plotter2D(**kwargs)
+            self.PlotHandle = self.Plotter2D(**kwargs)
+            self.PlotType = '2D'
         elif DataDim>2:
             print('Cannot plot data in more than two dimensions.')  
-            self.PlotHandle=None
+            self.PlotHandle = None
+            self.PlotType = None
         elif DataDim<1:
             print('Cannot plot empty data.')  
-            self.PlotHandle=None
+            self.PlotHandle = None
+            self.PlotType = None
+        self.SetPlotLabel(**kwargs)
+        self.SetPlotTitle(**kwargs)
+        self.SetXLabel(**kwargs)
+        self.SetXLabel(**kwargs)
         self.SetAxProperties(**kwargs)
     # def GetData(Name):
         
@@ -178,35 +161,58 @@ class UBoxPlotter(UBoxPlot2D,UBoxPlot1D,UBoxPlotUtils):
         (r,z)=self.PreparePlot2DGrid(**kwargs)
         if r is None or z is None:
             print('Problem with the grid in plotter. Grid:',self.Grid)
+            return None
         else:
-            self.PlotHandle=self.PlotData2D(r,z,self.Data,**kwargs)
-            self.SetPlotLabel(**kwargs)
+            PlotHandle = self.PlotData2D(r,z,self.Data,**kwargs)
+            return PlotHandle
 
-    def SetPlotLabel(self,PlotLabel='se',ExtraLabel=None,**kwargs):
-        self.BuildLabelPlot(ExtraLabel)
-        if self.ax is None or PlotLabel is None:
-            return
-        
-        if PlotLabel=='title':
-                self.ax.set_title(self.LabelPlot)
-        else:    
-            BBox=kwargs.get('BBox')
-            if BBox is None:
-                BBox = dict(boxstyle='round', facecolor='blue', alpha=0.5) 
+    def SetPlotLabel(self,PlotLabel=None,PlotLabelLocation:str or tuple='se',PlotLabelFontSize=10,**kwargs):
+        if PlotLabel is None:
+            PlotLabel = self.PlotLabel
+        if self.ax is None:
+           return 
                 
-            PlotLabelFontSize=kwargs.get('PlotLabelFontSize')
-            if PlotLabelFontSize is None:
-                PlotLabelFontSize=10
-                
-            Pos=dict(se=(0,1),sw=(1,1),nw=(1,0),ne=(0,0))    
+        Pos=dict(se=(1,0),sw=(0,0),nw=(0,1),ne=(1,1))    
             
-            if type(PlotLabel)==str:
-                PosLabel=Pos.get(PlotLabel)
-            elif type(PlotLabel)==tuple:
-                PosLabel=PlotLabel
-            print('PosLabel',PosLabel,'K',self.LabelPlot)
-            if PosLabel is not None:
-                self.HandlePlotLabel=self.ax.text(PosLabel[0], PosLabel[1], self.LabelPlot, transform=self.ax.transAxes, fontsize=PlotLabelFontSize,verticalalignment='bottom',horizontalalignment='right', bbox=BBox)
+        if type(PlotLabelLocation)==str:
+           PlotLabelLocation=Pos.get(PlotLabelLocation)
+        PlotLabelLocation
+        self.HandlePlotLabel=self.ax.text(PlotLabelLocation[0], PlotLabelLocation[1], PlotLabel,transform=self.ax.transAxes, fontsize=PlotLabelFontSize,verticalalignment='bottom',horizontalalignment='right')
+        
+        
+        
+    def SetXLabel(self,XLabel=None,XLabelFontSize=10,**kwargs):
+        if XLabel is None:
+            if self.XLabel is None:
+                if self.PlotType == '2D':
+                    self.XLabel='R [m]'
+        else:
+            self.XLabel=XLabel
+        
+        self.ax.set_xlabel(self.XLabel,fontsize=XLabelFontSize)
+        
+    def SetYLabel(self,YLabel=None,YLabelFontSize=10,**kwargs):
+        if YLabel is None:
+            if self.YLabel is None:
+                if self.PlotType == '2D':
+                    self.YLabel='R [m]'
+        else:
+            self.YLabel=YLabel
+        
+        self.ax.set_ylabel(self.YLabel,fontsize=YLabelFontSize)    
+        
+           
+    def SetPlotTitle(self,PlotTitle=None,TitleFontSize=10,**kwargs):
+        if PlotTitle is None:
+            if self.PlotTitle is not None:
+                PlotTitle = self.PlotTitle
+            else:
+                return
+        if self.ax is None:
+           return 
+        else:
+            self.ax.set_title(PlotTitle.TitleFontSize)
+        
     
             
             # self.ax.set_title('{}:({},{})'.format(self.Label,self.CompactStr(self.Indexes[0]),self.CompactStr(self.Indexes[1])))
@@ -237,4 +243,21 @@ class UBoxPlotter(UBoxPlot2D,UBoxPlot1D,UBoxPlotUtils):
             
     def SetGrid(self,Grid):
         self.Grid=Grid
+        
+    def SetSharedXAxis(self,ax):
+        if not self.IsBottom:
+            self.ax.set_xlabel(None)
+            self.ax.xaxis.set_ticklabels([])
+        if self.ax != ax:
+            self.ax.get_shared_x_axes().join(self.ax, ax)
+        self.ax.set_xlim(ax.get_xlim())
+            
+    
+    def SetSharedYAxis(self,ax):
+        if not self.IsLeft:
+            self.ax.set_ylabel(None)
+            self.ax.yaxis.set_ticklabels([])
+        if self.ax != ax:
+            self.ax.get_shared_y_axes().join(self.ax, ax)
+        self.ax.set_ylim(ax.get_ylim())
             

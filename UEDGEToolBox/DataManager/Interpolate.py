@@ -12,8 +12,8 @@ from UEDGEToolBox.DataManager.Grid import UBoxGrid
 from UEDGEToolBox.DataManager.IO import UBoxIO
 
 class UBoxInterpolate(UBoxGrid,UBoxIO):
-    def __init__(self):
-        self.Verbose=False
+    def __init__(self,Verbose=False):
+        self.Verbose=Verbose
         
     @staticmethod
     def Interpolate2D(rold,zold,data,rnew,znew,zshift=0.0,rshift=0.0,method='nearest',\
@@ -94,8 +94,7 @@ class UBoxInterpolate(UBoxGrid,UBoxIO):
             if DataType is None:
                 OldData=Data
             else:
-                OldData=Data[DataType]
-        print('hello')        
+                OldData=Data[DataType]      
         return self._Interpolate2DData(OldData,OldGrid,NewGrid,**kwargs)
     
     @ClassInstanceMethod

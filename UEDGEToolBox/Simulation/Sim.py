@@ -220,11 +220,14 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
             (Data,Tag)=self.LoadData(FilePath)
             ListLoadedVar=self.ImportData(Data,DataSet,DataType,EnforceDim,PrintStatus,ReturnList=True)
             print('Loaded variables:',ListLoadedVar)
+            return True
         else:
-            raise IOError("Cannot read the file '{}'... Exiting".format(FileName))
+            print("Cannot read the file '{}'... Exiting".format(FileName))
+            return False
 
-        
+        self.Init()
         bbb.restart=1
+        
         
     def Restore(self,FileName:str or None=None,DataSet=['all',''],DataType=['UEDGE','DataStore'],EnforceDim=True,PrintStatus=False,OverWrite:dict={},ShowLines=False):
         """Read an input file, initalize UEDGE main engine and load plasma state variables into UEDGE from last.npy file in Folder SaveDir/Casename."""
@@ -240,7 +243,15 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         bbb.restart=1
         bbb.newgeo=1
         self.Init()
-        bbb.newgeo=0    
+        bbb.newgeo=0 
+        
+    def RestoreFinal(self,DataSet=['all'],DataType=['UEDGE'],EnforceDim=True,PrintStatus=False):
+        """Read an input file, initalize UEDGE main engine and load plasma state variables into UEDGE from last.npy file in Folder SaveDir/Casename."""
+        self.Load('final_state.npy',DataSet,DataType,EnforceDim,PrintStatus)
+        bbb.restart=1
+        bbb.newgeo=1
+        self.Init()
+        bbb.newgeo=0  
         
     def Initialize(self,ftol=1e20,restart=0,dtreal=1e10,SetDefaultNumerics=True):
         """

@@ -13,20 +13,21 @@ from UEDGEToolBox.Plot.PlotTest import UBoxPlotTest
 from UEDGEToolBox.DataManager.Grid import UBoxGrid
 
 #Compare two grids
-NewGrid='/global/homes/j/jguterl/simulations/Projects/NFBaseline/GridDir/base_174270_2500_high'
-OldGrid='/global/homes/j/jguterl/simulations/Projects/testbaseline/gridue'
-OldData='/global/homes/j/jguterl/simulations/Projects/testbaseline/SaveDir/nf_2019_nc57_ln4_test2/final_state.npy'
+NewGrid='/home/jguterl/cori/simulations/Projects/NFBaseline/GridDir/base_174270_2500_high'
+OldGrid='/home/jguterl/cori/simulations/Projects/testbaseline/gridue'
+OldData='/home/jguterl/cori/simulations/Projects/testbaseline/SaveDir/nf_2019_nc57_ln4_test2/final_state.npy'
 UBoxGrid.PlotGrid([OldGrid,NewGrid],edgecolor=['b'],zshift=[-1.6])
 
 OldD=UBoxInterpolate.ExtractData(OldData,DataType='UEDGE')
-NewData=UBoxInterpolate.InterpolateData(OldData,OldGrid,NewGrid,DataType='UEDGE',zshift=-1.6,VarList=['bbb.tes','bbb.nis','bbb.tis','bbb.phis','bbb.ngs','bbb.ups'])
+NewData=UBoxInterpolate.InterpolateData(OldData,OldGrid,NewGrid,DataType='UEDGE',zshift=-1.6,VarList=['bbb.tes','bbb.nis','bbb.tis','bbb.phis','bbb.ngs','bbb.ups'],method='cubic')
+from UEDGEToolBox.Plot.PlotTest import UBoxPlotTest
 UBoxPlotTest.ResetPlot()
-UBoxPlotTest.AddPlot('bbb.tes',DataType=OldD,Grid=OldGrid)
-UBoxPlotTest.Plot('bbb.tes',DataType=NewData,Grid=NewGrid,Refresh=False,Nrow=2)
+UBoxPlotTest.AddPlot('bbb.nis',DataType=OldD,Grid=OldGrid,zshift=-1.6,ScaleFactor=1,ColorBar=True,ShareCLim=False)
+UBoxPlotTest.Plot('bbb.nis',DataType=NewData,Grid=NewGrid,Refresh=False,Nrow=2,ScaleFactor=1,ColorBar=True,ShareCLim=False)
 
 
 #UBoxInterpolate.SaveData('/home/guterlj/simulations/UEDGE/NFBaseline/svpfb_nf_2019_nc57_ln4_V784_base_174270_2500_balance.npy',NewData)
-NewData={'UEDGE':NewData}
+#NewData={'UEDGE':NewData}
 UBoxInterpolate.SaveData('/global/homes/j/jguterl/simulations/Projects/NFBaseline/data_base_174270_2500_high.npy',NewData)
 #%%
 OldCoeff='/home/jguterl/Dropbox/python/Grids/transport_coeff.npy'

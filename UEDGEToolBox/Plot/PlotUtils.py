@@ -48,6 +48,16 @@ class UBoxPlotUtils(UBoxDataParser):
         self.ax.set_visible(True)
         return self.ax
     
+    def GetCAx(self,**kwargs):
+        cax=kwargs.get('cax')
+        if cax is None:
+            if not hasattr(self,'cax') or self.cax is None:
+                self.cax=None
+        else:
+            self.cax=cax
+        self.cax.set_visible(True)
+        return self.ax
+    
     def CheckIndexes(self):
         if not hasattr(self,'Indexes'):
             self.Indexes={}
@@ -241,5 +251,5 @@ class UBoxPlotUtils(UBoxDataParser):
             
         self.LabelPlot='{}:{} \n {}'.format(Project,CaseName,self.Label)
         if ExtraLabel is not None:
-            self.LabelPlot='{} \n {}'.format(self.LabelPlot,ExtraLabel)    
+            self.PlotLabel='{} \n {}'.format(self.LabelPlot,ExtraLabel)    
             

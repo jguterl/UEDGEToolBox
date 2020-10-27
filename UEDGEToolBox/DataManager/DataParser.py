@@ -233,7 +233,6 @@ class UBoxDataParser():
     def _CheckArrayIndex(DataShape:tuple,Indexes:list):
         
         for i,(S,I) in enumerate(zip(DataShape,Indexes)):
-            print(I)
             if I.size!=0 and I.max()>S-1:
                 return 'Out of bound index for dimension {}: {} > 0:{}'.format(i,I.max(),S-1)
             if I.size!=0 and I.min()<0:
@@ -250,7 +249,6 @@ class UBoxDataParser():
         OffsetDim=0
         for i,Idx in enumerate(Indexes):
             if Idx.size>0:
-                print(i,Idx,DataOut.shape)
                 DataOut=np.take(DataOut,Idx, axis=i+OffsetDim)
                 if Idx.size==1 and len(DataOut.shape)<len(DataArray.shape): #prevent axis out of bound when Dataout is squeeze
                     OffsetDim=OffsetDim-1
@@ -396,7 +394,7 @@ class UBoxDataParser():
         length = len(DataFields)
         if any([len(lst) != length for lst in [DataFields,IdxSlice,DimSlice,DimSplit]]):
             L=[len(lst) for lst in [DataFields,IdxSlice,DimSlice,DimSplit]]
-            print(L)
+            if self.Verbose: print(L)
             raise IOError('Mismatch in length of DataFields(len={}),IdxSlice(len={}),DimSlice(len={}) and DimSplit(len={})'.format(L[0],L[1],L[2],L[3]))
             
         
