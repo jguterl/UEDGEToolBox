@@ -169,15 +169,15 @@ class UBoxIO(UBoxDataSet,UBoxLoader):
        
          
     @ClassInstanceMethod        
-    def ImportData(self,Data:dict,DataSet=['all'],DataType=['UEDGE'],EnforceDim:bool=True,PrintStatus=True,ReturnList=False,ExtData=False)->list:
+    def ImportData(self,Data:dict,DataSet=['all'],DataType='UEDGE',EnforceDim:bool=True,PrintStatus=True,ReturnList=False,ExtData=False)->list:
         """Import data from a dictionary into either UEDGE package or into a dictionary as attribute of an object."""
         if type(Data)!=dict:
             raise ValueError('Data must be a dictionary'
                              )
-        if type(DataType)==str:
-            DataType=[DataType]
+        if type(DataSet)==str or tuple:
             DataSet=[DataSet]
-            
+        if type(DataType)==str:
+            DataType=[DataType for D in DataSet]
         if self.Verbose:
             print('Data available for import:',list(Data.keys()))   
         

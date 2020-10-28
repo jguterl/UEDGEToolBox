@@ -21,12 +21,15 @@ from UEDGEToolBox.DataManager.Grid import UBoxGrid
 from UEDGEToolBox.Utils.Misc import LsFolder,GetListPackage,GetPlatform,GetTimeStamp,ClassInstanceMethod,SetClassArgs
 from UEDGEToolBox.ProjectManager.Projects import UBoxSingleProject
 from UEDGEToolBox.DataManager.DataSet import UBoxDataSet,UBoxDataFilter
+from UEDGEToolBox.Utils.Doc import UBoxDoc
 from UEDGEToolBox.ProjectManager.Source import UBoxSource
 #from UEDGEToolBox.Plot import *
 #from UEDGEToolBox.Projects import *
 #from UEDGEToolBox.IO import *
 
+         
         
+       
 class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
     def __init__(self,  Verbose=False,*args, **kwargs):
         # Import Uedge packages as attribute of the class instance
@@ -36,14 +39,58 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         self.ListPkg=GetListPackage()
         self.Verbose=Verbose
         print('Loaded Packages:',self.ListPkg)
-        # for pkg in self.ListPkg:
-        #     exec('self.' + pkg + '=' + pkg,globals(),locals())
-        #self.IO=UBoxIO(self.Verbose)
         self.ExcludeList=['ExcludeList','ListPkg','IO']+self.ListPkg
-        self.CorrectTemp= 1.602176634e-19
-        self.Adjustftol=False
-        self.dt_threshold=5e-10
-        #self.SetVersion()
+        self.SetDefault()
+        
+        
+    def SetDefault(self):
+           self.UBoxRunDefaults={'Jmax':5,'Imax':3000, 'mult_dt_fwd':3.4,'mult_dt_bwd':3,'ISave':10,'SaveSim':True}
+           self.UBoxRunDefaults['dt_ftol_threshold']=5e-10
+           self.UBoxRunDefaults['CorrectTemp']= 1.602176634e-19
+           self.UBoxRunDefaults['Adjustftol']=False
+           self.UBoxRunDefaults['ContCall']=True
+           self.bbbRunDefault={}
+           self.bbbRunDefault['dtreal']=1e-8
+           self.bbbRunDefault['t_stop']=10
+           self.bbbRunDefault['ftol_min']=1e-10
+           self.bbbRunDefault['ftol_dt']=1e-9
+           self.bbbRunDefault['itermx']=25
+           self.bbbRunDefault['rlx']=0.9
+           self.bbbRunDefault['incpset']=10
+           self.bbbRunDefault['isbcwdt']=1
+           
+           self.SetPackageParams(self.bbbRunDefault)
+           self.SetPackageParams(self.UBoxRunDefaults,self,AddAttr=True)
+       
+    def SetPackageParams(self,Dic:dict,Pkg=None,AddAttr=False):
+        """
+        Args:
+            Verbose (TYPE, optional): DESCRIPTION. Defaults to False.
+
+        Returns:
+            None.
+        """
+        if Pkg is None:
+            if not hasattr(self,'Doc') or self.Doc is None:
+                self.Doc = UBoxDoc()
+            for A,V in Dic.items():
+                if V is not None:
+                    Result=self.Doc.Search(A.split('[')[0],Exact=True,Silent=True)
+                    if len(Result)>0:
+                        Pkg=Result[0]['Package']
+                        comm='{}.{}={}'.format(Pkg,A,V)
+                        if self.Verbose: print(comm)
+                        try:
+                            exec(comm,globals(),globals())
+                        except:
+                            print('Cannot set {}.{} = {} '.format(Pkg,A,V))
+                    else:
+                        print('No package found for {}'.format(A))
+        else:
+            for A,V in Dic.items():
+                    if AddAttr or hasattr(Pkg,A):
+                        setattr(Pkg,A,V)
+                    
     @staticmethod
     def InitPlasma():
         bbb.ngs=1e14; bbb.ng=1e14
@@ -52,6 +99,8 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         bbb.tes=bbb.ev;   bbb.te=bbb.ev
         bbb.tis=bbb.ev;   bbb.ti=bbb.ev
         bbb.phis=0;bbb.phi=0
+        
+        
     def PrintTimeStepModif(self,i):
         self.PrintInfo('New time-step = {:.4E}'.format(bbb.dtreal),color=Back.MAGENTA)
     
@@ -356,7 +405,7 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         bbb.ylodt = bbb.yl
         bbb.pandf1 (-1, -1, 0, bbb.neq, 1., bbb.yl, bbb.yldot)
         fnrm_old=math.sqrt(sum((bbb.yldot[0:bbb.neq-1]*bbb.sfscal[0:bbb.neq-1])**2))
-        ftol_dt=bbb.ftol_dt*self.AdjustFtolTime(bbb.dtreal,self.dt_threshold)
+        ftol_dt=bbb.ftol_dt*self.AdjustFtolTime(bbb.dtreal,self.dt_ftol_threshold)
         if ftol_dt!=bbb.ftol_dt:
             self.PrintInfo('Increasing ftol_dt: ftol_dt={} | bbb.ftol_dt={}'.format(ftol_dt,bbb.ftol_dt))
         return max(min(ftol_dt, 0.01*fnrm_old),bbb.ftol_min)
@@ -496,8 +545,15 @@ class UBoxSimExt():
             
             
             
-            
-    def RestartRamp(self,FileName=None,RampVariable:dict,RampValue:list or np.array,dtreal_start:float=1e-8,tstop:float=10):
+    def SetParamValue(self,Param,Value):
+        Line='{}={}'.format(Param,Value)
+        try:
+            exec(Line,globals(),locals())
+            self.InputFileLines.append(Line)
+        except Exception as e:
+            print('\n {color}>>>>>> Last line executed: {}{reset}\n'.format(L,color=Back.RED,reset=Style.RESET_ALL))
+        
+    def RestartRamp(self,FileName=None,RampVariable:dict=None,RampValue:list or np.array=None,dtreal_start:float=1e-8,tstop:float=10):
         """
 
         Args:
@@ -511,17 +567,18 @@ class UBoxSimExt():
 
         """
         self.Read(FileName)
+        self.RestorePlasmaFinal()
         BaseCaseName=self.CaseName
-        for i in RampValue:
-            StrParams=['{}_{:2.2e}'.format(RampVariable.split('[')[0],RampValue)]
+        for V in RampValue:
+            StrParams=['{}_{:2.2e}'.format(RampVariable.split('[')[0],V)]
             self.CaseName=BaseCaseName+'_'.join(StrParams)
-            self.SetPackageParams(Params)
+            self.SetParamValue(RampVariable,V)
             FileName='final_state_ramp_'+'_'.join(ListValueParams)
             FilePath=UEDGEToolBox.Source(FileName,Folder='SaveDir',Enforce=False,Verbose=Verbose,CaseName=self.CaseName,CheckExistence=False)
             if CheckFileExist(FilePath):
                 print('File {} exists. Skipping this ramp step...'.format(FilePath))
                 continue
-            if self.Load(FileName)
+            #if self.Load(FileName)
         #Check if all data arrays have the same length
         List=[v.shape for (k,v) in Data.items()]
         if not all(L == List[0] for L in List):

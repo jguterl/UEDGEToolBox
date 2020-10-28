@@ -34,8 +34,13 @@ class UBoxInterpolate(UBoxGrid,UBoxIO):
                 
             values = data.flatten()
             
-            
-            return interpolate.griddata(oldpoints, values, newpoints, method=method, fill_value=fill_value, rescale=False).reshape(rnew.shape)
+            NewData=interpolate.griddata(oldpoints, values, newpoints, method=method, fill_value=fill_value, rescale=False).reshape(rnew.shape)
+            if SmoothGuardCells:
+                NewData[0,:]=NewData[1,:]
+                NewData[-1,:]=NewData[-2,:]
+                NewData[:,0]=NewData[:,1]
+                NewData[:,-1]=NewData[:,-2]
+            return NewData
 
 
     @staticmethod    
@@ -127,6 +132,18 @@ class UBoxInterpolate(UBoxGrid,UBoxIO):
         OldData=dict((k,v) for k,v in OldData.items() if k not in ExcludeList and k in IncludeList)
         
         return self.Interpolate2DData(OldData,OldGrid,NewGrid,**kwargs)
+    
+    @staticmethod
+    def CleanUpData(Data,TeMin=0.1,DensMin=1e10):
+        TeMin=TeMin*1.6e-19
+        for k,v in Data.items():
+            if 'te' in k or 'ti' in k:
+                v[(v<=TeMin)]=TeMin
+            if 'ng' in k or 'ni' in k:
+                v[(v<=DensMin)]=DensMin
+            
+            
+                
     
     
     

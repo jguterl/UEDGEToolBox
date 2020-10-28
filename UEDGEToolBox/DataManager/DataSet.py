@@ -169,7 +169,8 @@ class UBoxDataFilter():
             VarList=list(DataOut.keys())
         else:
             VarList=self.MakeVarList(DataSet)
-            
+        
+        VarList=self.AddPackage(VarList,DataType)    
         if DataType=='UEDGE':
              DataOut=dict((self.AddPackage(k,DataType),v) for (k,v) in DataOut.items() if self.FindPackage(k) in ListUEDGEPkg and k in VarList)
         else:
@@ -385,7 +386,7 @@ class UBoxDataSet(UBoxDataFilter):
     #     return List
     
     @ClassInstanceMethod        
-    def GetDataSet(self,DataSet:str or list):
+    def GetDataSet(self,DataSet:str or list,Pkg=None):
         """
         Get the list of variables from a dataset.
 
@@ -402,17 +403,19 @@ class UBoxDataSet(UBoxDataFilter):
             L=self._DataSets.get(self.DefaultDataSetName)
             if L is None:
                 L=[]
-            return L
         if type(DataSet)==tuple:
-            return list(DataSet)
+            L=list(DataSet)
         else:
-            S=self._DataSets.get(DataSet.lower())
-            if S is not None:
-                return S
-            else:
+            L=self._DataSets.get(DataSet.lower())
+            if L is None:
                 if DataSet!='':
                     print('Dataset "{}" is unknow. Have datasets been loaded? '.format(DataSet))
-                return []
+                    L=[]
+                    
+
+        L=self.AddPackage(L,Pkg)
+        
+        return L
     
     @staticmethod
     def SaveDataSet(self):

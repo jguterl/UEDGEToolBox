@@ -21,7 +21,6 @@ from UEDGEToolBox.ProjectManager.Settings import UBoxSettings
 from UEDGEToolBox.Utils.Doc import UBoxDoc
 from UEDGEToolBox.DataManager.ExtData import UBoxExtData
 from UEDGEToolBox.DataManager.Grid import UBoxGrid
-from UEDGEToolBox.Simulation.RunSim import UBoxRun
 from UEDGEToolBox.Simulation.Sim import UBoxSim
 from matplotlib import pyplot as plt 
 #from UEDGEToolBox.Grid import *
@@ -32,7 +31,7 @@ except Exception as e:
     print('Cannot load UEDGE... ',repr(e))
     
 #@UBoxPrefix
-class UBoxLauncher(UBoxProjects,UBoxRun):
+class UBoxLauncher(UBoxProjects,UBoxSim):
     """Class handling the initialization and loading of UEDGEToolBox.
     
     Example:

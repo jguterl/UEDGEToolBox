@@ -16,12 +16,47 @@ from datetime import date,datetime
 #from UEDGEToolBox.DataManager.Grid import UBoxGrid
 from UEDGEToolBox.Utils.Misc import BrowserFolder,QueryYesNo,GetTimeStamp
 #from UEDGEToolBox.ProjectManager.Projects import UBoxSingleProject
-from UEDGEToolBox.Simulation.Simulations import UBoxSimUtils
+from UEDGEToolBox.Simulation.SimUtils import UBoxSimUtils
 from UEDGEToolBox.Simulation.Input import UBoxInput
 from UEDGEToolBox.DataManager.IO import UBoxIO
 from UEDGEToolBox.Plot.PlotTest import UBoxPlotTest
 import numpy as np
 class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
+    """ Main class to run an UEDGE simulation.
+
+        This class contains methods to run, save and restore UEDGE simulation.
+        An instance of this class "Sim" is automatically created when the module uedge is imported.
+        This class is derived from UEDGESimBase, which containes the method Run() which is the equilent of rdrundt/rdcondt and Show
+    
+        Methods:
+    
+        Example:
+        Examples can be given using either the ``Example`` or ``Examples``
+        sections. Sections support any reStructuredText formatting, including
+        literal blocks::
+    
+            $ python example_google.py
+    
+    Section breaks are created by resuming unindented text. Section breaks
+    are also implicitly created anytime a new section starts.
+    
+    Attributes:
+        module_level_variable1 (int): Module level variables may be documented in
+            either the ``Attributes`` section of the module docstring, or in an
+            inline docstring immediately following the variable.
+    
+            Either form is acceptable, but the two should not be mixed. Choose
+            one convention to document module level variables and be consistent
+            with it.
+    
+    Todo:
+        * For module TODOs
+        * You have to also use ``sphinx.ext.todo`` extension
+    
+    .. _Google Python Style Guide:
+       http://google.github.io/styleguide/pyguide.html
+
+    """
     CaseName=None
     Verbose=False
     CurrentProject=None
@@ -30,18 +65,13 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         super().__init__()
         self.CaseName=None
         self.Description='None'
-        ListBefore=list(self.__dict__.keys())
-        self.mult_dt_fwd=3.4
-        self.mult_dt_bwd=3
+        #ListBefore=list(self.__dict__.keys())
         self._iSave=1
-        self.ISave=10
-        self.Imax=500
-        self.Jmax=5
-        self.SaveSim=True
-        ListAfter=list(self.__dict__.keys())
-        self.ListRunSettings=[k for k in ListAfter if k not in ListBefore]
+        
+        #ListAfter=list(self.__dict__.keys())
+        #self.ListRunSettings=[k for k in ListAfter if k not in ListBefore]
          
-    def Read(self,FileName=None,Initialize=False,Filter:str='*',OverWrite:dict={},ShowLines=False,Vars={},DicG=globals(),**kwargs)->None:
+    def Read(self,FileName=None,Filter:str='*',ExtraCommand:list=[],ShowLines=False,Vars={},DicG=globals(),**kwargs)->None:
         """
         Parse and execute sequentialy a python script input file (*.py).
 
@@ -96,9 +126,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         print('Reading file {} '.format(FilePath))
         self.CurrentInputFile=FilePath
         
-        self.ParseInputFile(FilePath,OverWrite,ShowLines,Vars,DicG)
-        if Initialize:
-            self.Initialize()
+        self.ParseInputFile(FilePath,ExtraCommand,ShowLines,Vars,DicG)
         return True
             
             
@@ -176,7 +204,9 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
     #     self.Tag.update(Tag)
     #     FilePath=Source(FileName,Folder=Folder,Enforce=False,Verbose=self.Verbose,CaseName=self.CaseName,CheckExistence=False,CreateFolder=True)
     #     self.IO.SaveLog(FilePath,Str,self.Tag)
-    def Load(self,FileName=None,DataSet=['all'],DataType=['UEDGE'],Ext='*.npy',EnforceDim=True,PrintStatus=False,Folder='SaveDir'):
+    def LoadPlasma(self):
+        pass
+    def Load(self,FileName=None,DataSet=['all'],DataType=['UEDGE'],Ext='*.npy',EnforceDim=True,PrintStatus=False,Folder='SaveDir',Init=True):
         """
         Wrapper method to load UEDGE simulation data
         See Load method of UEDGEIO class
@@ -224,9 +254,9 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         else:
             print("Cannot read the file '{}'... Exiting".format(FileName))
             return False
-
-        self.Init()
-        bbb.restart=1
+        if Init:
+            self.Init()
+            bbb.restart=1
         
         
     def Restore(self,FileName:str or None=None,DataSet=['all',''],DataType=['UEDGE','DataStore'],EnforceDim=True,PrintStatus=False,OverWrite:dict={},ShowLines=False):
@@ -399,13 +429,11 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
             Status='mainloop'|'tstop'|'dtkill'|'aborted'
 
         """
-
+        self.SetPackageParams(kwargs,self)
         bbb.exmain_aborted=0
         self.PrintInfo('----Starting Main Loop ----')
+        
         while bbb.exmain_aborted==0:
-
-
-            
 # Main loop-----------------------------------------------
             for imain in range(self.Imax):
                 
@@ -415,7 +443,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
                 self.Controlftol()
                 bbb.ftol = self.Updateftol()
                 
-                
+                self.ApplyRunTimeModifier(**kwargs)
 
                 self.PrintTimeStepModif(imain)
 
@@ -448,7 +476,8 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
 
                     if (bbb.ijactot>1):
 # Second loop -----------------------------------------------------------------------------------
-                        bbb.icntnunk = 1
+                        if self.ContCall:                       
+                            bbb.icntnunk = 1
                         bbb.isdtsfscal = 0
                         
                         for ii2 in range(self.Jmax): #take ii2max steps at the present time-step
@@ -506,3 +535,27 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
 # End of main loop -------------------------------------------------------- --------------------------------
         if bbb.exmain_aborted==1: self.Status='aborted'
         return self.Status
+    
+    @staticmethod
+    def RobustStart(dt_threshold=1e-6, mult_dt_bwd=1.5,mult_dt_fwd=1.25,Jmax=0):
+        
+         def Func(self):
+             if dt_threshold>bbb.dtreal:
+                 self.Jmax=self.UBoxRunDefaults['Jmax']
+                 self.mult_dt_bwd=self.UBoxRunDefaults['mult_dt_bwd']
+                 self.mult_dt_fwd=self.UBoxRunDefaults['mult_dt_fwd']
+             else:
+                 self.Jmax=Jmax
+                 self.mult_dt_bwd=mult_dt_bwd
+                 self.mult_dt_fwd=mult_dt_fwd
+                
+        
+         return Func 
+    
+    def ApplyRunTimeModifier(self,Modifier:list or None  =None, **kwargs):
+        if Modifier is not None:
+            if type(Modifier)!=list:
+                Modifier=list[Modifier]
+            for M in Modifier:
+                    M(self)
+                    
