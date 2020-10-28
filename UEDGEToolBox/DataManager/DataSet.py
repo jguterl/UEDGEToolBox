@@ -67,7 +67,7 @@ class UBoxDataFilter():
         return Data
     
     @ClassInstanceMethod
-    def MakeVarList(self,DataSet:str or None or list or tuple=None,ExtraVars:list=[]):
+    def MakeVarList(self,DataSet:str or None or list or tuple=None,VarList=[],ExtraVars:list=[]):
         """
         Return a list of variable names from a dataset and/or a tuple of variable names or a list of dataset/tuple.
         
@@ -104,7 +104,10 @@ class UBoxDataFilter():
                         if type(Set)==tuple:
                             List.extend(list(Set))
                         else:
-                            List.extend(self.GetDataSet(Set))
+                            if Set=='all':
+                                List.Extend(VarList)
+                            else:
+                                List.extend(self.GetDataSet(Set))
                 
                 if type(DataSet)==tuple:
                           List.extend(list(DataSet))                      
@@ -149,7 +152,7 @@ class UBoxDataFilter():
     @ClassInstanceMethod    
     def SelectData(self,Data:dict,DataSet=None,DataType='UEDGE')->dict:
         """Return a subset of a dictionary with keys set by a loader."""
-
+        
         if DataType=='' or DataType is None:
             D=Data
         else:
@@ -164,11 +167,8 @@ class UBoxDataFilter():
             DataOut=dict((k,v) for (k,v) in Data.items() if type(v)!=dict)
             
         ListUEDGEPkg=GetListPackage()
-        
-        if DataSet=='all':
-            VarList=list(DataOut.keys())
-        else:
-            VarList=self.MakeVarList(DataSet)
+    
+        VarList=self.MakeVarList(DataSet,VarList=list(DataOut.keys()))
         
         VarList=self.AddPackage(VarList,DataType)    
         if DataType=='UEDGE':
