@@ -105,7 +105,7 @@ class UBoxDataFilter():
                             List.extend(list(Set))
                         else:
                             if Set=='all':
-                                List.Extend(VarList)
+                                List.extend(VarList)
                             else:
                                 List.extend(self.GetDataSet(Set))
                 
