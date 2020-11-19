@@ -45,11 +45,12 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         
     def SetDefault(self):
            self.UBoxRunDefaults={'Jmax':5,'Imax':3000, 'mult_dt_fwd':3.4,'mult_dt_bwd':3,'ISave':10,'SaveSim':True}
-           self.UBoxRunDefaults['dt_ftol_threshold']=5e-10
+           self.UBoxRunDefaults['dt_ftol_threshold']=5e-11
            self.UBoxRunDefaults['CorrectTemp']= 1.602176634e-19
            self.UBoxRunDefaults['Adjustftol']=False
            self.UBoxRunDefaults['ContCall']=True
            self.bbbRunDefault={}
+           self.bbbRunDefault['dt_tot']=0
            self.bbbRunDefault['dtreal']=1e-8
            self.bbbRunDefault['t_stop']=10
            self.bbbRunDefault['ftol_min']=1e-10
@@ -61,7 +62,11 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
            
            self.SetPackageParams(self.bbbRunDefault)
            self.SetPackageParams(self.UBoxRunDefaults,self,AddAttr=True)
-       
+    
+    def SetUEDGEParams(self,Dic:dict):
+        Dic=dict((k,v) for k,v in Dic.items() if k in list(self.bbbRunDefault.keys()))
+        self.SetPackageParams(Dic)
+        
     def SetPackageParams(self,Dic:dict,Pkg=None,AddAttr=False):
         """
         Args:
@@ -79,7 +84,7 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
                     if len(Result)>0:
                         Pkg=Result[0]['Package']
                         comm='{}.{}={}'.format(Pkg,A,V)
-                        if self.Verbose: print(comm)
+                        if self.Verbose: print('Setting {}'.format(comm))
                         try:
                             exec(comm,globals(),globals())
                         except:
@@ -89,6 +94,8 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         else:
             for A,V in Dic.items():
                     if AddAttr or hasattr(Pkg,A):
+                        if self.Verbose:
+                            print('Setting {}.{}={}'.format(Pkg,A,V))
                         setattr(Pkg,A,V)
                     
     @staticmethod
@@ -368,11 +375,6 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
 
     def SetCaseName(self,CaseName):
         self.CaseName=CaseName
-        try:
-            from uedge import bbb
-            bbb.CaseName=CaseName
-        except:
-            pass
 
     def GetCaseName(self):
         try:
@@ -411,7 +413,7 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         return max(min(ftol_dt, 0.01*fnrm_old),bbb.ftol_min)
     
     @staticmethod 
-    def AdjustFtolTime(dt,dt0=5e-11,p=2.5):
+    def AdjustFtolTime(dt,dt0=1e-11,p=2.5):
         if type(dt)!=np.ndarray:
             if dt>dt0:
                 return 1.0
@@ -464,7 +466,8 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
                         self.Changeftol(1/self.CftolMult)
                         self.CftolCount-=1
             
-            self.dtreal_bkp=bbb.dtreal    
+            self.dtreal_bkp=bbb.dtreal 
+            
     
         
 
@@ -473,144 +476,4 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
     
 
 
-class UBoxSimExt():
-    def WideSave(self):
-        self.SaveInputSomewhere()
-        self.Save()
-    def TimeEvolution(self):
-        """
-        Allow the evolution of UEDGE settings in time. Set by SetTimeEvolution(). Print a log of values associated with files
-
-        Returns:
-            None.
-
-        """
-        pass
-        #for k,v in self.TimeParameters:
-
-            #bbb.dt_tot    
-    def RunRamp(self,Data:dict,Istart:int=0,dtreal_start:float=1e-8,tstop:float=10):
-        """
-
-        Args:
-            Data (dict): ebbb.g. Dic={'ncore[0]':np.linspace(1e19,1e20,10),'pcoree':np.linspace(0.5e6,5e6,10)}
-            Istart (int, optional): DESCRIPTION. Defaults to 0.
-            dtreal_start (float, optional): DESCRIPTION. Defaults to 1e-8.
-            tstop (float, optional): DESCRIPTION. Defaults to 10.
-
-        Returns:
-            None.
-
-        """
-
-        #Check if all data arrays have the same length
-        List=[v.shape for (k,v) in Data.items()]
-        if not all(L == List[0] for L in List):
-            print('Arrays of different size... Cannot proceed...')
-            return
-        Istop=List[0][0]
-        if Istart>=Istop:
-            print('Istart={} >= Istop={}: cannot proceed...'.format(Istart,Istop))
-        irun=Istart
-        # Loop over data
-
-        BaseCaseName=self.CaseName
-        while irun <Istop:
-
-            # 1) Set data in uedge packages
-            Params=dict((k,v[irun]) for (k,v) in Data.items())
-            ListParams=['{}:{}'.format(k,v) for k,v in Params.items()]
-            StrParams=['{}_{:2.2e}'.format(k.split('[')[0],v) for k,v in Params.items()]
-
-            self.CaseName=BaseCaseName+'_'.join(StrParams)
-            self.SetPackageParams(Params)
-
-            # 2) Run until completion
-            self.PrintInfo('RAMP i={}/{} : '.format(irun,Istop)+','.join(ListParams),color=Back.MAGENTA)
-            FileName='final_state_ramp_'+'_'.join(ListValueParams)
-            FilePath=UEDGEToolBox.Source(FileName,Folder='SaveDir',Enforce=False,Verbose=Verbose,CaseName=self.CaseName,CheckExistence=False)
-            if CheckFileExist(FilePath):
-                print('File {} exists. Skipping this ramp step...'.format(FilePath))
-                continue
-
-            Status=self.Cont(dt_tot=0,dtreal=dtreal_start,t_stop=tstop)
-            if Status=='tstop':
-                ListValueParams=['{:2.2e}'.format(v) for k,v in Params.items()]
-                self.Save('final_state_ramp_'+'_'.join(ListValueParams))
-                self.SaveLog('logramp','{}:{}::'.format(self.Tag['Date'],self.Tag['Time'])+';'.join(ListParams))
-                irun+=1
-            else:
-                print('Exiting ramp... Need to add a routine to restart after dtkill')
-                return 
-            
-            
-            
-    def SetParamValue(self,Param,Value):
-        Line='{}={}'.format(Param,Value)
-        try:
-            exec(Line,globals(),locals())
-            self.InputFileLines.append(Line)
-        except Exception as e:
-            print('\n {color}>>>>>> Last line executed: {}{reset}\n'.format(L,color=Back.RED,reset=Style.RESET_ALL))
-        
-    def RestartRamp(self,FileName=None,RampVariable:dict=None,RampValue:list or np.array=None,dtreal_start:float=1e-8,tstop:float=10):
-        """
-
-        Args:
-            Data (dict): ebbb.g. Dic={'ncore[0]':np.linspace(1e19,1e20,10),'pcoree':np.linspace(0.5e6,5e6,10)}
-            Istart (int, optional): DESCRIPTION. Defaults to 0.
-            dtreal_start (float, optional): DESCRIPTION. Defaults to 1e-8.
-            tstop (float, optional): DESCRIPTION. Defaults to 10.
-
-        Returns:
-            None.
-
-        """
-        self.Read(FileName)
-        self.RestorePlasmaFinal()
-        BaseCaseName=self.CaseName
-        for V in RampValue:
-            StrParams=['{}_{:2.2e}'.format(RampVariable.split('[')[0],V)]
-            self.CaseName=BaseCaseName+'_'.join(StrParams)
-            self.SetParamValue(RampVariable,V)
-            FileName='final_state_ramp_'+'_'.join(ListValueParams)
-            FilePath=UEDGEToolBox.Source(FileName,Folder='SaveDir',Enforce=False,Verbose=Verbose,CaseName=self.CaseName,CheckExistence=False)
-            if CheckFileExist(FilePath):
-                print('File {} exists. Skipping this ramp step...'.format(FilePath))
-                continue
-            #if self.Load(FileName)
-        #Check if all data arrays have the same length
-        List=[v.shape for (k,v) in Data.items()]
-        if not all(L == List[0] for L in List):
-            print('Arrays of different size... Cannot proceed...')
-            return
-        Istop=List[0][0]
-        if Istart>=Istop:
-            print('Istart={} >= Istop={}: cannot proceed...'.format(Istart,Istop))
-        irun=Istart
-        # Loop over data
-
-        BaseCaseName=self.CaseName
-        while irun <Istop:
-
-            # 1) Set data in uedge packages
-            Params=dict((k,v[irun]) for (k,v) in Data.items())
-            ListParams=['{}:{}'.format(k,v) for k,v in Params.items()]
-            StrParams=['{}_{:2.2e}'.format(k.split('[')[0],v) for k,v in Params.items()]
-
-            self.CaseName=BaseCaseName+'_'.join(StrParams)
-            self.SetPackageParams(Params)
-
-            # 2) Run until completion
-            self.PrintInfo('RAMP i={}/{} : '.format(irun,Istop)+','.join(ListParams),color=Back.MAGENTA)
-            
-
-            Status=self.Cont(dt_tot=0,dtreal=dtreal_start,t_stop=tstop)
-            if Status=='tstop':
-                ListValueParams=['{:2.2e}'.format(v) for k,v in Params.items()]
-                self.Save('final_state_ramp_'+'_'.join(ListValueParams))
-                self.SaveLog('logramp','{}:{}::'.format(self.Tag['Date'],self.Tag['Time'])+';'.join(ListParams))
-                irun+=1
-            else:
-                print('Exiting ramp... Need to add a routine to restart after dtkill')
-                return  
+  

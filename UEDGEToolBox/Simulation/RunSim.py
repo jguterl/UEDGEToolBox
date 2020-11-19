@@ -84,13 +84,31 @@ def TogglePlasma():
     bbb.isupon[0]=Toggle(bbb.isupon[0])
     bbb.istion=Toggle(bbb.istion)
     bbb.isteon=Toggle(bbb.isteon)
-
+# def ThresholdDens():
+#     for i in range(com.nisp):bbb.ni[(bbb.ni[:,:,i]<bbb.nzbackg[i]),i]=bbb.nzbackg[i]
+#     for i in range(com.ngsp):bbb.ng[(bbb.ng[:,:,i]<bbb.ngbackg[i]),i]=bbb.ngbackg[i]
+#     for i in range(com.nisp):bbb.nis[(bbb.nis[:,:,i]<bbb.nzbackg[i]),i]=bbb.nzbackg[i]
+#     for i in range(com.ngsp):bbb.ngs[(bbb.ng[:,:,i]<bbb.ngbackg[i]),i]=bbb.ngbackg[i]
 def TurnOffPlasma():
     bbb.isnion[0]=0
     bbb.isupon[0]=0
     bbb.istion=0
     bbb.isteon=0
 
+def OnlyCoreOn():
+    bbb.isnioffxy=1
+    bbb.isngoffxy=1
+    bbb.isphioffxy=1
+    bbb.istioffxy=1
+    bbb.isteoffxy=1
+    bbb.isupoffxy=1
+    
+    bbb.isnioffxy[:,0:com.iysptrx+1,:]=0
+    bbb.isupoffxy[:,0:com.iysptrx+1,:]=0
+    bbb.isngoffxy[:,0:com.iysptrx+1,:]=0
+    bbb.istioffxy[:,0:com.iysptrx+1]=0
+    bbb.isteoffxy[:,0:com.iysptrx+1]=0
+    bbb.isphioffxy[:,0:com.iysptrx+1]=0
 def TurnOnPlasma():
     bbb.isnion[0]=1
     bbb.isupon[0]=1

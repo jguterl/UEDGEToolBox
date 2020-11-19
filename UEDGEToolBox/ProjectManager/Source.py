@@ -41,7 +41,9 @@ class UBoxSource():
                 
             if CaseName is not None and Folder!='RootDir':
                 ObjectDir=os.path.join(ObjectDir,CaseName)
-            
+            elif CaseName is None and Folder=='SaveDir':
+                if self.CaseName is not None:
+                    ObjectDir=os.path.join(ObjectDir,self.CaseName)
             
         elif Folder is None:
             ObjectDir=None
@@ -51,9 +53,11 @@ class UBoxSource():
         if FileName is None:
             return ObjectDir
         
-        
+        if self.Verbose: print('ObjectDir:',ObjectDir)
         if ObjectDir is not None:
+            
             if not os.path.exists(ObjectDir) and CreateFolder:
+                print('Creating folder:{}'.format(ObjectDir))
                 os.mkdir(ObjectDir)
             FilePath=os.path.join(os.path.abspath(os.path.expanduser(ObjectDir)),os.path.expanduser(FileName))
         else:

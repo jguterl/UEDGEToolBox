@@ -17,11 +17,12 @@ from datetime import date,datetime
 from UEDGEToolBox.Utils.Misc import BrowserFolder,QueryYesNo,GetTimeStamp
 #from UEDGEToolBox.ProjectManager.Projects import UBoxSingleProject
 from UEDGEToolBox.Simulation.SimUtils import UBoxSimUtils
+from UEDGEToolBox.Simulation.SimExt import UBoxSimExt
 from UEDGEToolBox.Simulation.Input import UBoxInput
 from UEDGEToolBox.DataManager.IO import UBoxIO
 from UEDGEToolBox.Plot.PlotTest import UBoxPlotTest
 import numpy as np
-class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
+class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest,UBoxSimExt):
     """ Main class to run an UEDGE simulation.
 
         This class contains methods to run, save and restore UEDGE simulation.
@@ -67,6 +68,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         self.Description='None'
         #ListBefore=list(self.__dict__.keys())
         self._iSave=1
+        self._imain=0
         
         #ListAfter=list(self.__dict__.keys())
         #self.ListRunSettings=[k for k in ListAfter if k not in ListBefore]
@@ -138,9 +140,6 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
             bbb.restart=1
         else:
             bbb.restart=0
-        for k,v in kwargs.items():
-            if hasattr(self,k):
-                setattr(self,k,v)
         return self.RunTime(**kwargs)
 
         
@@ -204,9 +203,10 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
     #     self.Tag.update(Tag)
     #     FilePath=Source(FileName,Folder=Folder,Enforce=False,Verbose=self.Verbose,CaseName=self.CaseName,CheckExistence=False,CreateFolder=True)
     #     self.IO.SaveLog(FilePath,Str,self.Tag)
-    def LoadPlasma(self):
-        pass
-    def Load(self,FileName=None,DataSet=['all'],DataType=['UEDGE'],Ext='*.npy',EnforceDim=True,PrintStatus=False,Folder='SaveDir',Init=True):
+    def LoadPlasma(self,FileName=None,**kwargs):
+        return self.Load(FileName=FileName,DataSet=['plasmavarss','plasmavars'],DataType='UEDGE',**kwargs)
+    
+    def Load(self,FileName=None,DataSet=['all'],DataType=['UEDGE'],Ext='*.npy',EnforceDim=True,PrintStatus=False,Folder='SaveDir',Init=True,CaseName=None):
         """
         Wrapper method to load UEDGE simulation data
         See Load method of UEDGEIO class
@@ -226,10 +226,9 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         """
         
         
-        if hasattr(self,'CaseName'):
-            CaseName=self.CaseName
-        else:
-            CaseName=None
+        if CaseName is None:
+            if hasattr(self,'CaseName'):
+                CaseName=self.CaseName
             
         if hasattr(self,'CurrentProject'):
             Project=self.CurrentProject
@@ -250,21 +249,25 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
             (Data,Tag)=self.LoadData(FilePath)
             ListLoadedVar=self.ImportData(Data,DataSet,DataType,EnforceDim,PrintStatus,ReturnList=True)
             print('Loaded variables:',ListLoadedVar)
+            if Init:
+                self.Init()
+                bbb.restart=1
             return True
         else:
             print("Cannot read the file '{}'... Exiting".format(FileName))
             return False
-        if Init:
-            self.Init()
-            bbb.restart=1
         
         
-    def Restore(self,FileName:str or None=None,DataSet=['all',''],DataType=['UEDGE','DataStore'],EnforceDim=True,PrintStatus=False,OverWrite:dict={},ShowLines=False):
+        
+    def Restore(self,FileName:str or None=None,DataSet=['all'],DataType=['UEDGE'],EnforceDim=True,PrintStatus=False,ExtraCommand:dict=[],ShowLines=False,**kwargs):
         """Read an input file, initalize UEDGE main engine and load plasma state variables into UEDGE from last.npy file in Folder SaveDir/Casename."""
-        self.Read(FileName,Initialize=False,OverWrite=OverWrite,ShowLines=ShowLines)
-        self.Load('last.npy',DataSet,DataType,EnforceDim,PrintStatus)
-        bbb.restart=1
-        self.Init()
+        self.Read(FileName,Initialize=False,ExtraCommand=ExtraCommand,ShowLines=ShowLines)
+        Status=self.Load('last.npy',DataSet,DataType,EnforceDim,PrintStatus)
+        if Status:
+            bbb.restart=1
+            return True
+        else:
+            return False
         
         
     def RestoreLast(self,DataSet=['all',''],DataType=['UEDGE','DataStore'],EnforceDim=True,PrintStatus=False):
@@ -417,9 +420,9 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         
     def Restart(self,**kwargs):
         self.Restore(**kwargs)
-        return self.Cont()
+        return self.Cont(**kwargs)
     
-    def RunTime(self,**kwargs):
+    def RunTime(self,RestartfromNegative=True,**kwargs):
         """
 
         Args:
@@ -430,13 +433,14 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
 
         """
         self.SetPackageParams(kwargs,self)
+        self.SetUEDGEParams(kwargs)
         bbb.exmain_aborted=0
         self.PrintInfo('----Starting Main Loop ----')
         
         while bbb.exmain_aborted==0:
 # Main loop-----------------------------------------------
             for imain in range(self.Imax):
-                
+                self._imain=imain
                 self.Status='mainloop'
                
                 bbb.icntnunk = 0
@@ -452,9 +456,10 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
                 try:
                     bbb.exmain() # take a single step at the present bbb.dtreal
                 except Exception as e:
-                    self.PrintError(e,imain)
-                    self.Status='error'
-                    return self.Status
+                    if bbb.iterm!=-100 or not self.RestartfromNegative:
+                        self.PrintError(e,imain)
+                        self.Status='error'
+                        return self.Status
                 bbb.newgeo=0
                 sys.stdout.flush()
 
@@ -488,9 +493,13 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
                             try:
                                 bbb.exmain() # take a single step at the present bbb.dtreal
                             except Exception as e:
-                                self.PrintError(e,imain,ii2)
-                                self.Status='error'
-                                return self.Status
+                                if bbb.iterm==-100 and self.RestartfromNegative:
+                                    break
+                                else:
+                                    self.PrintError(e,imain,ii2)
+                                    self.Status='error'
+                                    return self.Status
+                            
                             sys.stdout.flush()
     
                             if bbb.iterm == 1 and bbb.exmain_aborted!=1:
@@ -512,10 +521,11 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
                     break
 
 # Handle success/error ------------------------------------------------------------------------------
-                if (bbb.iterm == 1):
+                if bbb.iterm == 1:
                     bbb.dtreal *= self.mult_dt_fwd
                     self.dtreal=bbb.dtreal
-
+                elif bbb.iterm==-100:
+                    self.RestartfromNegative()
                 else:    #print bad eqn, cut dtreal by 3
                     self.Itrouble()
 
@@ -537,15 +547,19 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
         return self.Status
     
     @staticmethod
-    def RobustStart(dt_threshold=1e-6, mult_dt_bwd=1.5,mult_dt_fwd=1.25,Jmax=0):
-        
-         def Func(self):
-             if dt_threshold>bbb.dtreal:
+    def RobustStart(dt_threshold=1e-7, mult_dt_bwd=1.5,mult_dt_fwd=3.4,itermx=100,ContCall=False):
+         
+         def Func(self,**kwargs):
+             if self._imain<10:
+                 bbb.itermx=itermx
+                
+             if dt_threshold<bbb.dtreal:
+                 self.ContCall=True
                  self.Jmax=self.UBoxRunDefaults['Jmax']
                  self.mult_dt_bwd=self.UBoxRunDefaults['mult_dt_bwd']
                  self.mult_dt_fwd=self.UBoxRunDefaults['mult_dt_fwd']
              else:
-                 self.Jmax=Jmax
+                 self.ContCall=ContCall
                  self.mult_dt_bwd=mult_dt_bwd
                  self.mult_dt_fwd=mult_dt_fwd
                 
@@ -553,9 +567,11 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest):
          return Func 
     
     def ApplyRunTimeModifier(self,Modifier:list or None  =None, **kwargs):
+        
         if Modifier is not None:
             if type(Modifier)!=list:
-                Modifier=list[Modifier]
+                Modifier=[Modifier]
+            if self.Verbose: print('Modifider:',Modifier)
             for M in Modifier:
-                    M(self)
+                    M(self,**kwargs)
                     

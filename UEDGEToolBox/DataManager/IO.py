@@ -182,7 +182,7 @@ class UBoxIO(UBoxDataSet,UBoxLoader):
             print('Data available for import:',list(Data.keys()))   
         
         if len(DataSet)!=len(DataType):
-            raise ValueError('DataSet and DataType must be lists of identical length.')
+            raise ValueError('DataSet and DataType must be lists of identical length.\n DataSet={}\nDataType={}'.format(DataSet,DataType))
         # Filter data to be loaded into UEDGE packages.DataPkg is empty is Loader is None
         DataPkg={}
         for Set,Type in zip(DataSet,DataType):
