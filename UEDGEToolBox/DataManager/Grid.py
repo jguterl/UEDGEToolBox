@@ -9,6 +9,7 @@
 
 
 """
+from matplotlib.collections import LineCollection
 from UEDGEToolBox.Utils.Misc import ClassInstanceMethod
 import numpy as np
 from matplotlib import pyplot as plt
@@ -85,8 +86,145 @@ class UBoxGrid():
                  annot=self.ax.annotate("ix={},iy={}".format(ix,iy), xy=(r,z), xytext=(-20,20),textcoords="offset points",
                             bbox=dict(boxstyle="round", fc="w"),
                             arrowprops=dict(arrowstyle="->"))
+    @ClassInstanceMethod
+    def PlotCentroid(self):
+        if self.Grid is not None:
+            if self.Grid.get('cm') is None:
+                self.ComputeCentroid()
+            Cm=self.Grid['cm']
+        else:
+            print("No grid loaded ... Use GetGrid() or SetGrid() to load a grid.")
+            return
+        if self.ax is None:
+            self.PlotGrid()
+        self.ax.scatter(Cm[:,:,0].flatten(),Cm[:,:,1].flatten(),marker='+',color='r')            
+            
+    @ClassInstanceMethod                 
+    def ComputeCentroid(self):
+        if self.Grid is not None:
+            r=self.Grid['rm']
+            z=self.Grid['zm']
+        else:
+            print("No grid loaded ... Use GetGrid() or SetGrid() to load a grid.")
+            return
+        
+        idx=[np.array([1,2,4,3,1])]
+        Nx=len(r)
+        Ny=len(r[0])
+        Cm=np.zeros((Nx,Ny,2))
+        for i in range(Nx):
+            for j in range(Ny):
+                    Poly=np.concatenate((r[i,j,idx],z[i,j,idx])).reshape(2,5).T
+                 
+                    x=Poly[:,0]
+                    y=Poly[:,1]
+                    a = x[:-1] * y[1:]
+                    b = y[:-1] * x[1:]
+                
+                    cx = x[:-1] + x[1:]
+                    cy = y[:-1] + y[1:]
+                    
+                    A = np.sum(a - b) / 2.
+                    Cx = np.sum(cx * (a - b)) / (6. * A)
+                    Cy = np.sum(cy * (a - b)) / (6. * A)
+                    Cm[i,j,0]=Cx
+                    Cm[i,j,1]=Cy
+                    
+        self.Grid['cm']=Cm
+        
     @ClassInstanceMethod 
-    def PlotGrid(self,Grid=None,edgecolor='black',zshift=[],**kwargs):
+    def PlotCenter(self):
+        if self.Grid is not None:
+            r=self.Grid['rm']
+            z=self.Grid['zm']
+        else:
+            print("No grid loaded ... Use GetGrid() or SetGrid() to load a grid.")
+            return
+
+        self.ax.scatter(r[:,:,0].flatten(),z[:,:,0].flatten(),'pb')
+    @ClassInstanceMethod 
+    def PlotCenterFace(self):
+        if self.Grid is not None:
+            r=self.Grid['rm']
+            z=self.Grid['zm']
+            if self.Grid.get('cm') is None:
+                self.ComputeCentroid()
+            Cm=self.Grid['cm']
+        else:
+            print("No grid loaded ... Use GetGrid() or SetGrid() to load a grid.")
+            return
+        idx=np.array([1,2,4,3,1])
+        Nx=len(r)
+        Ny=len(r[0])
+        x=list()
+        y=list()
+        def line(p1, p2):
+            A = (p1[1] - p2[1])
+            B = (p2[0] - p1[0])
+            C = (p1[0]*p2[1] - p2[0]*p1[1])
+            return A, B, -C
+
+        def intersection(L1, L2):
+            D  = L1[0] * L2[1] - L1[1] * L2[0]
+            Dx = L1[2] * L2[1] - L1[1] * L2[2]
+            Dy = L1[0] * L2[2] - L1[2] * L2[0]
+            if D != 0:
+                x = Dx / D
+                y = Dy / D
+                return x,y
+            else:
+                return 0,0
+        IntsecN=np.zeros((Nx,Ny,2))
+        IntsecE=np.zeros((Nx,Ny,2))
+        for i in range(1,Nx-1):
+            for j in range(1,Ny-1):
+                for k,l in zip(idx[0:-1],idx[1:]):
+                    L1=line(Cm[i,j,:],Cm[i,j+1,:])
+                    p1=[r[i,j,4],z[i,j,4]]
+                    p2=[r[i,j,3],z[i,j,3]]
+                    L2=line(p1,p2) 
+                    I=intersection(L1,L2)
+                    
+                    IntsecN[i,j,0]=I[0]
+                    IntsecN[i,j,1]=I[1]
+                    L1=line(Cm[i,j,:],Cm[i+1,j,:])
+                    p1=[r[i,j,4],z[i,j,4]]
+                    p2=[r[i,j,2],z[i,j,2]]
+                    L2=line(p1,p2) 
+                    I=intersection(L1,L2)
+                    
+                    IntsecE[i,j,0]=I[0]
+                    IntsecE[i,j,1]=I[1]
+                    
+        if self.ax is None:
+            self.PlotGrid()            
+        self.ax.scatter(IntsecN[:,:,0].flatten(),IntsecN[:,:,1].flatten(),color='b',marker='o')
+        self.ax.scatter(IntsecE[:,:,0].flatten(),IntsecE[:,:,1].flatten(),color='b',marker='o')
+                
+    @ClassInstanceMethod 
+    def PlotCentroidFace(self):
+        if self.Grid is not None:
+            r=self.Grid['rm']
+            z=self.Grid['zm']
+        else:
+            print("No grid loaded ... Use GetGrid() or SetGrid() to load a grid.")
+            return
+        idx=np.array([1,2,4,3,1])
+        Nx=len(r)
+        Ny=len(r[0])
+        x=list()
+        y=list()
+        for i in range(Nx):
+            for j in range(Ny):
+                for k,l in zip(idx[0:-1],idx[1:]):   
+                    x.append((r[i,j,k]+r[i,j,l])/2)
+                    y.append((z[i,j,k]+z[i,j,l])/2)
+        
+        if self.ax is None:
+            self.PlotGrid()
+        self.ax.scatter(x,y,marker='x',color='r')
+    @ClassInstanceMethod 
+    def PlotGrid(self,Grid=None,edgecolor='black',zshift=[0],**kwargs):
         if type(Grid)!=list:
             Grid=[Grid]
         if type(edgecolor)!=list:
@@ -95,9 +233,8 @@ class UBoxGrid():
             zshift=[zshift]
         for G,ec,zs in  itertools.zip_longest(Grid,edgecolor,zshift,fillvalue=None):
             self.PlotterGrid(Grid=G,edgecolor=ec,zshift=zs,**kwargs)
-        self.ax=None
     @ClassInstanceMethod     
-    def PlotterGrid(self,r:np.array or None=None,z:np.array or None =None,ax:plt.Axes or None=None,zshift=None,Grid=None,edgecolor:str=None,Title:str='',NewFig=True)->None:
+    def PlotterGrid(self,r:np.array or None=None,z:np.array or None =None,ax:plt.Axes or None=None,zshift=0,Grid=None,edgecolor:str=None,Title:str='',NewFig=True)->None:
         """Get the foobar.
 
         This really should have a full function definition, but I am too lazy.
@@ -121,8 +258,7 @@ class UBoxGrid():
                 print("No grid loaded ... Use GetGrid() or SetGrid() to load a grid.")
                 return
                 
-        if zshift is not None:
-            z=z+zshift
+        z=z+zshift
         
         if ax is not None:
             self.ax=ax
@@ -133,6 +269,7 @@ class UBoxGrid():
                 self.ax=ax
             else:
                 self.ax=plt.gca()
+                
         axx=self.ax
         def onpick(evt):
             if evt.artist in Pos.keys():
@@ -199,6 +336,8 @@ class UBoxGrid():
 
         """
         self.Grid=self.ReadGridFile(FileName)
+        
+        
     @ClassInstanceMethod
     def SetPsinc(self,psinc=None):
         if psinc is not None:
@@ -277,6 +416,8 @@ class UBoxGrid():
             return gridue_params
         except Exception as e:
             print(repr(e))
+            
+    
             
 
 #Grid=UBoxGrid()
