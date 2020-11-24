@@ -5,7 +5,7 @@ Created on Thu Apr 30 10:34:18 2020
 
 @author: jguterl
 """
-from UEDGEToolBox.Utils.Misc import GetListPackage, ClassInstanceMethod,SetClassArgs   
+from UEDGEToolBox.Utils.Misc import GetListPackage, ClassInstanceMethod,SetClassArgs,QueryItem 
 from UEDGEToolBox.DataManager.DataSet import UBoxDataSet
 from UEDGEToolBox.DataManager.IOFormat import UBoxNumpy,UBoxHdf5
 
@@ -118,13 +118,38 @@ class UBoxIO(UBoxDataSet,UBoxLoader):
     def __init__(self):
         pass
           
-            
+           
     @ClassInstanceMethod 
     def ShowFormat(self):
         """Display available format to save and load UEDGE data."""
-        print('Available format to save and load data are:')
+        print('Default format to save and load data is currently:')
         for k,v in self._AvailableFormat.items():
-            print(" >>>> {:<10} (*{:<4})".format(k,v.Ext))
+            if k == self._DefaultFormat:
+                Str='<---- current default format'
+            else:
+                Str=''
+            
+            print(" >>>> {:<10} (*{:<4})  {}".format(k,v.Ext,Str))
+           
+            
+    @ClassInstanceMethod 
+    def SetDefaultFormat(self):
+        """Display available format to save and load UEDGE data."""
+        print('Available format to save and load data are:')
+        ListFormat=[]
+        ListFormati=[]
+        for i,(k,v) in enumerate(self._AvailableFormat.items()):
+            if k == self._DefaultFormat:
+                Str='<---- current default format'
+            else:
+                Str=''
+            ListFormat.append(" [{}] {:<10} (*{:<4})  {}\n".format(i,k,v.Ext,Str))
+            ListFormati.append(k)
+        print("".join(ListFormat))
+        i=QueryItem(ListFormat)
+        if i is not None:
+            self._DefaultFormat=ListFormati[int(i)]
+            print('Default format is now: {}'.format(self._DefaultFormat))
             
     @ClassInstanceMethod  
     def GetFormat(self,FileName:str or None,RaiseError=True):
@@ -182,7 +207,7 @@ class UBoxIO(UBoxDataSet,UBoxLoader):
             print('Data available for import:',list(Data.keys()))   
         
         if len(DataSet)!=len(DataType):
-            raise ValueError('DataSet and DataType must be lists of identical length.')
+            raise ValueError('DataSet and DataType must be lists of identical length.\n DataSet={}\nDataType={}'.format(DataSet,DataType))
         # Filter data to be loaded into UEDGE packages.DataPkg is empty is Loader is None
         DataPkg={}
         for Set,Type in zip(DataSet,DataType):

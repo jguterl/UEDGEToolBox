@@ -96,14 +96,15 @@ class UBoxPlotTest(UBoxDataParser):
             DicPlotter['PlotLabel']=NameData
             
         if kwargs.get('PlotTitle') is None:
-            Project=Tag.get('Project')
+            ProjectName=Tag.get('Project').get('Name')
             CaseName=Tag.get('CaseName')
             PlotTitle=[]
-            if Project is not None:
-                PlotTitle.append(Project)
+            if ProjectName is not None:
+                PlotTitle.append(ProjectName)
             if CaseName is not None:
                 PlotTitle.append(CaseName)
             if PlotTitle != []:
+                print(PlotTitle)
                 DicPlotter['PlotTitle']=':'.join(PlotTitle)    
             
         return DicPlotter

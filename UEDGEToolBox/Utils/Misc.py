@@ -475,6 +475,7 @@ def BrowserFolder(Folder,Filter='*',Ext="*.py",LoadMode=True)->None or int:
         elif Input=='q':
             return None
 
+
     
     
 def GetTimeStamp()->str:
@@ -533,7 +534,7 @@ def GetTimeStamp()->str:
 def QueryItem(ListItems,Message=None):
     if len(ListItems)>0:
         if Message is None:
-            Message='Enter an item number between {} and {} or "r" or "q" to exit\n >>>:'.format(0,len(ListItems))
+            Message='Enter an item number between {} and {} or "r" or "q" to exit\n >>>:'.format(0,len(ListItems)-1)
         Input=input(Message)
         while Input!='q' and Input!='r':
             if Input.isnumeric() and int(Input) in range(len(ListItems)):

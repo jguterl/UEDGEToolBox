@@ -277,7 +277,7 @@ class UBoxDataFilter():
             if Verbose:print('Preparing data {}'.format(V))
             if RemovePackage:
                 #remove package name : bbb.ne->ne
-                if len(V.split('.'))>0 :
+                if len(V.split('.'))>1 :
                         VV=V.split('.')[1]
                 else:
                         VV=V

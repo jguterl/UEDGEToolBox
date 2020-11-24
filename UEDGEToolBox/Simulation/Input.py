@@ -48,14 +48,15 @@ class UBoxInput():
         DicG.update(locals())
         
     @ClassInstanceMethod        
-    def WriteInputFile(self,FileName=None, Folder='SaveDir'):
-        
-        if Folder is not None and FileName is not None:
-            FilePath = os.path.join(self.Source(Folder=Folder), '{}_{}.py'.format(FileName, GetTimeStamp()))
-        elif Folder is None and FileName is not None:
-            FilePath = os.path.abspath(FileName)
+    def WriteInputFile(self,FileName=None, Folder='SaveDir',ExtraHeader=[]):
+        TimeStamp=GetTimeStamp()
+        if FileName is None:
+            FileName='InputFile'
+            FilePath = os.path.join(self.Source(Folder=Folder,EnforceExistence=False), '{}_{}.py'.format(FileName, TimeStamp))
         else:
-            FilePath = None
+            FilePath = os.path.splitext(self.Source(FileName,Folder=Folder,EnforceExistence=False))[0]+'_{}.py'.format(TimeStamp)
+        if type(ExtraHeader)==str:
+            ExtraHeader=[ExtraHeader]
         User=self.GetTag().get('User')
         Project=self.GetTag().get('Project').get('Name')
         if FilePath is None:
@@ -63,10 +64,14 @@ class UBoxInput():
         else:
             print('Writing input file {} ...'.format(FilePath))
             with open(FilePath,'w') as f:
+                
                 f.write('# InputFile generated from: {}\n'.format(self.InputFilePath))
                 f.write('# User: {}\n'.format(User))
                 f.write('# Project: {}\n'.format(Project))
-                for L in self.InputFileLines:
+                f.write('# TimeStamp: {}\n'.format(TimeStamp))
+                for L in ExtraHeader:
+                    f.write("# {} \n".format(L))
+                for L in self.InputLines:
                     f.write('{}\n'.format(L))
                 
         return             
