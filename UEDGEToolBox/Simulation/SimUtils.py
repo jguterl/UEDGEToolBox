@@ -51,7 +51,7 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
            self.UBoxRunDefaults['ContCall']=True
            self.bbbRunDefault={}
            self.bbbRunDefault['dt_tot']=0
-           self.bbbRunDefault['dtreal']=1e-8
+           self.bbbRunDefault['dtreal']=5e-8
            self.bbbRunDefault['t_stop']=10
            self.bbbRunDefault['ftol_min']=1e-10
            self.bbbRunDefault['ftol_dt']=1e-9
@@ -128,13 +128,21 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         if Extra: print("*---------------------------------------------------------*")
         print("{color}{}{reset}".format(Str,color=color,reset=Style.RESET_ALL))
         if Extra: print("*---------------------------------------------------------*")
-        
+
     def SaveLast(self,DataSet='regular'):
-        self.Save('last.npy',DataSet=DataSet,DataType='UEDGE',OverWrite=True)
+        self.Save('last',DataSet=DataSet,DataType='UEDGE',OverWrite=True)
     
-    def SaveFinalState(self,DataSet='regular'):
-        self.Save('final_state.npy',DataSet=DataSet,DataType='UEDGE',OverWrite=True)
+    def GetFinalStateFileName(self,WithDate=False):
+        if WithDate:
+            return self.SetFormat('final_state_{}'.format(GetTimeStamp()))[1]
+        else:
+            return self.SetFormat('final_state')[1]
         
+        
+        
+    def SaveFinalState(self,DataSet='regular'):
+        self.Save(self.GetFinalStateFileName(),DataSet=DataSet,DataType='UEDGE',OverWrite=True)
+        self.Save(self.GetFinalStateFileName(WithDate=True),DataSet=DataSet,DataType='UEDGE',OverWrite=True)
     def AutoSave(self,DataSet='regular'):
         self._iSave+=1
         if self._iSave>self.ISave:

@@ -206,6 +206,9 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest,UBoxSimExt):
     def LoadPlasma(self,FileName=None,**kwargs):
         return self.Load(FileName=FileName,DataSet=['plasmavarss','plasmavars'],DataType='UEDGE',**kwargs)
     
+    def LoadPlasmaFinal(self,CaseName=None,**kwargs):
+        return self.Load(FileName=self.GetFinalStateFileName(),DataSet=['plasmavarss','plasmavars'],DataType='UEDGE',CaseName=CaseName,**kwargs)
+    
     def Load(self,FileName=None,DataSet=['all'],DataType=['UEDGE'],Ext='*.npy',EnforceDim=True,PrintStatus=False,Folder='SaveDir',Init=True,CaseName=None):
         """
         Wrapper method to load UEDGE simulation data
@@ -437,111 +440,110 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest,UBoxSimExt):
         bbb.exmain_aborted=0
         self.PrintInfo('----Starting Main Loop ----')
         
-        while bbb.exmain_aborted==0:
 # Main loop-----------------------------------------------
-            for imain in range(self.Imax):
-                self._imain=imain
-                self.Status='mainloop'
-               
-                bbb.icntnunk = 0
-                self.Controlftol()
-                bbb.ftol = self.Updateftol()
-                
-                self.ApplyRunTimeModifier(**kwargs)
+        for imain in range(self.Imax):
+            self._imain=imain
+            self.Status='mainloop'
+           
+            bbb.icntnunk = 0
+            self.Controlftol()
+            bbb.ftol = self.Updateftol()
+            
+            self.ApplyRunTimeModifier(**kwargs)
 
-                self.PrintTimeStepModif(imain)
+            self.PrintTimeStepModif(imain)
 
-                
-                self.PrintCurrentIteration(imain)
-                try:
-                    bbb.exmain() # take a single step at the present bbb.dtreal
-                except Exception as e:
-                    if bbb.iterm!=-100 or not self.RestartfromNegative:
-                        self.PrintError(e,imain)
-                        self.Status='error'
+            
+            self.PrintCurrentIteration(imain)
+            try:
+                bbb.exmain() # take a single step at the present bbb.dtreal
+            except Exception as e:
+                if bbb.iterm!=-100 or not self.RestartfromNegative:
+                    self.PrintError(e,imain)
+                    self.Status='error'
+                    return self.Status
+            bbb.newgeo=0
+            sys.stdout.flush()
+
+            if bbb.exmain_aborted==1:
+                break
+
+            if (bbb.iterm == 1 and bbb.exmain_aborted!=1):
+                self.AutoSave()
+                self.SaveLast() # Save data in file SaveDir/CaseName/last.npy
+                bbb.dt_tot += bbb.dtreal
+                self.dt_tot=bbb.dt_tot
+                #self.TimeEvolution()
+
+                if bbb.dt_tot>=bbb.t_stop:
+                        bbb.exmain_aborted=1
+                        self.SaveFinalState()
+                        self.Status='tstop'
                         return self.Status
-                bbb.newgeo=0
-                sys.stdout.flush()
 
-                if bbb.exmain_aborted==1:
-                    break
+                if (bbb.ijactot>1):
+# Second loop -----------------------------------------------------------------------------------
+                    if self.ContCall:                       
+                        bbb.icntnunk = 1
+                    bbb.isdtsfscal = 0
+                    
+                    for ii2 in range(self.Jmax): #take ii2max steps at the present time-step
+                        if bbb.exmain_aborted==1:
+                            break
+                        bbb.ftol = self.Updateftol()
+                        self.PrintCurrentIteration(imain,ii2)
+                        try:
+                            bbb.exmain() # take a single step at the present bbb.dtreal
+                        except Exception as e:
+                            if bbb.iterm==-100 and self.RestartfromNegative:
+                                break
+                            else:
+                                self.PrintError(e,imain,ii2)
+                                self.Status='error'
+                                return self.Status
+                        
+                        sys.stdout.flush()
 
-                if (bbb.iterm == 1 and bbb.exmain_aborted!=1):
-                    self.AutoSave()
-                    self.SaveLast() # Save data in file SaveDir/CaseName/last.npy
-                    bbb.dt_tot += bbb.dtreal
-                    self.dt_tot=bbb.dt_tot
-                    #self.TimeEvolution()
+                        if bbb.iterm == 1 and bbb.exmain_aborted!=1:
+                            self.SaveLast() # Save data in file SaveDir/CaseName/last.npy
+                            bbb.dt_tot += bbb.dtreal
+                            self.dt_tot=bbb.dt_tot
+                            #self.TimeEvolution()
+                        else:
+                            break
 
-                    if bbb.dt_tot>=bbb.t_stop:
-                            bbb.exmain_aborted=1
+                        if bbb.dt_tot>=bbb.t_stop:
+                            self.PrintInfo('SUCCESS: dt_tot >= t_stop')
                             self.SaveFinalState()
                             self.Status='tstop'
                             return self.Status
+# End Second loop -----------------------------------------------------------------------------------
 
-                    if (bbb.ijactot>1):
-# Second loop -----------------------------------------------------------------------------------
-                        if self.ContCall:                       
-                            bbb.icntnunk = 1
-                        bbb.isdtsfscal = 0
-                        
-                        for ii2 in range(self.Jmax): #take ii2max steps at the present time-step
-                            if bbb.exmain_aborted==1:
-                                break
-                            bbb.ftol = self.Updateftol()
-                            self.PrintCurrentIteration(imain,ii2)
-                            try:
-                                bbb.exmain() # take a single step at the present bbb.dtreal
-                            except Exception as e:
-                                if bbb.iterm==-100 and self.RestartfromNegative:
-                                    break
-                                else:
-                                    self.PrintError(e,imain,ii2)
-                                    self.Status='error'
-                                    return self.Status
-                            
-                            sys.stdout.flush()
-    
-                            if bbb.iterm == 1 and bbb.exmain_aborted!=1:
-                                self.SaveLast() # Save data in file SaveDir/CaseName/last.npy
-                                bbb.dt_tot += bbb.dtreal
-                                self.dt_tot=bbb.dt_tot
-                                #self.TimeEvolution()
-                            else:
-                                break
-    
-                            if bbb.dt_tot>=bbb.t_stop:
-                                self.PrintInfo('SUCCESS: dt_tot >= t_stop')
-                                self.SaveFinalState()
-                                self.Status='tstop'
-                                return self.Status
-    # End Second loop -----------------------------------------------------------------------------------
-
-                if bbb.exmain_aborted==1:
-                    break
+            if bbb.exmain_aborted==1:
+                break
 
 # Handle success/error ------------------------------------------------------------------------------
-                if bbb.iterm == 1:
-                    bbb.dtreal *= self.mult_dt_fwd
-                    self.dtreal=bbb.dtreal
-                elif bbb.iterm==-100:
-                    self.RestartfromNegative()
-                else:    #print bad eqn, cut dtreal by 3
-                    self.Itrouble()
+            if bbb.iterm == 1:
+                bbb.dtreal *= self.mult_dt_fwd
+                self.dtreal=bbb.dtreal
+            elif bbb.iterm==-100:
+                self.RestartfromNegative()
+            else:    #print bad eqn, cut dtreal by 3
+                self.Itrouble()
 
-                    self.PrintInfo('Converg. fails for bbb.dtreal; reduce time-step by 3',Back.RED)
-                    bbb.dtreal /= self.mult_dt_bwd
-                    self.dtreal=bbb.dtreal
+                self.PrintInfo('Converg. fails for bbb.dtreal; reduce time-step by 3',Back.RED)
+                bbb.dtreal /= self.mult_dt_bwd
+                self.dtreal=bbb.dtreal
 #                    if bbb.iterm==2 and bbb.dtreal<self.dtLowThreshold:
 
 
-                    bbb.iterm = 1
+                bbb.iterm = 1
 
-                    if (bbb.dtreal < bbb.dt_kill):
-                        self.PrintInfo('FAILURE: time-step < dt_kill',Back.RED)
-                        bbb.exmain_aborted=1
-                        self.Status='dtkill'
-                        return self.Status
+                if (bbb.dtreal < bbb.dt_kill):
+                    self.PrintInfo('FAILURE: time-step < dt_kill',Back.RED)
+                    bbb.exmain_aborted=1
+                    self.Status='dtkill'
+                    return self.Status
 # End of main loop -------------------------------------------------------- --------------------------------
         if bbb.exmain_aborted==1: self.Status='aborted'
         return self.Status

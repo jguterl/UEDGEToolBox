@@ -99,13 +99,13 @@ class UBoxSimExt():
         bbb.iterm = 1
         bbb.dtreal/=10
           
-    def RunRamp(self,RampVariable:str,RampValues:list or np.array,FileName=None,dtreal:float=1e-8,t_stop:float=10,ForceRun=False,LoadLast=True,ThresholdDens=False,**kwargs):
+    def RunRamp(self,RampVariable:str,RampValues:list or np.array,FileName=None,dtreal:float=5e-8,t_stop:float=10,ForceRun=False,LoadLast=True,ThresholdDens=False,**kwargs):
         """
 
         Args:
             Data (dict): ebbb.g. Dic={'ncore[0]':np.linspace(1e19,1e20,10),'pcoree':np.linspace(0.5e6,5e6,10)}
             Istart (int, optional): DESCRIPTION. Defaults to 0.
-            dtreal_start (float, optional): DESCRIPTION. Defaults to 1e-8.
+            dtreal_start (float, optional): DESCRIPTION. Defaults to 5e-8.
             tstop (float, optional): DESCRIPTION. Defaults to 10.
 
         Returns:

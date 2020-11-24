@@ -211,7 +211,7 @@ class UBoxPlotter(UBoxPlot2D,UBoxPlot1D,UBoxPlotUtils):
         if self.ax is None:
            return 
         else:
-            self.ax.set_title(PlotTitle.TitleFontSize)
+            self.ax.set_title(PlotTitle,fontsize=TitleFontSize)
         
     
             
