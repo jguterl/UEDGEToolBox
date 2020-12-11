@@ -136,8 +136,9 @@ class UBoxSimExt():
             else:
                 RampInfo=["RampVariable:{}\n".format(RampVariable),"RampValues:{}".format(RampValues)," CurrentRampValue: {}".format(V)]
                 self.WriteInputFile(ExtraHeader=RampInfo)
+                LoadLastSuccess=False
                 if LoadLast:
-                    self.Load('last.npy')
+                    LoadLastSuccess=self.Load('last.npy')
                 if ThresholdDens:
                     from uedge import com
                     from uedge import bbb
@@ -145,7 +146,10 @@ class UBoxSimExt():
                     for i in range(com.ngsp):bbb.ng[(bbb.ng[:,:,i]<bbb.ngbackg[i]),i]=bbb.ngbackg[i]
                     for i in range(com.nisp):bbb.nis[(bbb.nis[:,:,i]<bbb.nzbackg[i]),i]=bbb.nzbackg[i]
                     for i in range(com.ngsp):bbb.ngs[(bbb.ng[:,:,i]<bbb.ngbackg[i]),i]=bbb.ngbackg[i]
-                Status=self.Cont(dt_tot=0.0,dtreal=dtreal,t_stop=t_stop,**kwargs)
+                if LoadLastSuccess:
+                    Status=self.Cont(**kwargs)
+                else:
+                    Status=self.Cont(dt_tot=0.0,dtreal=dtreal,t_stop=t_stop,**kwargs)
                 if Status=='tstop':
                     self.Save('final_state_ramp')
                 else:
