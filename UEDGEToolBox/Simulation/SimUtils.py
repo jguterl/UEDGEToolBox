@@ -46,6 +46,8 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
     def SetDefault(self):
            self.UBoxRunDefaults={'Jmax':5,'Imax':3000, 'mult_dt_fwd':3.4,'mult_dt_bwd':3,'ISave':10,'SaveSim':True}
            self.UBoxRunDefaults['dt_ftol_threshold']=5e-11
+           self.UBoxRunDefaults['dt_ContCallOff_min']=5e-2
+           self.UBoxRunDefaults['dt_ContCallOff_max']=5e-3
            self.UBoxRunDefaults['CorrectTemp']= 1.602176634e-19
            self.UBoxRunDefaults['Adjustftol']=False
            self.UBoxRunDefaults['ContCall']=True
@@ -100,11 +102,12 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
                     
     @staticmethod
     def InitPlasma():
-        bbb.ngs=1e14; bbb.ng=1e14
-        bbb.nis=1e20; bbb.ni=1e20 
+        bbb.ngs=1e16; bbb.ng=1e16
+        bbb.nis=1e16; bbb.ni=1e16 
         bbb.ups=0.0;  bbb.up=0.0
-        bbb.tes=bbb.ev;   bbb.te=bbb.ev
-        bbb.tis=bbb.ev;   bbb.ti=bbb.ev
+        bbb.tes=1*bbb.ev;   bbb.te=1*bbb.ev
+        bbb.tis=1*bbb.ev;   bbb.ti=1*bbb.ev
+        bbb.tgs=1*bbb.ev;   bbb.tg=1*bbb.ev
         bbb.phis=0;bbb.phi=0
         
         
@@ -475,6 +478,15 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
                         self.CftolCount-=1
             
             self.dtreal_bkp=bbb.dtreal 
+            
+    def SetContCall(self):
+        if bbb.dtreal>=self.dt_ContCallOff_min and bbb.dtreal<=self.dt_ContCallOff_max:
+            self.ContCall=False
+        else:
+            if self.dt_ContCallOff_min<self.dt_ContCallOff_max:
+                self.ContCall=True
+        
+           
             
     
         

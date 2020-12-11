@@ -452,7 +452,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest,UBoxSimExt):
             self.ApplyRunTimeModifier(**kwargs)
 
             self.PrintTimeStepModif(imain)
-
+            self.SetContCall()
             
             self.PrintCurrentIteration(imain)
             try:
@@ -567,6 +567,7 @@ class UBoxSim(UBoxSimUtils,UBoxIO,UBoxInput,UBoxPlotTest,UBoxSimExt):
                 
         
          return Func 
+     
     
     def ApplyRunTimeModifier(self,Modifier:list or None  =None, **kwargs):
         
