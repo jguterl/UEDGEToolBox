@@ -104,6 +104,22 @@ except:
                  
     #      return orig_func(*args, **kwargs)
     # return decorator
+def AddPrintMethod(Level=0):
+    def Decorator(cls):
+        def Print(self, *args, **kwargs):
+            Name='{}:'.format(self.__class__.__name__)
+            print('=== {}{}'.format((Level)*3*'---',Name),*args, **kwargs)
+        
+        def PrintVerbose(self, *args, **kwargs):
+            if hasattr(self,'Verbose') and getattr(self,'Verbose'):
+                Name='{}:'.format(self.__class__.__name__)
+                print('{} {}'.format((Level)*3*'---',Name),*args, **kwargs)
+        
+        setattr(cls,'Print',Print)
+        setattr(cls,'PrintVerbose',PrintVerbose)
+        return cls
+    return Decorator
+
 
     
 def UBoxPreFix():
