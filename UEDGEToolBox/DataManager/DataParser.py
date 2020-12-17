@@ -1,23 +1,19 @@
 import numpy as np
-from UEDGEToolBox.Utils.Misc import GetListPackage, ClassInstanceMethod, SetClassArgs, UBoxPreFix
+from UEDGEToolBox.Utils.Misc import ClassInstanceMethod, SetClassArgs,AddPrintMethod
 
 # @UBoxPreFix()
 
-
+@AddPrintMethod(4)
 class UBoxDataParser():
-    """
-    Some useful method:
-        ParseDataField:
-    """
+
     Verbose = False
 
-    @SetClassArgs
     def __init__(self, Verbose=False):
         self.Verbose = Verbose
 
     @staticmethod
     def _ParseDataField(DataField: str, Verbose=False) -> (str, list):
-        '''
+        """
         Parse and return a field with dataname and indexes.
 
         Example:
@@ -33,7 +29,7 @@ class UBoxDataParser():
         Returns:
             (DataFieldName,DataFieldIndex) (str,list(int)): Name of the field (e.g. te), indexes of third dimensions if any; otherwise None
 
-        '''
+        """
         # Input data for
         Nb = DataField.count('[') + DataField.count(']')
         Np = DataField.count('(') + DataField.count(')')
@@ -323,8 +319,7 @@ class UBoxDataParser():
 
     @ClassInstanceMethod
     def ProcessDataArray(self, DataArray, Indexes=[], IdxSlice=None, DimSlice=None, DimSplit=None) -> (list, list):
-        if self.Verbose:
-            print('Processing Data arrays: \n IdxSlice:{} \n DimSlice:{}'.format(IdxSlice, DimSlice))
+        self.PrintVerbose('Processing Data arrays: IdxSlice:{} DimSlice:{}'.format(IdxSlice, DimSlice))
         if Indexes == []:
             Indexes = self.ProcessArrayIndexes(DataArray.shape, [])
 
@@ -338,8 +333,7 @@ class UBoxDataParser():
         Shape = DataArray.shape
         # process data array
 
-        if self.Verbose:
-            print('SliceDataArray >>> IdxSlice:{},DimSlice:{}'.format(IdxSlice, DimSlice))
+        self.PrintVerbose('SliceDataArray: IdxSlice:{},DimSlice:{}'.format(IdxSlice, DimSlice))
 
         if type(DimSlice) != list:
             DimSlice = [DimSlice]
@@ -351,8 +345,6 @@ class UBoxDataParser():
         for D, I in zip(DimSlice, IdxSlice):
             Indexes = self._ConcatSliceIndexes(Indexes, I, D)
 
-        if self.Verbose:
-            print('Indexes after concact:', Indexes)
         Check = self._CheckArrayIndex(Shape, Indexes)
 
         if Check != True:
@@ -393,13 +385,8 @@ class UBoxDataParser():
             V = DataType
             DataType = [V for D in DataFields]
 
-        if self.Verbose:
-            print('Parsing DataFields:')
-            print('   DataFields:', DataFields)
-            print('   IdxSlice:', IdxSlice)
-            print('   DimSlice:', DimSlice)
-            print('   DimSplit:', DimSplit)
-            print('   DataType:', DataType)
+        self.PrintVerbose('Parsing DataFields: DataFields={}\nIdxSlice={}; DimSlice:{}; DimSplit:{}; DataType:{}'\
+                  .format( DataFields, IdxSlice, DimSlice,  DimSplit,DataType))
 
         assert len(DataType) == len(DataFields), 'DataType must be either a string or have the same number of entries than DataFields'
 
@@ -421,8 +408,7 @@ class UBoxDataParser():
     @ClassInstanceMethod
     def ParseArray(self, Field, DataType, IndexSet, IdxSl, DimSl, DimSp):
         DicOut = {}
-        if self.Verbose:
-            print('Parse Array: Processing field "{}" with \n IndexSet:"{}" \n DataType:"{}" \n IdxSl:{} \n DimSl:{}'.format(Field, IndexSet, DataType, IdxSl, DimSl))
+        self.PrintVerbose('Parse Array: Processing field "{}" with IndexSet:"{}" DataType:"{}" IdxSl:{} DimSl:{}'.format(Field, IndexSet, DataType, IdxSl, DimSl))
 
         if type(DataType) == dict:
             DataArray = DataType.get(Field)
@@ -437,8 +423,7 @@ class UBoxDataParser():
             DicOut[Field] = {'Data': None, 'Indexes': None, 'OriginalShape': None, 'Label': Field}
             return DicOut
 
-        if self.Verbose:
-            print('Field:"{}" type:"{}"'.format(Field, type(DataArray)))
+        self.PrintVerbose('Field:"{}" type:"{}"'.format(Field, type(DataArray)))
 
         if not isinstance(DataArray, np.ndarray):
             DicOut[Field] = {'Data': DataArray, 'Indexes': None, 'OriginalShape': None, 'Label': Field}
@@ -447,8 +432,7 @@ class UBoxDataParser():
         else:
             Shape = DataArray.shape
             Indexes = self.ProcessArrayIndexes(DataArray.shape, IndexSet)
-            if self.Verbose:
-                print('Indexes for field "{}" after processing of IndexSet:'.format(Field), Indexes)
+            self.PrintVerbose('Indexes for field "{}" after processing of IndexSet:\n {}'.format(Field, Indexes))
             if DimSp is None or DimSp > len(Indexes) - 1:
                 DimSp = None
             (DataArray, Indexes) = self.ProcessDataArray(DataArray, Indexes, IdxSl, DimSl, DimSp)
@@ -457,11 +441,8 @@ class UBoxDataParser():
             DicOut[Field] = {'Data': DataArray[0], 'Indexes': Indexes[0], 'OriginalShape': Shape, 'Label': Field}
         else:
             for D, I in zip(DataArray, Indexes):
-                if self.Verbose:
-                    print('Field "{}" I:{}'.format(Field, I))
+                self.PrintVerbose('Field "{}" I:{}'.format(Field, I))
                 Str = '{}__{}'.format(Field, I[DimSp])
-                if self.Verbose:
-                    print('Field and Index:{}'.format(Str))
                 DicOut[Str] = {'Data': D, 'Indexes': I, 'OriginalShape': Shape, 'Label': Str}
 
         return DicOut

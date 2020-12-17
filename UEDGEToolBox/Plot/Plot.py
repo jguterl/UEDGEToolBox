@@ -193,7 +193,7 @@ class UBoxPlot2D(UBoxPlotUtils):
                 if evt.mouseevent.button == 3:
                     annot.set_visible(False)
 
-            # print(kwargs.get('ax'))
+
             PlotHandle.append(ax.add_collection(Collec))
 
             ax.set_ylim(z.min(), z.max())
@@ -230,12 +230,14 @@ class UBoxDataPlotter(UBoxPlot2D, UBoxPlot1D, UBoxPlotUtils):
         self.DataStructName = []
         self.ExtraLabels = []
         self.DataSpecies = []
+        self.CaseName = []
         self.PlotDim = None
         self.AxisType = None
         self.XData = []
         self.YData = []
         self.XYData = []
         self.Labels = []
+        self.Tag = []
         self.ax_settings = {}
         self.AutoUnits = True
         self.AutoLabels = True
@@ -257,8 +259,7 @@ class UBoxDataPlotter(UBoxPlot2D, UBoxPlot1D, UBoxPlotUtils):
             Dic = dict((k, v) for (k, v) in kwargs.items() if k in List)
             for (k, v) in Dic.items():
                 if hasattr(self.ax, 'set_{}'.format(k)):
-                    if self.Verbose:
-                        print('Applying set_{}({})'.format(k, v))
+                    self.VerbosePrint('Applying set_{}({})'.format(k, v))
                     getattr(self.ax, 'set_' + k)(v)
 
     @staticmethod
@@ -310,23 +311,26 @@ class UBoxDataPlotter(UBoxPlot2D, UBoxPlot1D, UBoxPlotUtils):
                     if hasattr(self, DataProperty):
                         ListDataProperty = getattr(self, DataProperty)
                         DicAttribute = self.MakeDicStyle(ListDataProperty, ListStyle)
-                        print(Attribute, DicAttribute, ListDataProperty)
+                        #print(Attribute, DicAttribute, ListDataProperty)
                         for p, DP in zip(self.PlotHandle, ListDataProperty):
                             if hasattr(p, 'set_{}'.format(Attribute)):
                                 f = getattr(p, 'set_{}'.format(Attribute))
-                                print(Attribute, DicAttribute[DP])
+                                #print(Attribute, DicAttribute[DP])
                                 f(DicAttribute[DP])
 
                     else:
                         self.Print('Cannot find property "{}" in DataPlotter)'.format(DataProperty))
 
     def SetLabel(self, SetupLabels=[], **kwargs):
-        for P, DS, EL in zip(self.PlotHandle, self.DataSpecies, self.ExtraLabels):
+        if type(SetupLabels) != list:
+            SetupLabels = [SetupLabels]
+
+        for P, DS, EL, T in zip(self.PlotHandle, self.DataSpecies, self.ExtraLabels, self.Tag):
             Label = []
             if 'Project' in SetupLabels:
-                Label.append(self.Tag.get('Project'))
+                Label.append(T.get('Project'))
             if 'CaseName' in SetupLabels:
-                Label.append(self.Tag.get('CaseName'))
+                Label.append(T.get('CaseName'))
             if 'DataSpecies' in SetupLabels:
                 Label.append(DS)
             if 'ExtraLabels' in SetupLabels:
@@ -335,8 +339,8 @@ class UBoxDataPlotter(UBoxPlot2D, UBoxPlot1D, UBoxPlotUtils):
                 P.set_label(' | '.join(Label))
 
     def SetLegend(self,**kwargs):
-        Dic=self.LegendKw(**kwargs)
-        self.PrintVerbose('Legend settings:',print(Dic))
+        Dic = self.LegendKw(**kwargs)
+        self.PrintVerbose('Legend settings:',Dic)
         self.ax.legend(**Dic)
 
     @staticmethod
@@ -361,8 +365,9 @@ class UBoxDataPlotter(UBoxPlot2D, UBoxPlot1D, UBoxPlotUtils):
             self.DataName = D.get('DataName')
             self.DataStructName.append(D.get('DataStructName'))
             self.DataStruct.append(D)
+            self.Tag.extend(D.get('Tag'))
+            self.CaseName.extend([T.get('CaseName') for T in D.get('Tag')])
             self.DataSpecies.extend(D.get('DataSpecies'))
-            print('DataSpecies', self.DataSpecies)
             # Adding extralabels (e.g. slice)
             if kwargs.get('ExtraLabels') is None:
                 self.ExtraLabels.extend(D.get('ExtraLabels'))
@@ -370,9 +375,9 @@ class UBoxDataPlotter(UBoxPlot2D, UBoxPlot1D, UBoxPlotUtils):
                 assert len(kwargs.get('ExtraLabels')) == len(D.get('ExtraLabels')),\
                     'ExtraLabels must be a list with number of elements = length of Data per DataStruct'
                 self.ExtraLabels.extend(kwargs.get('ExtraLabels'))
-
-            self.PrintVerbose('Adding plot data for DataStruct:{} with PlotDim:{}; AxisType:{}; DataSpecies:{}'
+            self.PrintVerbose('Adding data to plotter: DataStruct:{} with PlotDim:{}; AxisType:{}; DataSpecies:{}'
                               .format(D.get('DataName'), PlotDim, AxisType, D.get('DataSpecies')))
+
             assert PlotDim is not None and AxisType is not None, "PlotType and AxisType cannot be None"
 
             if self.PlotDim is not None:
@@ -403,36 +408,28 @@ class UBoxDataPlotter(UBoxPlot2D, UBoxPlot1D, UBoxPlotUtils):
 
                 XData = D.get('XData')
                 if XData is not None:
-                    if self.Verbose:
-                        print('XData.shape:{}'.format(XData.shape))
-                    self.XData.append(XData)
+                    self.XData.extend(XData)
                 else:
                     raise ValueError('Cannot find XData')
 
                 YData = D.get('YData')
                 if YData is not None:
-                    if self.Verbose:
-                        print('YData.shape:{}'.format(YData.shape))
-                    self.YData.append(YData)
+                    self.YData.extend(YData)
                 else:
                     raise ValueError('Cannot find YData')
 
                 XYData = D.get('XYData')
                 if XYData is not None:
-                    if self.Verbose:
-                        print('XYData.shape:{}'.format(XYData.shape))
-                    self.XYData.append(XYData)
+                    self.XYData.extend(XYData)
                 else:
                     raise ValueError('Cannot find XYData')
 
             else:
-                raise ValueError('Unknown PlotType:', PlotType)
+                raise ValueError('Unknown PlotType:', self.PlotDim)
 
         self.SetAxeSettings(**kwargs)
 
     def Plot(self, **kwargs):
-        if self.Verbose:
-            print('Plotting {} data ... '. format(self.PlotDim))
         if self.PlotDim == '2D':
             for (X, Y, XY) in zip(self.XData, self.YData, self.XYData):
                 self.PlotHandle.extend(self.PlotData2D(X, Y, XY, **kwargs))
@@ -442,8 +439,7 @@ class UBoxDataPlotter(UBoxPlot2D, UBoxPlot1D, UBoxPlotUtils):
         # set ax properties
         for (k, v) in self.ax_settings.items():
             if hasattr(self.ax, 'set_{}'.format(k)):
-                if self.Verbose:
-                    print('Applying set_{}({})'.format(k, v))
+                self.PrintVerbose('Applying set_{}({})'.format(k, v))
                 getattr(self.ax, 'set_' + k)(v)
 
         # set artist properties
@@ -490,12 +486,9 @@ class UBoxDataPlotter(UBoxPlot2D, UBoxPlot1D, UBoxPlotUtils):
     def PreparePlot1DData(self, XType=None, DimSplit=None):
         (DimSplit, XType) = self.GetDimSplit(XType, DimSplit, self.Data)
 
-        if self.Verbose:
-            print('Preparing 1D for for XType:{} ; DimSplit={}'.format(XType, DimSplit))
+        self.PrintVerbose('Preparing 1D for for XType:{} ; DimSplit={}'.format(XType, DimSplit))
         DataSplit = self._SplitDataArray(self.Data, DimSplit)
         IndexesSplit = self._SplitIndexes(self.Indexes, DimSplit)
-        if self.Verbose:
-            print('IndexesSplit={}'.format(IndexesSplit))
         # Now we get the grid for each Data
 
         DataOut = []
@@ -518,8 +511,7 @@ class UBoxDataPlotter(UBoxPlot2D, UBoxPlot1D, UBoxPlotUtils):
 
         (XDataOut, DataOut, LabelOut, XType) = self.PreparePlot1DData(XType, DimSplit)
         Labels = ['{} {}={}'.format(self.Label, XType, L) for L in LabelOut]
-        if self.Verbose:
-            print('Plot1D: XType:{},DataOut.shape:{} ; XDataOut.shape={}'.format(XType, DataOut.shape, XDataOut.shape))
+        self.PrintVerbose('Plot1D: XType:{},DataOut.shape:{} ; XDataOut.shape={}'.format(XType, DataOut.shape, XDataOut.shape))
         return self.PlotData1D(XDataOut, DataOut, Labels, **kwargs)
 
     def PreparePlot2DGrid(self, XType=None, **kwargs):
@@ -632,11 +624,12 @@ class UBoxPlotFigure(UBoxDataParser):
             self.Verbose = kwargs.get('Verbose')
         self.DataPlotter = {}
         self.fig = plt.figure()
-        if FigName is not None:
-            self.fig.canvas.set_window_title(FigName)
-        self.Name = self.fig.canvas.get_window_title()
         self.Parent = Parent
-        print('==== UBox: new figure "{}" created'.format(self.Name))
+        if FigName is not None:
+            self.fig.canvas.set_window_title(self.MakeFigTitle(FigName))
+        self.Name = self.fig.canvas.get_window_title()
+
+        self.Print('new figure "{}" created'.format(self.Name))
 
     @property
     def Name(self):
@@ -681,9 +674,10 @@ class UBoxPlotFigure(UBoxDataParser):
             self.ResetPlot()
 
         if DataFields is not None and DataFields != []:
-            self.AddPlot(DataFields, **kwargs)
+            self.AddDataPlotter(DataFields, **kwargs)
 
         self.ShowPlot(**kwargs)
+
 
     @ClassInstanceMethod
     def FigLayout(self, Nplot, pad=0.5, **kwargs):
@@ -692,7 +686,7 @@ class UBoxPlotFigure(UBoxDataParser):
         # fig, axs = plt.subplots(Nx, Ny, sharex='col', sharey='row',
         #                 gridspec_kw={'hspace': 0, 'wspace': 0})
         axs = self.fig.subplots(self.Nx, self.Ny)
-        self.fig.tight_layout(pad=pad)
+
         if type(axs) != np.ndarray:
             axs = np.array([axs])
         # =[]
@@ -751,8 +745,7 @@ class UBoxPlotFigure(UBoxDataParser):
 
     @ClassInstanceMethod
     def LinkAxis(self, LinkAxis='xy', LinkDim='all', ShareCLim=True, **kwargs):
-        if self.Verbose:
-            print('LinkAxis:', LinkAxis)
+        self.PrintVerbose('LinkAxis:', LinkAxis)
         if LinkDim is None or LinkDim.lower() == 'no':
             pass
         elif LinkDim == 'all':
@@ -783,25 +776,26 @@ class UBoxPlotFigure(UBoxDataParser):
 
     @ClassInstanceMethod
     def ShowPlot(self, TightLayout=True, **kwargs):
-        print('===== Showing plotting')
         Nplot = len(list(self.DataPlotter.keys()))
         self.axs = self.FigLayout(Nplot, **kwargs)
         count = 1
+        if TightLayout:
+            plt.tight_layout()
         for (Name, Plotter), ax in zip(self.DataPlotter.items(), self.axs.flat):
-            print('Plotting "{}" on ax={}...'.format(Name, id(ax)))
             Plotter.ax = ax
             Plotter.IsBottom = self.IsBottom(count, self.Nx, self.Ny)
             Plotter.IsLeft = self.IsLeft(count, self.Nx, self.Ny)
             Plotter.Plot(**kwargs)
             count += 1
         self.LinkAxis(**kwargs)
-        if TightLayout:
-            plt.tight_layout()
+
 
         plt.show()
 
     @ClassInstanceMethod
     def AddDataPlotter(self, DataFields=[], DataType='UEDGE', Refresh=False, GroupBy=None, Fig=None, **kwargs):
+        if kwargs.get('CompareWith') is not None:
+            kwargs.get('CompareWith')
 
         if kwargs.get('Verbose') is not None:
             self.Verbose = kwargs.get('Verbose')
@@ -843,10 +837,10 @@ class UBoxPlotFigure(UBoxDataParser):
             DataStructName = DataStruct['DataStructName']
             self.PrintVerbose('Making plotter for {} / {} with GroupBy:{}'.format(DataName, DataStructName, GroupBy))
 
-            if GroupBy is None or GroupBy.lower() == 'single' or GroupBy.lower() == 'no':
+            if GroupBy is None or GroupBy.lower() == 'single' or GroupBy.lower() == 'no' or DataStruct['PlotDim'] == '2D':
                 if self.DataPlotter.get(DataStructName) is not None and not Refresh:
                     i = 1
-                    while self.DataPlot.get(DataStructName) is not None:
+                    while self.DataPlotter.get(DataStructName) is not None:
                         DataStructName = DataStructName + '_#' + str(i)
                         i = i + 1
                     DataStruct['DataStructName'] = DataStructName
@@ -858,6 +852,7 @@ class UBoxPlotFigure(UBoxDataParser):
                     self.DataPlotter[DataName].AddPlotData(DataStruct, **kwargs)
                 else:
                     self.DataPlotter[DataName] = UBoxDataPlotter(DataStruct, **kwargs)
+
             elif GroupBy.lower() == 'new':
                 if FirstData is None:
                     self.DataPlotter[DataName] = UBoxDataPlotter(DataStruct, **kwargs)
@@ -870,16 +865,6 @@ class UBoxPlotFigure(UBoxDataParser):
             # set verbose mode of plotters
             for DP in self.DataPlotter.values():
                 DP.Verbose = self.Verbose
-            # if Success:
-            #     NameDataPlot=DataName
-            #     if not Refresh:
-            #         i=1
-            #         while self.DataPlot.get(NameDataPlot) is not None:
-            #             NameDataPlot=NameDataPlot+'_#'+str(i)
-            #             i=i+1
-            #     self.DataPlot[NameDataPlot]=DataStruct
-            # else:
-            #     print('Cannot add plot for the datafield {}'.format(NameDataPlot))
 
     def ProcessPlotterData(self, DicData, Grid, Tag, PlotType='auto', **kwargs):
         for DataName, DataStruct in DicData.items():
@@ -906,8 +891,8 @@ class UBoxPlotFigure(UBoxDataParser):
 
             DataStruct['PlotDim'] = PlotDim
             DataStruct['AxisType'] = AxisType
-            if self.Verbose:
-                print('Plotter: \n DataStructName: {}'.format(DataName), 'PlotDim:', PlotDim, 'AxisType:', AxisType)
+
+            self.PrintVerbose('ProcessPlotterData: DataStructName={}; PlotDim={}; AxisType={}'.format(DataName,PlotDim,AxisType))
 
             if PlotDim == '1D':
                 DataStruct.update(self.MakePlotData1D(Data, Indexes, Grid, AxisType, **kwargs))
@@ -915,9 +900,8 @@ class UBoxPlotFigure(UBoxDataParser):
                 DataStruct.update(self.MakePlotData2D(Data, Indexes, Grid, AxisType, **kwargs))
             else:
                 raise ValueError('Unknown PlotDim:"{}"'.format(PlotDim))
-            print('XData', DataStruct['XData'])
             DataStruct['DataSpecies'] = [DataSpecies for X in DataStruct['XData']]
-
+            DataStruct['Tag'] = [Tag for X in DataStruct['XData']]
     @staticmethod
     def SetPlotType(Data, PlotType='auto'):
 
@@ -1014,8 +998,7 @@ class UBoxPlotFigure(UBoxDataParser):
         DimSplit = self.GetDimSplit(AxisType)
         DataSplit = self._SplitDataArray(Data, DimSplit)
         IndexesSplit = self._SplitIndexes(Indexes, DimSplit)
-        if self.Verbose:
-            print('Preparing 1D for for XType:{} ; DimSplit={}'.format(AxisType, DimSplit))
+        self.PrintVerbose('Preparing 1D for for XType:{} ; DimSplit={}'.format(AxisType, DimSplit))
 
         DataOut = []
         XDataOut = []
@@ -1038,14 +1021,42 @@ class UBoxPlotFigure(UBoxDataParser):
         return {'XData': XDataOut, 'YData': DataOut, 'ExtraLabels': LabelOut}
 
     def MakePlotData2D(self, Data, Indexes, Grid, AxisType, **kwargs):
-        if self.Verbose:
-            print('Preparing 2D data for AxisType:{}'.format(AxisType))
         (XData, YData) = self.GetXYData(Grid, AxisType, Indexes, **kwargs)
-        if self.Verbose:
-            print('Shape XData and YData:{} ; {}'.format(XData.shape, YData.shape))
-        return {'XData': XData, 'YData': YData, 'XYData': Data}
+        self.PrintVerbose('MakePlotData2D: AxisType:{} XData.shape={}; YData.Shape:{}'.format(AxisType,XData.shape,YData.shape))
+        return {'XData': [XData], 'YData': [YData], 'XYData': [Data], 'ExtraLabels': [""]}
 
+    @ClassInstanceMethod
+    def MakeFigTitle(self,TitlePart=['CaseName']):
+        Title=[]
+        if type(TitlePart) == list:
+            for T in TitlePart:
+                if T == 'CaseName':
+                    if hasattr(self.Parent,'Tag'):
+                        CaseName = self.Parent.Tag.get('CaseName')
+                    else:
+                        if hasattr(self.Parent,'GetTag'):
+                            CaseName = self.Parent.GetTag().get('CaseName')
+                        else:
+                            CaseName = ""
+                    Title.append(CaseName)
+                elif T == 'Project':
+                    if hasattr(self.Parent,'Tag'):
+                        Project = self.Parent.Tag.get('Project').get('Name')
+                    else:
+                        if hasattr(self.Parent,'GetTag'):
+                            Project = self.Parent.GetTag().get('Project').get('Name')
+                        else:
+                            Project = ""
+                    Title.append(Project)
+                else:
+                    if type(T) == list:
+                        Title.extend(T)
+                    else:
+                        Title.append(T)
+            return ' | '.join(Title)
 
+        else:
+            return TitlePart
 @AddPrintMethod(0)
 class UBoxPlot(UBoxDataParser):
 
@@ -1067,6 +1078,9 @@ class UBoxPlot(UBoxDataParser):
 
     @ClassInstanceMethod
     def Plot(self, DataFields=None, NewFig=True, FigName=None, **kwargs):
+        if kwargs.get('Verbose') is not None:
+            self.Verbose = kwargs.get('Verbose')
+
         if not hasattr(self, 'CurrentFigure'):
             self.CurrentFigure = None
         if not hasattr(self, 'Figures'):
@@ -1078,11 +1092,50 @@ class UBoxPlot(UBoxDataParser):
         if FigName is not None:
             self.CurrentFigure = self.Figures.get(FigName)
 
+
+        if kwargs.get('CompareWith') is not None:
+            self.SetDefaultCompareWithKwargs(kwargs)
+            CompareWith=kwargs.get('CompareWith')
+            if type(CompareWith) != list:
+                CompareWith=[CompareWith]
+            self.PrintVerbose('Add plot for comparison with:',CompareWith)
+
+            for W in CompareWith:
+                    Parent = self.CurrentFigure.Parent
+                    try:
+                        self.CurrentFigure.Parent = W
+                        self.CurrentFigure.AddDataPlotter(DataFields, **kwargs)
+                    except Exception:
+                        raise Exception
+                    finally:
+                        self.CurrentFigure.Parent = Parent
         self.CurrentFigure.Plot(DataFields, **kwargs)
 
     @ClassInstanceMethod
+    def SetDefaultCompareWithKwargs(self, kwargs):
+        if kwargs.get('CompareWith') is not None:
+            if kwargs.get('GroupBy') is None:
+                    kwargs['GroupBy'] = 'Name'
+
+            if kwargs.get('SetupLabels') is None:
+                kwargs['SetupLabels'] = ['CaseName']
+            else:
+                if type(kwargs.get('SetupLabels')) != list:
+                    kwargs['SetupLabels'] = [kwargs.get('SetupLabels')]
+                kwargs['SetupLabels'].append('CaseName')
+            if kwargs.get('color') is None:
+                kwargs['color'] = {'DataSpecies':'default'}
+
+            if kwargs.get('linestyle') is None:
+                kwargs['linestyle'] = {'CaseName':'default'}
+
+    @ClassInstanceMethod
     def AddPlot(self, DataFields=None, NewFig=False, FigName=None, **kwargs):
-        print('===== Adding plot:{}'.format(DataFields))
+        if kwargs.get('Verbose') is not None:
+            self.Verbose = kwargs.get('Verbose')
+
+        self.Print('Adding plot:{}'.format(DataFields))
+
         if not hasattr(self, 'CurrentFigure'):
             self.CurrentFigure = None
         if not hasattr(self, 'Figures'):
@@ -1094,7 +1147,25 @@ class UBoxPlot(UBoxDataParser):
         if FigName is not None and self.Figures.get(FigName) is not None:
             self.CurrentFigure = self.Figures.get(FigName)
 
+
+        if kwargs.get('CompareWith') is not None:
+            self.SetDefaultCompareWithKwargs(kwargs)
+            CompareWith = kwargs.get('CompareWith')
+            if type(CompareWith) != list:
+                CompareWith=[CompareWith]
+            self.PrintVerbose('Add plot for comparison with:',CompareWith)
+            for W in CompareWith:
+                    Parent = self.CurrentFigure.Parent
+                    try:
+                        self.CurrentFigure.Parent = W
+                        self.CurrentFigure.AddDataPlotter(DataFields, **kwargs)
+                    except Exception:
+                        raise Exception
+                    finally:
+                        self.CurrentFigure.Parent = Parent
+
         self.CurrentFigure.AddDataPlotter(DataFields, **kwargs)
+
 
     @ClassInstanceMethod
     def ShowPlot(self, FigName=None, **kwargs):
@@ -1106,6 +1177,9 @@ class UBoxPlot(UBoxDataParser):
 
         if FigName is not None and self.Figures.get(FigName) is not None:
             self.CurrentFigure = self.Figures.get(FigName)
+
+
+        self.SetDefaultCompareWithKwargs(kwargs)
 
         if self.CurrentFigure is not None:
             self.CurrentFigure.ShowPlot(**kwargs)
@@ -1151,7 +1225,6 @@ class UBoxPlot(UBoxDataParser):
     def AddRadialPlot(self, DataFields=None, Location='Outer', ShowGuardCell=False, **kwargs):
         if type(Location) != list:
             Location = [Location]
-        print('Location:', Location)
         IdxSlice = []
         for L in Location:
             if L == 'Outer':
@@ -1175,6 +1248,7 @@ class UBoxPlot(UBoxDataParser):
         assert kwargs['PlotType'].lower() in ['r', 'ix', 'psi'], 'For radial plot, PlotType is either "r", "i" or "psi"'
         self.AddPlot(DataFields, IdxSlice=IdxSlice, DimSlice=DimSlice, **kwargs)
 
+
     @ClassInstanceMethod
     def DivertorPlot(self, DataFields=None, ShowGuardCell=False, **kwargs):
         if kwargs.get('Location') is None:
@@ -1186,7 +1260,8 @@ class UBoxPlot(UBoxDataParser):
         if kwargs.get('GroupBy') is None:
             kwargs['GroupBy'] = 'Name'
 
-        self.NewFig('Divertor radial profiles')
+        Loc = kwargs['Location']
+        self.NewFig(['Project', 'CaseName', Loc])
 
         if DataFields is None:
             self.AddRadialPlot(['te'], **kwargs)
@@ -1204,28 +1279,28 @@ class UBoxPlot(UBoxDataParser):
         #     else:
         #         raise IOError('Cannot reset DataPlot when no data fields are given')
 
-    @ClassInstanceMethod
-    def PreparePlotter(self, DicData, Grid, Tag, NameDataPlot, NameData, **kwargs):
-        DicPlotter = DicData
-        DicPlotter['Grid'] = Grid
-        DicPlotter['Tag'] = Tag
-        DicPlotter['NameData'] = NameData
-        DicPlotter['NameDataPlot'] = NameDataPlot
-        DicPlotter.update(kwargs)
+    # @ClassInstanceMethod
+    # def PreparePlotter(self, DicData, Grid, Tag, NameDataPlot, NameData, **kwargs):
+    #     DicPlotter = DicData
+    #     DicPlotter['Grid'] = Grid
+    #     DicPlotter['Tag'] = Tag
+    #     DicPlotter['NameData'] = NameData
+    #     DicPlotter['NameDataPlot'] = NameDataPlot
+    #     DicPlotter.update(kwargs)
 
-        if kwargs.get('PlotLabel') is None:
-            DicPlotter['PlotLabel'] = NameData
+    #     if kwargs.get('PlotLabel') is None:
+    #         DicPlotter['PlotLabel'] = NameData
 
-        if kwargs.get('PlotTitle') is None:
-            ProjectName = Tag.get('Project').get('Name')
-            CaseName = Tag.get('CaseName')
-            PlotTitle = []
-            if ProjectName is not None:
-                PlotTitle.append(ProjectName)
-            if CaseName is not None:
-                PlotTitle.append(CaseName)
-            if PlotTitle != []:
-                print(PlotTitle)
-                DicPlotter['PlotTitle'] = ':'.join(PlotTitle)
+    #     if kwargs.get('PlotTitle') is None:
+    #         ProjectName = Tag.get('Project').get('Name')
+    #         CaseName = Tag.get('CaseName')
+    #         PlotTitle = []
+    #         if ProjectName is not None:
+    #             PlotTitle.append(ProjectName)
+    #         if CaseName is not None:
+    #             PlotTitle.append(CaseName)
+    #         if PlotTitle != []:
+    #             #print(PlotTitle)
+    #             DicPlotter['PlotTitle'] = ':'.join(PlotTitle)
 
-        return DicPlotter
+    #     return DicPlotter

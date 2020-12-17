@@ -5,7 +5,7 @@ Created on Mon Aug 24 10:42:39 2020
 
 @author: jguterl
 """
-from UEDGEToolBox.Utils.Misc import SetClassArgs, ClassInstanceMethod
+from UEDGEToolBox.Utils.Misc import SetClassArgs, ClassInstanceMethod, AddPrintMethod
 from UEDGEToolBox.Plot.Plot import UBoxPlot
 from UEDGEToolBox.DataManager.IO import UBoxIO
 from UEDGEToolBox.DataManager.Interpolate import UBoxInterpolate
@@ -14,7 +14,7 @@ from UEDGEToolBox.ProjectManager.Source import UBoxSource
 
 # @UBoxPreFix()
 
-
+@AddPrintMethod(0)
 class UBoxExtData(UBoxSource, UBoxPlot, UBoxInterpolate):  # ,UBoxPlot):
     """Class managing loading of UEDGE data saved in files."""
     Verbose = False
@@ -83,8 +83,7 @@ class UBoxExtData(UBoxSource, UBoxPlot, UBoxInterpolate):  # ,UBoxPlot):
     @ClassInstanceMethod
     def GetData(self, Field: str, DicAttr: str = 'DataUEDGE', CorrectTempUnit=True):
         """Get data values from data dictionary stored in the instance."""
-        if self.Verbose:
-            print('Getting data field {} from DicAttr:{}'.format(Field, DicAttr))
+        self.PrintVerbose('Getting data field {} from DicAttr:{}'.format(Field, DicAttr))
         if hasattr(self, DicAttr) and type(getattr(self, DicAttr)) == dict:
             Out = getattr(self, DicAttr).get(Field)
             if Out is not None and Out.size == 1 and Out.dtype.char == 'S':
@@ -148,7 +147,7 @@ class UBoxExtData(UBoxSource, UBoxPlot, UBoxInterpolate):  # ,UBoxPlot):
         if self.GridFileName is None:
             print('Cannot find a filename for a grid file in instance Data ... Provide a path toward a grid file')
         else:
-            print('Importing grid from {} ...'.format(self.GridFileName))
+            self.Print('Importing grid from {} ...'.format(self.GridFileName))
             self.Grid = self.ReadGridFile(self.GridFileName)
 
     @ClassInstanceMethod
