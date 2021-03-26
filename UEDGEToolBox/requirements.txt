@@ -87,7 +87,7 @@ python3-ppgplot==3.0.7
 python3-ptdata==3.0.4
 python3-screens==3.0.3
 pytz==2019.3
-PyYAML==5.3
+PyYAML==5.4
 readme-renderer==26.0
 requests==2.24.0
 requests-toolbelt==0.9.1
