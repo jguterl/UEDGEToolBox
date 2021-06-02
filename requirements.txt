@@ -105,7 +105,7 @@ traitlets==4.3.3
 twine==3.2.0
 uedge==7.0.8.4.15rc1
 -e git+https://github.com/jguterl/UEDGEToolBox.git@b19f0328d628f6573c5bd49464118b6b3a6b4db9#egg=UEDGEToolBox
-urllib3==1.25.10
+urllib3==1.26.5
 wcwidth==0.1.8
 webencodings==0.5.1
 zope.interface==5.1.0
