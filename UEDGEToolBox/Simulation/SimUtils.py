@@ -27,9 +27,9 @@ from UEDGEToolBox.ProjectManager.Source import UBoxSource
 #from UEDGEToolBox.Projects import *
 #from UEDGEToolBox.IO import *
 
-         
-        
-       
+
+
+
 class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
     def __init__(self,  Verbose=False,*args, **kwargs):
         # Import Uedge packages as attribute of the class instance
@@ -41,8 +41,8 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         print('Loaded Packages:',self.ListPkg)
         self.ExcludeList=['ExcludeList','ListPkg','IO']+self.ListPkg
         self.SetDefault()
-        
-        
+
+
     def SetDefault(self):
            self.UBoxRunDefaults={'Jmax':5,'Imax':3000, 'mult_dt_fwd':3.4,'mult_dt_bwd':3,'ISave':10,'SaveSim':True}
            self.UBoxRunDefaults['dt_ftol_threshold']=5e-11
@@ -61,14 +61,14 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
            self.bbbRunDefault['rlx']=0.9
            self.bbbRunDefault['incpset']=10
            self.bbbRunDefault['isbcwdt']=1
-           
+
            self.SetPackageParams(self.bbbRunDefault)
            self.SetPackageParams(self.UBoxRunDefaults,self,AddAttr=True)
-    
+
     def SetUEDGEParams(self,Dic:dict):
         Dic=dict((k,v) for k,v in Dic.items() if k in list(self.bbbRunDefault.keys()))
         self.SetPackageParams(Dic)
-        
+
     def SetPackageParams(self,Dic:dict,Pkg=None,AddAttr=False):
         """
         Args:
@@ -99,28 +99,28 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
                         if self.Verbose:
                             print('Setting {}.{}={}'.format(Pkg,A,V))
                         setattr(Pkg,A,V)
-                    
+
     @staticmethod
     def InitPlasma():
-        bbb.ngs=1e16; bbb.ng=1e16
-        bbb.nis=1e16; bbb.ni=1e16 
+        bbb.ngs=1e18; bbb.ng=1e18
+        bbb.nis=1e18; bbb.ni=1e18
         bbb.ups=0.0;  bbb.up=0.0
         bbb.tes=1*bbb.ev;   bbb.te=1*bbb.ev
         bbb.tis=1*bbb.ev;   bbb.ti=1*bbb.ev
         bbb.tgs=1*bbb.ev;   bbb.tg=1*bbb.ev
         bbb.phis=0;bbb.phi=0
-        
-        
+
+
     def PrintTimeStepModif(self,i):
         self.PrintInfo('New time-step = {:.4E}'.format(bbb.dtreal),color=Back.MAGENTA)
-    
+
     def PrintError(self,E,i,j=None):
         if j is None:
-            self.PrintInfo('{cn}: Exmain failure i={i}/{imax}              dtreal={dt:.4E}'.format(cn=self.CaseName,i=i,imax=self.Imax, dt=bbb.dtreal),color=Back.RED)       
+            self.PrintInfo('{cn}: Exmain failure i={i}/{imax}              dtreal={dt:.4E}'.format(cn=self.CaseName,i=i,imax=self.Imax, dt=bbb.dtreal),color=Back.RED)
         else:
             self.PrintInfo('{cn}: Exmain failure i={i}/{imax} j={j}/{jmax} dtreal={dt:.4E}'.format(cn=self.CaseName,i=i,imax=self.Imax,j=j,jmax=self.Jmax,dt=bbb.dtreal),color=Back.RED)
         print("Exception: {}".format(E))
-    
+
     def PrintCurrentIteration(self,i,j=None):
         if j is None:
             self.PrintInfo('{cn}: Main loop i={i}/{imax}       dtreal={dt:.4E}'.format(cn=self.CaseName,i=i,imax=self.Imax, dt=bbb.dtreal),color=Back.BLUE)
@@ -134,15 +134,15 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
 
     def SaveLast(self,DataSet='regular'):
         self.Save('last',DataSet=DataSet,DataType='UEDGE',OverWrite=True)
-    
+
     def GetFinalStateFileName(self,WithDate=False):
         if WithDate:
             return self.SetFormat('final_state_{}'.format(GetTimeStamp()))[1]
         else:
             return self.SetFormat('final_state')[1]
-        
-        
-        
+
+
+
     def SaveFinalState(self,DataSet='regular'):
         self.Save(self.GetFinalStateFileName(),DataSet=DataSet,DataType='UEDGE',OverWrite=True)
         self.Save(self.GetFinalStateFileName(WithDate=True),DataSet=DataSet,DataType='UEDGE',OverWrite=True)
@@ -150,18 +150,18 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         self._iSave+=1
         if self._iSave>self.ISave:
             self._iSave=1
-            self.Save('save_{}'.format(GetTimeStamp()),DataSet=DataSet,DataType='UEDGE')  
-            
+            self.Save('save_{}'.format(GetTimeStamp()),DataSet=DataSet,DataType='UEDGE')
+
     def GetTag(self)->dict:
         """
         Generate a dictionary containing settings of a UBox instance.
-    
+
         Args:
             UBoxObject (UBoxSimulation, optional): Simulation instance. Defaults to None.
-    
+
         Return:
-            Dictionary with 
-    
+            Dictionary with
+
         """
         try:
             from uedge import __version__
@@ -171,7 +171,7 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
             from uedge import GitHash
         except:
             GitHash=None
-                
+
         today = date.today()
         now = datetime.now()
         Tag={}
@@ -179,24 +179,24 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         Tag['Time'] = now.strftime("%H-%M-%S")
         Tag['GitHash']=GitHash
         Tag['Version'] = __version__
-        
+
         if hasattr(self,'UserName'):
             Tag['User']=self.UserName
         else:
             Tag['User']='unknown'
-            
+
         if not hasattr(self,'PlatForm') or getattr(self,'PlatForm') is None:
             self.PlatForm=GetPlatform()
         Tag['PythonVersion']=self.PlatForm['python_version']
         Tag['Machine']=self.PlatForm['machine']
         Tag['Processor']=self.PlatForm['processor']
         Tag['PlatForm']=self.PlatForm['platform']
-        
+
         if hasattr(self,'CurrentProject') and self.CurrentProject is not None:
             Tag['Project']=self.CurrentProject.toDict()
         else:
             Tag['Project']={}
-        if hasattr(self,'Description'):    
+        if hasattr(self,'Description'):
             Tag['CaseName']=self.CaseName
         else:
             Tag['CaseName']=''
@@ -204,38 +204,38 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
             Tag['Description']=self.Description
         else:
             Tag['Description']=''
-    
+
         return Tag
-                                   
-    
-    @ClassInstanceMethod    
+
+
+    @ClassInstanceMethod
     def GetData(self,Field:str,DataType:str='UEDGE',CorrectTempUnit=True):
         """Get data values from data dictionary stored in the instance."""
         Out=self.CollectData(Field,DataType,RemovePackage=True)
-        if self.Verbose:print('GetData:',Out)      
-        Out=Out.get(Field)  
+        if self.Verbose:print('GetData:',Out)
+        Out=Out.get(Field)
         if Out is not None and Out.size==1 and Out.dtype.char=='S':
             Out=Out[0].decode().strip()
-            
+
         F=Field.lower()
         if Field.count('.')>0:
-            F=F.split('.')[1]    
+            F=F.split('.')[1]
         if Out is not None and CorrectTempUnit and any([F==L for L in ['tes','tis','tgs','te','ti','tg']]):
             if not hasattr(self,'CorrectTemp'):
                 self.CorrectTemp= 1.602176634e-19
-            Out=Out/self.CorrectTemp    
-    
+            Out=Out/self.CorrectTemp
+
         return Out
-    
+
     @ClassInstanceMethod
     def GetDataField(self,Field:str or list,DataType:str='UEDGE'):
         """Get data values from data dictionary stored in the instance."""
         if DataType is None:
             DataType='UEDGE'
-            
+
         if type(Field)==str:
             return self.GetData(Field,DataType)
-        elif type(Field)==list: 
+        elif type(Field)==list:
             return [self.GetData(k,DataType) for k in Field]
         else:
             raise IOError('Field must be a string or a list of strings')
@@ -243,18 +243,18 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
     # #     if type(Field)!=str:
     # #         raise ValueError('Field must be a string')
     # #     return self.CollectUEDGEData(Field).get(Field)
-    
+
     # # def GetData(self,Field):
     # #     if type(Field)==str:
     # #         Field=(Field,)
     # #     if type(Field)==list:
     # #         Field=tuple(Field)
-            
+
     #     Dic=self.CollectUEDGEData(Field)
     #     return dict((self.RemovePkg(k),v) for k,v in Dic.items())
-    
-    
-        
+
+
+
     # def GetData(self,Field,Package='bbb'):
     #     """
 
@@ -312,15 +312,15 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
             self.Grid=Grid
         if hasattr(self,'SetPsinc'):
                    self.SetPsinc()
-        
-        
 
 
 
 
 
 
-   
+
+
+
 
 
     # @classmethod
@@ -367,11 +367,11 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         for A,V in self.__class__.GetClassAttr().items():
             print(' - {}={}'.format(A,V))
 
-    
 
-    
 
-    
+
+
+
 
     # def OverrideClassParams(self,**kwargs):
     #     #Override class attribute
@@ -401,10 +401,10 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
 
     def GetVersion(self):
         return uedge.__version__
-    
+
     def GetGitHash(self):
         return uedge.GitHash
-    
+
     def SetVersion(self):
         try:
             bbb.uedge_ver=uedge.__version__
@@ -413,7 +413,7 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
     @staticmethod
     def Pandf():
         bbb.pandf1 (-1, -1, 0, bbb.neq, 1., bbb.yl, bbb.yldot)
-        
+
     def Updateftol(self):
         bbb.ylodt = bbb.yl
         bbb.pandf1 (-1, -1, 0, bbb.neq, 1., bbb.yl, bbb.yldot)
@@ -422,14 +422,14 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         if ftol_dt!=bbb.ftol_dt:
             self.PrintInfo('Increasing ftol_dt: ftol_dt={} | bbb.ftol_dt={}'.format(ftol_dt,bbb.ftol_dt))
         return max(min(ftol_dt, 0.01*fnrm_old),bbb.ftol_min)
-    
-    @staticmethod 
+
+    @staticmethod
     def AdjustFtolTime(dt,dt0=1e-11,p=2.5):
         if type(dt)!=np.ndarray:
             if dt>dt0:
                 return 1.0
             else:
-                return  (dt0/dt)**p       
+                return  (dt0/dt)**p
         else:
                 f=(dt0/dt)**p
                 f[(dt>dt0)]=1.0
@@ -440,19 +440,19 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         bbb.ftol_min=1e-10
         bbb.ftol_dt=1e-10
         print("Reset ftol: bbb.ftol_dt={};bbb.ftol_min={}".format(bbb.ftol_min,bbb.ftol_dt))
-    
+
     @staticmethod
     def Setftol(ftol):
         bbb.ftol_min=ftol
         bbb.ftol_dt=ftol
-        print("Set ftol to {}".format(ftol)) 
-    
+        print("Set ftol to {}".format(ftol))
+
     @staticmethod
     def Changeftol(factor):
         bbb.ftol_min*=factor
         bbb.ftol_dt*=factor
-        print("Change ftol by a factor {}: bbb.ftol_dt={};bbb.ftol_min={}".format(factor,bbb.ftol_min,bbb.ftol_dt)) 
-    
+        print("Change ftol by a factor {}: bbb.ftol_dt={};bbb.ftol_min={}".format(factor,bbb.ftol_min,bbb.ftol_dt))
+
     def Controlftol(self,dtreal_threshold=5e-10,Mult=10):
         if self.Adjustftol:
             if not hasattr(self,'CftolCount'):
@@ -462,7 +462,7 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
             if not hasattr(self,'dtreal_bkp'):
                 self.dtreal_bkp=bbb.dtreal
             if not hasattr(self,'dtreal_threshold'):
-                self.dtreal_threshold=dtreal_threshold    
+                self.dtreal_threshold=dtreal_threshold
             if bbb.dtreal<self.dtreal_threshold:
                 print('CftolCount:',self.CftolCount)
                 if bbb.dtreal<self.dtreal_bkp:
@@ -471,29 +471,29 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
                 else:
                     if self.CftolCount>0:
                         self.Changeftol(1/self.CftolMult)
-                        self.CftolCount-=1         
+                        self.CftolCount-=1
             else:
                 if self.CftolCount>0:
                         self.Changeftol(1/self.CftolMult)
                         self.CftolCount-=1
-            
-            self.dtreal_bkp=bbb.dtreal 
-            
+
+            self.dtreal_bkp=bbb.dtreal
+
     def SetContCall(self):
         if bbb.dtreal>=self.dt_ContCallOff_min and bbb.dtreal<=self.dt_ContCallOff_max:
             self.ContCall=False
         else:
             if self.dt_ContCallOff_min<self.dt_ContCallOff_max:
                 self.ContCall=True
-        
-           
-            
-    
-        
 
 
 
-    
 
 
-  
+
+
+
+
+
+
+

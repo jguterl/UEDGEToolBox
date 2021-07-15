@@ -13,7 +13,7 @@ from matplotlib.collections import LineCollection
 from UEDGEToolBox.Utils.Misc import ClassInstanceMethod
 import numpy as np
 from matplotlib import pyplot as plt
-import matplotlib 
+import matplotlib
 import os
 import itertools
 
@@ -25,10 +25,10 @@ class UBoxGrid():
             self.ImportGrid(FileName)
         self.Verbose=Verbose
         self.ax=None
-        
+
     def GetGrid(self):
         return self.Grid
-    
+
     @ClassInstanceMethod
     def SetGrid(self,Grid=None):
         print('Setting grid:',Grid)
@@ -36,18 +36,18 @@ class UBoxGrid():
             self.Grid=Grid
         elif type(Grid)==str:
             self.ImportGrid(Grid)
-        
-    
+
+
     def ShowCell(self,ixiy,ax=None,Annotate=True):
         if Grid is not None:
             self.PlotCell(ixiy,rm=self.Grid['rm'],zm=self.Grid['zm'],ax=ax,Verbose=self.Verbose,Annotate=Annotate)
 
-    
-    @staticmethod        
+
+    @staticmethod
     def PlotCell(ixiy,rm=None,zm=None,ax=None,Verbose=False,color='r',Annotate=True):
         """
-        
-        >>> 
+
+        >>>
 
         Args:
             ixiy (TYPE): DESCRIPTION.
@@ -62,7 +62,7 @@ class UBoxGrid():
             None.
 
         """
-        
+
         from uedge import com
         if ax is not None:
             self.ax=ax
@@ -70,12 +70,12 @@ class UBoxGrid():
             self.ax=plt.gca()
         if type(ixiy)!=list:
             ixiy=[ixiy]
-         
+
         if rm is None:
             rm=com.rm
         if zm is None:
             zm=com.zm
-        if Verbose: print(rm.shape)       
+        if Verbose: print(rm.shape)
         for (ix,iy) in ixiy:
             r=rm[ix,iy,0]
             z=zm[ix,iy,0]
@@ -97,9 +97,9 @@ class UBoxGrid():
             return
         if self.ax is None:
             self.PlotGrid()
-        self.ax.scatter(Cm[:,:,0].flatten(),Cm[:,:,1].flatten(),marker='+',color='r')            
-            
-    @ClassInstanceMethod                 
+        self.ax.scatter(Cm[:,:,0].flatten(),Cm[:,:,1].flatten(),marker='+',color='r')
+
+    @ClassInstanceMethod
     def ComputeCentroid(self):
         if self.Grid is not None:
             r=self.Grid['rm']
@@ -107,7 +107,7 @@ class UBoxGrid():
         else:
             print("No grid loaded ... Use GetGrid() or SetGrid() to load a grid.")
             return
-        
+
         idx=[np.array([1,2,4,3,1])]
         Nx=len(r)
         Ny=len(r[0])
@@ -115,24 +115,24 @@ class UBoxGrid():
         for i in range(Nx):
             for j in range(Ny):
                     Poly=np.concatenate((r[i,j,idx],z[i,j,idx])).reshape(2,5).T
-                 
+
                     x=Poly[:,0]
                     y=Poly[:,1]
                     a = x[:-1] * y[1:]
                     b = y[:-1] * x[1:]
-                
+
                     cx = x[:-1] + x[1:]
                     cy = y[:-1] + y[1:]
-                    
+
                     A = np.sum(a - b) / 2.
                     Cx = np.sum(cx * (a - b)) / (6. * A)
                     Cy = np.sum(cy * (a - b)) / (6. * A)
                     Cm[i,j,0]=Cx
                     Cm[i,j,1]=Cy
-                    
+
         self.Grid['cm']=Cm
-        
-    @ClassInstanceMethod 
+
+    @ClassInstanceMethod
     def PlotCenter(self):
         if self.Grid is not None:
             r=self.Grid['rm']
@@ -141,8 +141,8 @@ class UBoxGrid():
             print("No grid loaded ... Use GetGrid() or SetGrid() to load a grid.")
             return
 
-        self.ax.scatter(r[:,:,0].flatten(),z[:,:,0].flatten(),'pb')
-    @ClassInstanceMethod 
+        self.ax.scatter(r[:,:,0].flatten(),z[:,:,0].flatten(),color='b',marker='p')
+    @ClassInstanceMethod
     def PlotCenterFace(self):
         if self.Grid is not None:
             r=self.Grid['rm']
@@ -182,26 +182,26 @@ class UBoxGrid():
                     L1=line(Cm[i,j,:],Cm[i,j+1,:])
                     p1=[r[i,j,4],z[i,j,4]]
                     p2=[r[i,j,3],z[i,j,3]]
-                    L2=line(p1,p2) 
+                    L2=line(p1,p2)
                     I=intersection(L1,L2)
-                    
+
                     IntsecN[i,j,0]=I[0]
                     IntsecN[i,j,1]=I[1]
                     L1=line(Cm[i,j,:],Cm[i+1,j,:])
                     p1=[r[i,j,4],z[i,j,4]]
                     p2=[r[i,j,2],z[i,j,2]]
-                    L2=line(p1,p2) 
+                    L2=line(p1,p2)
                     I=intersection(L1,L2)
-                    
+
                     IntsecE[i,j,0]=I[0]
                     IntsecE[i,j,1]=I[1]
-                    
+
         if self.ax is None:
-            self.PlotGrid()            
+            self.PlotGrid()
         self.ax.scatter(IntsecN[:,:,0].flatten(),IntsecN[:,:,1].flatten(),color='b',marker='o')
         self.ax.scatter(IntsecE[:,:,0].flatten(),IntsecE[:,:,1].flatten(),color='b',marker='o')
-                
-    @ClassInstanceMethod 
+
+    @ClassInstanceMethod
     def PlotCentroidFace(self):
         if self.Grid is not None:
             r=self.Grid['rm']
@@ -216,14 +216,14 @@ class UBoxGrid():
         y=list()
         for i in range(Nx):
             for j in range(Ny):
-                for k,l in zip(idx[0:-1],idx[1:]):   
+                for k,l in zip(idx[0:-1],idx[1:]):
                     x.append((r[i,j,k]+r[i,j,l])/2)
                     y.append((z[i,j,k]+z[i,j,l])/2)
-        
+
         if self.ax is None:
             self.PlotGrid()
         self.ax.scatter(x,y,marker='x',color='r')
-    @ClassInstanceMethod 
+    @ClassInstanceMethod
     def PlotGrid(self,Grid=None,edgecolor='black',zshift=[0],**kwargs):
         if type(Grid)!=list:
             Grid=[Grid]
@@ -233,7 +233,7 @@ class UBoxGrid():
             zshift=[zshift]
         for G,ec,zs in  itertools.zip_longest(Grid,edgecolor,zshift,fillvalue=None):
             self.PlotterGrid(Grid=G,edgecolor=ec,zshift=zs,**kwargs)
-    @ClassInstanceMethod     
+    @ClassInstanceMethod
     def PlotterGrid(self,r:np.array or None=None,z:np.array or None =None,ax:plt.Axes or None=None,zshift=0,Grid=None,edgecolor:str=None,Title:str='',NewFig=True)->None:
         """Get the foobar.
 
@@ -247,9 +247,9 @@ class UBoxGrid():
         Isn't that what you want?
 
         """
-    
+
         self.SetGrid(Grid)
-        
+
         if r is None or z is None:
             if self.Grid is not None:
                 r=self.Grid['rm']
@@ -257,26 +257,26 @@ class UBoxGrid():
             else:
                 print("No grid loaded ... Use GetGrid() or SetGrid() to load a grid.")
                 return
-                
+
         z=z+zshift
-        
+
         if ax is not None:
             self.ax=ax
-        
+
         if not hasattr(self,'ax') or self.ax is None:
             if NewFig:
                 fig,ax=plt.subplots()
                 self.ax=ax
             else:
                 self.ax=plt.gca()
-                
+
         axx=self.ax
         def onpick(evt):
             if evt.artist in Pos.keys():
                 if old_artist.get('current') is not None:
                     old_artist['current'].set_fill(False)
                     old_artist['current'].set_edgecolor(edgecolor)
-                   
+
                 annot.set_visible(False)
                 annot.xy = Pos[evt.artist]
                 evt.artist.set_facecolor('blue')
@@ -285,16 +285,16 @@ class UBoxGrid():
                 annot.set_text(Dic[evt.artist])
                 annot.set_visible(True)
                 old_artist['current']=evt.artist
-                
+
             if evt.mouseevent.button == 3:
                 annot.set_visible(False)
-                
+
             axx.figure.canvas.draw_idle()
         old_artist={}
         Nx=len(r)
         Ny=len(r[0])
         self.ax.figure.suptitle("{}\n nx={} ny={}".format(Title,Nx,Ny))
-        
+
         idx=[np.array([1,2,4,3,1])]
         Dic={}
         Pos={}
@@ -307,7 +307,7 @@ class UBoxGrid():
                     Obj[p]=c
                     Dic[p]='ix={},iy={}'.format(i,j)
                     Pos[p]=(r[i,j,0],z[i,j,0])
-                    
+
         #print('xmin:',[np.where(z>0,z,1e10).min(),z.max()])
         #self.ax.set_ylim([z.min(),z.max()])
         #self.ax.set_xlim([np.where(r>0,r,1e10).min(),r.max()])
@@ -319,25 +319,25 @@ class UBoxGrid():
         self.ax.autoscale_view()
         self.ax.figure.canvas.mpl_connect('pick_event', onpick)
         plt.show()
-   
-        
-    
+
+
+
     # def ShowGrid(self,ax=None,Verbose=False,edgecolor='black',Title=''):
     #     self.Grid=self.GetGrid()
-    #     UboxGrid.PlotGrid(self.Grid['rm'],self.Grid['zm'],ax,Verbose,edgecolor,Title)     
-         
+    #     UboxGrid.PlotGrid(self.Grid['rm'],self.Grid['zm'],ax,Verbose,edgecolor,Title)
+
     @ClassInstanceMethod
     def ImportGrid(self,FileName:str = 'gridue')->None:
         """
         Read UEDGE grid file and import it into the class instance.
-        
+
         :param FileName: Grid file, defaults to 'gridue'
         :type FileName: str, optional
 
         """
         self.Grid=self.ReadGridFile(FileName)
-        
-        
+
+
     @ClassInstanceMethod
     def SetPsinc(self,psinc=None):
         if psinc is not None:
@@ -348,33 +348,33 @@ class UBoxGrid():
                 if self.Grid.get('simagxs') is not None:
                     simagxs=self.Grid.get('simagxs')
                     if self.Grid.get('sibdrys') is not None:
-                        sibdrys=self.Grid.get('sibdrys')        
+                        sibdrys=self.Grid.get('sibdrys')
                         if simagxs!=sibdrys:
                             self.Grid['psincdiv']=np.squeeze((self.Grid['psi'][0,:,0]-simagxs) / (sibdrys-simagxs))
                             nx=self.Grid['psi'].shape[0]
                             self.Grid['psinc']=np.squeeze((self.Grid['psi'][int(nx/2),:,0]-simagxs) / (sibdrys-simagxs))
-        
-    @ClassInstanceMethod    
+
+    @ClassInstanceMethod
     def ReadGridFile(self,FileName:str = 'gridue')->dict:
         """
         Read UEDGE grid file and return a dictionary containing the grid.
-        
+
         :param FileName: FileName, defaults to 'gridue'
         :type FileName: str, optional
-        :return: UEDGE grid stored in dictionary format 
+        :return: UEDGE grid stored in dictionary format
         :rtype: dict
 
         """
-            
-            
+
+
         try:
             f= open(FileName, mode = 'r')
-            
+
             Values = [x for x in next(f).split()]
             HeaderItems = {'nxm':int, 'nym':int, 'ixpt1':int, 'ixpt2':int, 'iyseptrx1':int,'simagxs':float,'sibdrys':float}
-            
+
             Values=[v(x) for x,v in zip(Values,HeaderItems.values())]
-                
+
             gridue_params=dict(zip(HeaderItems.keys(), Values))
             next(f)
             BodyItems = ['rm', 'zm', 'psi', 'br', 'bz', 'bpol', 'bphi', 'b']
@@ -399,14 +399,14 @@ class UBoxGrid():
                 L=(''.join(v).replace('\n','').replace('D','e')).split()
                 l=iter(L)
                 vv= next(l)
-    
+
                 data_=np.zeros((nx,ny,5))
                 for n in range(5):
                         for j in range(ny):
                             for i in range(nx):
-    
+
                                 data_[i][j][n]=float(vv)
-    
+
                                 try:
                                     vv=next(l)
                                 except:
@@ -416,14 +416,13 @@ class UBoxGrid():
             return gridue_params
         except Exception as e:
             print(repr(e))
-            
-    
-            
+
+
+
 
 #Grid=UBoxGrid()
 # def PlotSeparatrix(ax=None,color='r',linewidth=1,**kwargs):
 #     from uedge import com
 #     M.PlotFluxSurface(com.rm,com.zm,com.iysptrx,ax,color,linewidth,**kwargs)
-    
-    
-            
+
+
