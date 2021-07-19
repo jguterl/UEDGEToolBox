@@ -114,15 +114,15 @@ class UBoxProfileFitting(ExperimentalData):
         self.kye_new[(self.kye_new<0)] = self.kye_new[np.where(self.kye_new>0)[0][-1]]
 
         self.kye_new[(self.kye_new>kye_max)] = kye_max
-        #self.D_new[(self.D_new>D_max)] = D_max
+        self.D_new[(self.D_new>D_max)] = D_max
 
         bbb.dif_use[:,:,0] = self.D_new[:]
         bbb.kye_use[:,:] = self.kye_new[:]
 
 
-    def PlotTranspCoeffs(self, ax=None):
+    def PlotTranspCoeffs(self, ax=None, NewFig=False):
         if ax is None:
-            if not hasattr(self,'ax_transp'):
+            if not hasattr(self,'ax_transp') or self.ax_transp is None or NewFig is True:
                 fig, self.ax_transp = plt.subplots(2);
         else:
             self.ax_transp = ax
@@ -133,18 +133,23 @@ class UBoxProfileFitting(ExperimentalData):
         self.ax_transp[1].plot(psic, bbb.kye_use[self.ixslice,:],label='Iter={}'.format(self.Iteration))
         self.ax_transp[0].legend()
         self.ax_transp[1].legend()
-    def PlotProfiles(self,ax=None):
+        self.ax_transp[0].set_xlabel('$\Psi_N$')
+        self.ax_transp[0].set_xlabel('$\Psi_N$')
+        self.ax_transp[0].set_ylabel('D')
+        self.ax_transp[1].set_ylabel('kye')
+        
+    def PlotProfiles(self,ax=None, NewFig=False):
         from uedge import bbb
         if ax is None:
-            if not hasattr(self,'ax_data'):
+            if not hasattr(self,'ax_data') or self.ax_data is None or NewFig is True:
                 fig, self.ax_data = plt.subplots(2);
         else:
             self.ax_data = ax
 
         self.ax_data[0].plot(self.psi,bbb.ne[self.ixslice,:],marker='o',label='Iter={}'.format(self.Iteration))
         self.ax_data[1].plot(self.psi,bbb.te[self.ixslice,:]/bbb.ev,marker='o',label='Iter={}'.format(self.Iteration))
-        self.ax_transp[0].legend()
-        self.ax_transp[1].legend()
+        self.ax_data[0].legend()
+        self.ax_data[1].legend()
         plt.show()
         plt.draw()
         plt.pause(0.1)
@@ -155,6 +160,8 @@ class UBoxProfileFitting(ExperimentalData):
         bbb.tcorei = self.te_core
         bbb.iflcore = 0
         bbb.isnicore[0]=1
+        
+    
 
     def StartFitting(self,Itermax=10, dtreal=5e-8, dt_tot=0, **kwargs):
         self.Itermax = Itermax
@@ -168,11 +175,19 @@ class UBoxProfileFitting(ExperimentalData):
         plt.draw()
         plt.pause(0.5)
         self.UBox.Run(dtreal=dtreal, dt_tot=dt_tot, **kwargs)
-        self.PlotProfiles(self.ax_data)
+        self.PlotProfiles()
         self.UBox.Save('fit_{}.npy'.format(self.Iteration),OverWrite=True)
+        self.UBox.Save('last_fit.npy',OverWrite=True)
         self.UBox.Save('transpcoeff_{}.npy'.format(self.Iteration),DataSet=[('dif_use','kye_use')],DataType=['UEDGE'],OverWrite=True)
+        self.UBox.Save('last_transpcoeff.npy',DataSet=[('dif_use','kye_use')],DataType=['UEDGE'],OverWrite=True)
+        
         self.ContFitting(dtreal=5e-8, dt_tot=0, **kwargs)
-
+    
+    def RestoreLast(self):
+        self.UBox.Load('last_fit.npy')
+        self.UBox.Load('last_transpcoeff.npy')
+        self.GetTranspCoeffs()
+        
     def ContFitting(self,Itermax=None, dtreal=5e-8, dt_tot=0, **kwargs):
         if Itermax is not None:
             self.Itermax = Itermax
@@ -182,6 +197,8 @@ class UBoxProfileFitting(ExperimentalData):
             self.PlotTranspCoeffs()
             self.UBox.Run(dtreal=dtreal, dt_tot=dt_tot, **kwargs)
             self.UBox.Save('transpcoeff_{}.npy'.format(self.Iteration),DataSet=[('dif_use','kye_use')],DataType=['UEDGE'],OverWrite=True)
+            self.UBox.Save('last_transpcoeff.npy',DataSet=[('dif_use','kye_use')],DataType=['UEDGE'],OverWrite=True)
+            self.UBox.Save('last_fit.npy',OverWrite=True)
             self.UBox.Save('fit_{}.npy'.format(self.Iteration),OverWrite=True)
             self.PlotProfiles()
             plt.pause(0.5)
