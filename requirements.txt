@@ -72,7 +72,7 @@ py==1.8.1
 pycairo==1.18.2
 pycparser==2.20
 pyFFTW==0.11.1
-Pygments==2.5.2
+Pygments==2.7.4
 PyGObject==3.34.0
 pymdown-extensions==6.2.1
 pymssql==2.1.4
