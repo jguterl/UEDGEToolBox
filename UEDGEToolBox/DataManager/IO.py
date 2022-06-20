@@ -24,6 +24,7 @@ class UBoxLoader():
         
     @ClassInstanceMethod 
     def UEDGEArrayLoader(self,Pkg,VarName,VarValue,EnforceDim=True):
+        print('--- UEDGEArrayLoader:Verbose, EnforceDim',self.Verbose,EnforceDim)
         try:
             Dic=locals()
             Dic['Value']=VarValue
@@ -32,7 +33,7 @@ class UBoxLoader():
                 Str='Dimensions {} of variable {} different from dimensions {} of the variable in UEDGE package {}'.format(VarValue.shape,VarName,Dic['D'].shape,Pkg)
                 if EnforceDim:
                     raise ValueError(Str)
-                if self.Verbose: print(Str)
+                if self.Verbose: print('Mistach:',Str)
                 Mismatch=True
             else:
                 if self.Verbose: print('Variable {} match dimensions in UEDGE package {}'.format(VarName,Pkg))
@@ -41,7 +42,8 @@ class UBoxLoader():
             if Mismatch:
                 Str='['+",".join(['0:{}'.format(VarValue.shape[i]) for i in range(len(VarValue.shape))])+"]"
                 #if Verbose: print('exec to fix mismatch:','{}.{}{}=v'.format(Pkg,k,Str))
-                exec('{}.{}{}=Value'.format(Pkg,VarName,Str),globals(),Dic)    
+                exec('{}.{}{}=Value'.format(Pkg,VarName,Str),globals(),Dic)
+                print('Mismatch corrected: {} loaded in to {}'.format(VarName,Pkg))
             else:
                 exec('{}.{}=Value'.format(Pkg,VarName),globals(),Dic)
             return None
@@ -196,6 +198,7 @@ class UBoxIO(UBoxDataSet,UBoxLoader):
     @ClassInstanceMethod        
     def ImportData(self,Data:dict,DataSet=['all'],DataType='UEDGE',EnforceDim:bool=True,PrintStatus=True,ReturnList=False,ExtData=False)->list:
         """Import data from a dictionary into either UEDGE package or into a dictionary as attribute of an object."""
+        if self.Verbose: print(' Import data: EnforceDim=',EnforceDim)
         if type(Data)!=dict:
             raise ValueError('Data must be a dictionary'
                              )

@@ -99,7 +99,7 @@ class UBoxSimExt():
         bbb.iterm = 1
         bbb.dtreal/=10
           
-    def RunRamp(self,RampVariable:str,RampValues:list or np.array,FileName=None,dtreal:float=5e-8,t_stop:float=10,ForceRun=False,LoadLast=True,ThresholdDens=False,**kwargs):
+    def RunRamp(self,RampVariable:str,RampValues:list or np.array,iter_start=0,FileName=None,dtreal:float=5e-8,t_stop:float=10,ForceRun=False,LoadLast=True,ThresholdDens=False,**kwargs):
         """
 
         Args:
@@ -113,20 +113,20 @@ class UBoxSimExt():
 
         """
         
-        self.Restore(FileName)
-        BaseCaseName=self.CaseName
+        #self.Restore(FileName)
+        BaseCaseName = self.CaseName
         print('Starting ramp from Input: {}'.format(FileName))
         print('BaseCaseName: {}'.format(BaseCaseName))
         print('Starting ramp for {} with values:{}'.format(RampVariable,RampValues))
         Niter=len(RampValues)
         self.InputLines.append('')
-        for i,V in enumerate(RampValues):
+        for i,V in enumerate(RampValues[iter_start:]):
             StrParams=['{}_{:2.3e}'.format(RampVariable.split('[')[0].split('.')[-1],V)]
-            self.CaseName=BaseCaseName+'_'+'_'.join(StrParams)
+            self.CaseName = BaseCaseName+'_'+'_'.join(StrParams)
             self.PrintInfo('Ramp iteration i={}/{} : {}={} : {}'.format(i+1,Niter,RampVariable,V,self.CaseName),color=Back.MAGENTA)
             
-            self.InputLines[-1]=self.SetParamValue(RampVariable,V)
-            FileName='final_state_ramp.npy'
+            self.InputLines[-1] = self.SetParamValue(RampVariable,V)
+            FileName = 'final_state_ramp.npy'
             FilePath=self.Source(FileName,Folder='SaveDir',EnforceExistence=False,CreateFolder=True)
             
             
@@ -136,7 +136,7 @@ class UBoxSimExt():
             else:
                 RampInfo=["RampVariable:{}\n".format(RampVariable),"RampValues:{}".format(RampValues)," CurrentRampValue: {}".format(V)]
                 self.WriteInputFile(ExtraHeader=RampInfo)
-                LoadLastSuccess=False
+                LoadLastSuccess = False
                 if LoadLast:
                     LoadLastSuccess=self.Load('last.npy')
                 if ThresholdDens:

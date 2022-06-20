@@ -18,11 +18,13 @@ from UEDGEToolBox.Simulation.SimUtils import UBoxSimUtils
 from UEDGEToolBox.Simulation.SimExt import UBoxSimExt
 from UEDGEToolBox.Simulation.Input import UBoxInput
 from UEDGEToolBox.DataManager.IO import UBoxIO
+from UEDGEToolBox.Simulation.livedata import UBoxLiveData
+from UEDGEToolBox.Simulation.liveplot import  UBoxLivePlot
 from UEDGEToolBox.Plot.Plot import UBoxPlot
 import numpy as np
 
 
-class UBoxSim(UBoxSimUtils, UBoxIO, UBoxInput, UBoxPlot, UBoxSimExt):
+class UBoxSim(UBoxSimUtils,UBoxLivePlot,UBoxLiveData, UBoxIO, UBoxInput, UBoxPlot,UBoxSimExt):
     """ Main class to run an UEDGE simulation.
 
         This class contains methods to run, save and restore UEDGE simulation.
@@ -62,8 +64,32 @@ class UBoxSim(UBoxSimUtils, UBoxIO, UBoxInput, UBoxPlot, UBoxSimExt):
     Verbose = False
     CurrentProject = None
 
-    def __init__(self):
+    def __init__(self,*args,**kwargs):
+        print('UBOXSim init ----------------------------------------------')
+
+        #super(UBoxLivePlot,self).__init__(*args,**kwargs)
+        self.livedata = {}
+        self.niter_collect = 100
+        self.iter_collect = 0
+        self.iter_data = 0
+        self.data_collected = False
+        self.livedata_vars = ['ni','ng','te','ti','up']
+        self.storage = 10000
+        self.liveplot = False
+        self.ax_dens = None
+        self.ax_flx = None
+        self.plot_list = ['Gdes_l','Gdes_r','inflx']
+        self.plot_dens_list = ['dens']
+        self.plt_obj_flx = {}
+        self.plt_obj_dens = {}
+        self.plot_dens_ylim = [1e9,1e25]
+        self.plot_flx_ylim = [1e15,1e22]
+        self.plot_flx_xlim = []
+        self.iter = 0
+        
+ 
         super().__init__()
+
         self.CaseName = None
         self.Description = 'None'
         # ListBefore=list(self.__dict__.keys())
@@ -427,7 +453,7 @@ class UBoxSim(UBoxSimUtils, UBoxIO, UBoxInput, UBoxPlot, UBoxSimExt):
             bbb.icntnunk = 0
             self.Controlftol()
             bbb.ftol = self.Updateftol()
-
+            
             self.ApplyRunTimeModifier(**kwargs)
 
             self.PrintTimeStepModif(imain)
@@ -447,8 +473,10 @@ class UBoxSim(UBoxSimUtils, UBoxIO, UBoxInput, UBoxPlot, UBoxSimExt):
             if bbb.exmain_aborted == 1:
                 break
 
-            if (bbb.iterm == 1 and bbb.exmain_aborted != 1):
+            if ((bbb.iterm == 1 or self.fnrm_old<self.fnrm_threshold) and bbb.exmain_aborted != 1):
                 self.AutoSave()
+                self.livedata_collector()
+                self.plot_live()
                 self.SaveLast()  # Save data in file SaveDir/CaseName/last.npy
                 bbb.dt_tot += bbb.dtreal
                 self.dt_tot = bbb.dt_tot
@@ -470,6 +498,7 @@ class UBoxSim(UBoxSimUtils, UBoxIO, UBoxInput, UBoxPlot, UBoxSimExt):
                         if bbb.exmain_aborted == 1:
                             break
                         bbb.ftol = self.Updateftol()
+                        self.ApplyRunTimeModifier(**kwargs)
                         self.PrintCurrentIteration(imain, ii2)
                         try:
                             bbb.exmain()  # take a single step at the present bbb.dtreal
@@ -483,8 +512,10 @@ class UBoxSim(UBoxSimUtils, UBoxIO, UBoxInput, UBoxPlot, UBoxSimExt):
 
                         sys.stdout.flush()
 
-                        if bbb.iterm == 1 and bbb.exmain_aborted != 1:
+                        if (bbb.iterm == 1 or self.fnrm_old<self.fnrm_threshold) and bbb.exmain_aborted != 1:
                             self.SaveLast()  # Save data in file SaveDir/CaseName/last.npy
+                            self.livedata_collector()
+                            self.plot_live()
                             bbb.dt_tot += bbb.dtreal
                             self.dt_tot = bbb.dt_tot
                             # self.TimeEvolution()
@@ -502,7 +533,7 @@ class UBoxSim(UBoxSimUtils, UBoxIO, UBoxInput, UBoxPlot, UBoxSimExt):
                 break
 
 # Handle success/error ------------------------------------------------------------------------------
-            if bbb.iterm == 1:
+            if (bbb.iterm == 1 or self.fnrm_old<self.fnrm_threshold):
                 bbb.dtreal *= self.mult_dt_fwd
                 self.dtreal = bbb.dtreal
             elif bbb.iterm == -100:
@@ -546,6 +577,17 @@ class UBoxSim(UBoxSimUtils, UBoxIO, UBoxInput, UBoxPlot, UBoxSimExt):
 
         return Func
 
+    @staticmethod   
+    def set_recycp(recycface):
+        bbb.recycp = recycface + (1.-np.exp(-ebar/(bbb.bcei*bbb.ti[nx,1]))) * (1.-recycface)
+        bbb.albedorb[0,0] = recycface + (1.-np.exp(-ebar/(2.*bbb.ti[nx,1]))) * (1.-recycface)
+    @staticmethod   
+    def get_fluxes(ebar):
+        from uedge import bbb, com
+        pflux = bbb.fnix[com.nx,1,0]/com.sx[com.nx,1]*np.exp(-ebar/(bbb.bcei*bbb.ti[com.nx,1]))+bbb.ni[com.nx,1,1]*np.sqrt(bbb.ti[com.nx,1]/(2.*np.pi*bbb.mi[0]))*np.exp(-ebar/(2.*bbb.ti[com.nx,1]))
+        qflux  = np.sum(bbb.feix[com.nx,:]+bbb.feex[com.nx,:])/np.sum(com.sx[com.nx,:])+bbb.sdrrb[1,0]+bbb.sbindrb[1,0]
+        return pflux, qflux
+    
     def ApplyRunTimeModifier(self, Modifier: list or None = None, **kwargs):
 
         if Modifier is not None:

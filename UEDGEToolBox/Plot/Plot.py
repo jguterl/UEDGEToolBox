@@ -812,6 +812,7 @@ class UBoxPlotFigure(UBoxDataParser):
             if hasattr(self.Parent, 'GetGrid'):
                 Grid = self.Parent.GetGrid()
         elif type(Grid) == str:
+            print('Read grid file: ',Grid)
             Grid = UBoxGrid.ReadGridFile(Grid)
 
         if kwargs.get('Tag') is not None:
@@ -967,11 +968,13 @@ class UBoxPlotFigure(UBoxDataParser):
 
         elif AxisType == 'psi':
             if Grid.get('psinorm') is not None:
+        
                 XData = Grid['psinorm'] + psishift
             elif Grid.get('psinc') is not None:
                 XData = Grid['psinc'] + psishift
             else:
                 XData = Grid['psi'] + psishift
+                print('>>>>>>>>>>>>>> psi')
         else:
             raise ValueError('Unknown AxisType')
 
@@ -1269,7 +1272,7 @@ class UBoxPlot(UBoxDataParser):
             self.AddRadialPlot(['ni'], **kwargs)
             self.AddRadialPlot(['ng'], **kwargs)
             self.AddRadialPlot(['phi'], **kwargs)
-            self.AddRadialPlot(['up'], **kwargs)
+            self.AddRadialPlot(['ne'], **kwargs)
 
         self.ShowPlot(**kwargs)
 

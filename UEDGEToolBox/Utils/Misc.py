@@ -582,7 +582,11 @@ def SetClassArgs(function):
     for k,v in Dic.items():
         if not IsMethodClass(v) and not k.startswith('__'):
             #print('Adding {} to {}'.format(k,self.__class__),v)
-            setattr(self,k,v)
+            # try:
+                 setattr(self,k,v)
+            # except:
+            #     pass
+                
     return function(self,*args,**kwargs)
   return wrapper
 

@@ -51,6 +51,8 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
            self.UBoxRunDefaults['CorrectTemp']= 1.602176634e-19
            self.UBoxRunDefaults['Adjustftol']=False
            self.UBoxRunDefaults['ContCall']=True
+           self.UBoxRunDefaults['fnrm_threshold']=1e-10
+          
            self.bbbRunDefault={}
            self.bbbRunDefault['dt_tot']=0
            self.bbbRunDefault['dtreal']=5e-8
@@ -305,7 +307,7 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
         return self.Grid
 
     def SetGrid(self,Grid=None):
-        if Grid is None:
+        if Grid is None or (not hasattr(self,'Grid') or (hasattr(self,'Grid') and self.Grid is None)):
             Dic=self.CollectDataSet(DataSet='grid',DataType='UEDGE')['UEDGE']
             self.Grid=dict((self.RemovePkg(k),v) for k,v in Dic.items())
         else:
@@ -417,11 +419,11 @@ class UBoxSimUtils(UBoxGrid,UBoxSource,UBoxDataSet):
     def Updateftol(self):
         bbb.ylodt = bbb.yl
         bbb.pandf1 (-1, -1, 0, bbb.neq, 1., bbb.yl, bbb.yldot)
-        fnrm_old=math.sqrt(sum((bbb.yldot[0:bbb.neq-1]*bbb.sfscal[0:bbb.neq-1])**2))
+        self.fnrm_old=math.sqrt(sum((bbb.yldot[0:bbb.neq-1]*bbb.sfscal[0:bbb.neq-1])**2))
         ftol_dt=bbb.ftol_dt*self.AdjustFtolTime(bbb.dtreal,self.dt_ftol_threshold)
         if ftol_dt!=bbb.ftol_dt:
             self.PrintInfo('Increasing ftol_dt: ftol_dt={} | bbb.ftol_dt={}'.format(ftol_dt,bbb.ftol_dt))
-        return max(min(ftol_dt, 0.01*fnrm_old),bbb.ftol_min)
+        return max(min(ftol_dt, 0.01*self.fnrm_old),bbb.ftol_min)
 
     @staticmethod
     def AdjustFtolTime(dt,dt0=1e-11,p=2.5):

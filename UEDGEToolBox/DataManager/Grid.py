@@ -337,23 +337,34 @@ class UBoxGrid():
         """
         self.Grid=self.ReadGridFile(FileName)
 
+    @ClassInstanceMethod
+    def set_gfile(self,gfile):
+        from omfit_classes.omfit_eqdsk import OMFITeqdsk
+        from uedge import com
+        g = OMFITeqdsk(gfile)
+       
+        com.simagxs = g['SIMAG']
+        com.sibdrys = g['SIBRY']
+        self.SetGrid()
 
+        
     @ClassInstanceMethod
     def SetPsinc(self,psinc=None):
+        from uedge import com
         if psinc is not None:
             self.Grid['psinc']=psinc
         else:
-            self.Grid['psinc']=None
-            if self.Grid.get('psi') is not None:
-                if self.Grid.get('simagxs') is not None:
-                    simagxs=self.Grid.get('simagxs')
-                    if self.Grid.get('sibdrys') is not None:
-                        sibdrys=self.Grid.get('sibdrys')
-                        if simagxs!=sibdrys:
-                            self.Grid['psincdiv']=np.squeeze((self.Grid['psi'][0,:,0]-simagxs) / (sibdrys-simagxs))
-                            nx=self.Grid['psi'].shape[0]
-                            self.Grid['psinc']=np.squeeze((self.Grid['psi'][int(nx/2),:,0]-simagxs) / (sibdrys-simagxs))
-
+            if self.Grid is not None:
+                self.Grid['psinc']=None
+                if self.Grid.get('psi') is not None:
+                    if com.simagxs!=0.0 and com.sibdrys!=0 and com.simagxs!=com.sibdrys:
+                        self.Grid['psincdiv']=np.squeeze((self.Grid['psi'][0,:,0]-com.simagxs) / (com.sibdrys-com.simagxs))
+                        nx=self.Grid['psi'].shape[0]
+                        self.Grid['psinc']=np.squeeze((self.Grid['psi'][int(nx/2),:,0]-com.simagxs) / (com.sibdrys-com.simagxs))
+                        self.Grid['psinorm']=(self.Grid['psi']-com.simagxs) / (com.sibdrys-com.simagxs)
+                        print('here psinorm')
+            else:
+                print('self.Grid.get("psi") is None')
     @ClassInstanceMethod
     def ReadGridFile(self,FileName:str = 'gridue')->dict:
         """
