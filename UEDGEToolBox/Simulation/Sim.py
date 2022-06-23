@@ -86,8 +86,8 @@ class UBoxSim(UBoxSimUtils,UBoxLivePlot,UBoxLiveData, UBoxIO, UBoxInput, UBoxPlo
         self.plot_flx_ylim = [1e15,1e22]
         self.plot_flx_xlim = []
         self.iter = 0
-        
- 
+
+
         super().__init__()
 
         self.CaseName = None
@@ -158,8 +158,8 @@ class UBoxSim(UBoxSimUtils,UBoxLivePlot,UBoxLiveData, UBoxIO, UBoxInput, UBoxPlo
 
     def Cont(self, **kwargs):
         return self.Run(Restart=True, **kwargs)
-
-    def Run(self, Restart=False, **kwargs):
+# WARNING: restart must be turned to 1 to actually updates state variables in UEDGE...
+    def Run(self, Restart=True, **kwargs):
         if Restart:
             bbb.restart = 1
         else:
@@ -453,7 +453,7 @@ class UBoxSim(UBoxSimUtils,UBoxLivePlot,UBoxLiveData, UBoxIO, UBoxInput, UBoxPlo
             bbb.icntnunk = 0
             self.Controlftol()
             bbb.ftol = self.Updateftol()
-            
+
             self.ApplyRunTimeModifier(**kwargs)
 
             self.PrintTimeStepModif(imain)
@@ -577,17 +577,17 @@ class UBoxSim(UBoxSimUtils,UBoxLivePlot,UBoxLiveData, UBoxIO, UBoxInput, UBoxPlo
 
         return Func
 
-    @staticmethod   
+    @staticmethod
     def set_recycp(recycface):
         bbb.recycp = recycface + (1.-np.exp(-ebar/(bbb.bcei*bbb.ti[nx,1]))) * (1.-recycface)
         bbb.albedorb[0,0] = recycface + (1.-np.exp(-ebar/(2.*bbb.ti[nx,1]))) * (1.-recycface)
-    @staticmethod   
+    @staticmethod
     def get_fluxes(ebar):
         from uedge import bbb, com
         pflux = bbb.fnix[com.nx,1,0]/com.sx[com.nx,1]*np.exp(-ebar/(bbb.bcei*bbb.ti[com.nx,1]))+bbb.ni[com.nx,1,1]*np.sqrt(bbb.ti[com.nx,1]/(2.*np.pi*bbb.mi[0]))*np.exp(-ebar/(2.*bbb.ti[com.nx,1]))
         qflux  = np.sum(bbb.feix[com.nx,:]+bbb.feex[com.nx,:])/np.sum(com.sx[com.nx,:])+bbb.sdrrb[1,0]+bbb.sbindrb[1,0]
         return pflux, qflux
-    
+
     def ApplyRunTimeModifier(self, Modifier: list or None = None, **kwargs):
 
         if Modifier is not None:
