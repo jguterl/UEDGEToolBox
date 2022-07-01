@@ -69,7 +69,7 @@ class UBoxSim(UBoxSimUtils,UBoxLivePlot,UBoxLiveData, UBoxIO, UBoxInput, UBoxPlo
 
         #super(UBoxLivePlot,self).__init__(*args,**kwargs)
         self.livedata = {}
-        self.niter_collect = 100
+        self.niter_collect = 0
         self.iter_collect = 0
         self.iter_data = 0
         self.data_collected = False
