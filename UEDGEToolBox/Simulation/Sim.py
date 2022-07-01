@@ -86,6 +86,7 @@ class UBoxSim(UBoxSimUtils,UBoxLivePlot,UBoxLiveData, UBoxIO, UBoxInput, UBoxPlo
         self.plot_flx_ylim = [1e15,1e22]
         self.plot_flx_xlim = []
         self.iter = 0
+        self.save_last = True
 
 
         super().__init__()
@@ -477,7 +478,7 @@ class UBoxSim(UBoxSimUtils,UBoxLivePlot,UBoxLiveData, UBoxIO, UBoxInput, UBoxPlo
                 self.AutoSave()
                 self.livedata_collector()
                 self.plot_live()
-                self.SaveLast()  # Save data in file SaveDir/CaseName/last.npy
+                if self.save_last: self.SaveLast()  # Save data in file SaveDir/CaseName/last.npy
                 bbb.dt_tot += bbb.dtreal
                 self.dt_tot = bbb.dt_tot
                 # self.TimeEvolution()
@@ -513,7 +514,7 @@ class UBoxSim(UBoxSimUtils,UBoxLivePlot,UBoxLiveData, UBoxIO, UBoxInput, UBoxPlo
                         sys.stdout.flush()
 
                         if (bbb.iterm == 1 or self.fnrm_old<self.fnrm_threshold) and bbb.exmain_aborted != 1:
-                            self.SaveLast()  # Save data in file SaveDir/CaseName/last.npy
+                            if self.save_last: self.SaveLast()  # Save data in file SaveDir/CaseName/last.npy
                             self.livedata_collector()
                             self.plot_live()
                             bbb.dt_tot += bbb.dtreal

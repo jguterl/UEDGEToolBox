@@ -303,7 +303,7 @@ class UBoxProjects(UBoxSettings):
     def __GetPathProject(self,Name,RootPath):
         return os.path.abspath(RootPath+'/'+Name)
     
-    def __CreateProject(self,Name,RootPath=None,Description=None,Owner=None):
+    def __CreateProject(self,Name,RootPath=None,Description=None,Owner=None, force=False):
         
         if Owner is None:
             Owner=self.Owner
@@ -322,7 +322,7 @@ class UBoxProjects(UBoxSettings):
             print('Project Description:',Description)
             print('Project Owner      :',Owner)
             print('')
-            if QueryYesNo('Confirming the creation of the project?'):
+            if force or QueryYesNo('Confirming the creation of the project?'):
                self.Projects[Name]=UBoxSingleProject(Name,RootPath,Owner,Description,False,self,Create=True)
                self.CurrentProject=Name
                self.SaveProjects()             
@@ -566,23 +566,23 @@ class UBoxProjects(UBoxSettings):
  
          
             
-    def CreateProject(self)->None:
+    def CreateProject(self, Name=None, force=False)->None:
         """Create a new project."""
         if self.ProjectsFile is None:
             print("Cannot create a new project. A project file must be first set with SetProjectsFile()")
             return
-        
-        Name=input('Enter the name of the project: ')
-        if Name=='':
-            print("Name of the project cannot be empty... Aborting project creation... Type 'CreateProject' to create new project")
-            return
-        
+        if Name is None:
+            Name=input('Enter the name of the project: ')
+            if Name=='':
+                print("Name of the project cannot be empty... Aborting project creation... Type 'CreateProject' to create new project")
+                return
         print('RootPath:{}'.format(os.path.abspath(self.RootPathProjects)))
-        if not QueryYesNo('Confirming the roothpath?'):
-            RootPathProjects=easygui.diropenbox(title='Select a rootfolder',default=self.RootPathProjects)
-            if RootPathProjects is not None:
-                self.SetRootPathProjects(RootPathProjects)
-                print('RootPathProjects set to {}'.format(self.RootPathProjects))
+        if not force:
+            if not QueryYesNo('Confirming the roothpath?'):
+                RootPathProjects=easygui.diropenbox(title='Select a rootfolder',default=self.RootPathProjects)
+                if RootPathProjects is not None:
+                    self.SetRootPathProjects(RootPathProjects)
+                    print('RootPathProjects set to {}'.format(self.RootPathProjects))
         RootPath=os.path.abspath(self.RootPathProjects)
         if not os.path.exists(RootPath):
             os.mkdir(RootPath)
@@ -591,11 +591,13 @@ class UBoxProjects(UBoxSettings):
         if self.ProjectExist(Name,self.__GetPathProject(Name,RootPath)):
             print('Project {} or folder {} already exist.Cannot create project ...'.format(Name,self.__GetPathProject(Name,RootPath)))
             return
-         
-        Description=input('Enter a brief description of the project: ')
+        if not force: 
+            Description=input('Enter a brief description of the project: ')
+        else:
+            Description = ""
         Owner={'UserName':self.UserName,'Affiliation':self.Affiliation,'Email':self.Email}
 
-        self.__CreateProject(Name,RootPath,Description,Owner)
+        self.__CreateProject(Name,RootPath,Description,Owner, force)
         
     def SetProjectsFile(self,FileName:str=None)->None:
         """

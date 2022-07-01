@@ -12,7 +12,7 @@ class UBoxLiveData():
     def __init__(self,*args,**kwargs):
         print('Livedata 12------------------------------')   
         self.livedata = {}
-        self.niter_collect = 100
+        self.niter_collect =0
         self.iter_collect = 0
         self.iter_data = 0
         self.data_collected = False
@@ -33,7 +33,7 @@ class UBoxLiveData():
                self.livedata[k] = np.zeros(attr.shape)                 
     def livedata_collector(self, force=False):
         self.data_collected = False
-        if self.niter_collect>=0:
+        if self.niter_collect>0:
             self.iter_collect += 1
             if self.iter_collect>=self.niter_collect or force:
                print('------- Collecting data ...')
