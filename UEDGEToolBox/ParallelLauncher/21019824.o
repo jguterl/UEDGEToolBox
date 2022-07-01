@@ -1,0 +1,36 @@
+>>> UEDGE version: 7.1.0.0.0
+>>> UEDGE Git SHA:, efecb620cf635f3eaee5af63d3a193d7f979bf4b
+UBOXSim init ----------------------------------------------
+Loaded Packages: ['aph', 'api', 'bbb', 'com', 'flx', 'grd', 'ppp', 'svr', 'wdf']
+UBox configuration loaded from /home/guterlj/.UBoxSettings.yml
+0 projects loaded from /fusion/projects/boundary/guterlj/simulations/UEDGE/.UBoxProjects.yml ...
+UEDGEToolBox sucessfully launched. Type QuickStart() for basic commands.
+Cannot find project slab1Db ....
+*** For isimpon=2, set afracs, not afrac ***
+[46m----Starting Main Loop ----[0m
+[45mNew time-step = 1.0000E-08[0m
+[44mruntest_0: Main loop i=0/3000       dtreal=1.0000E-08[0m
+*** For isimpon=2, set afracs, not afrac ***
+Creating folder:/fusion/projects/boundary/guterlj/UEDGEToolBox/UEDGEToolBox/ParallelLauncher/SaveDir/runtest_0
+*OMPJac* Jacobian calculation: OMP not enabled
+ **** mhdgeo=-1: cartesian grid generated *****
+*OMPJac* Jacobian calculation: OMP not enabled
+ UEDGE $Name:  V7OMP84 $                                                               
+ **** mhdgeo=-1: cartesian grid generated *****
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=      8.021616134294012     nfe=      1
+  Updating Jacobian, npe =                      2
+ **** Time in jac_lu_decomp:   9.9711125250905752E-002 [banded  |old]
+ iter=    1 fnrm=     0.7800919895548915     nfe=      4
+ iter=    2 fnrm=     0.3547141441561254E-02 nfe=     11
+ iter=    3 fnrm=     0.3649769124563977E-03 nfe=     25
+ iter=    4 fnrm=     0.4019721416232823E-04 nfe=     41
+ iter=    5 fnrm=     0.9574632495787182E-08 nfe=     60
+ iter=    6 fnrm=     0.3074916194495657E-12 nfe=     91
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1

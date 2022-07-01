@@ -1,0 +1,1242 @@
+>>> UEDGE version: 7.1.0.0.0
+>>> UEDGE Git SHA:, efecb620cf635f3eaee5af63d3a193d7f979bf4b
+UBOXSim init ----------------------------------------------
+Loaded Packages: ['aph', 'api', 'bbb', 'com', 'flx', 'grd', 'ppp', 'svr', 'wdf']
+UBox configuration loaded from /home/guterlj/.UBoxSettings.yml
+Current Project set to "slab1Db"
+10 projects loaded from /fusion/projects/boundary/guterlj/simulations/UEDGE/.UBoxProjects.yml ...
+UEDGEToolBox sucessfully launched. Type QuickStart() for basic commands.
+Current Project set to "slab1Db"
+*** For isimpon=2, set afracs, not afrac ***
+[46m----Starting Main Loop ----[0m
+[45mNew time-step = 1.0000E-08[0m
+[44mruntest_1: Main loop i=0/3000       dtreal=1.0000E-08[0m
+*** For isimpon=2, set afracs, not afrac ***
+Creating folder:/fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=0/3000 j=0/5 dtreal=1.0000E-08[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=0/3000 j=1/5 dtreal=1.0000E-08[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=0/3000 j=2/5 dtreal=1.0000E-08[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=0/3000 j=3/5 dtreal=1.0000E-08[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=0/3000 j=4/5 dtreal=1.0000E-08[0m
+*** For isimpon=2, set afracs, not afrac ***
+*OMPJac* Jacobian calculation: OMP not enabled
+ **** mhdgeo=-1: cartesian grid generated *****
+*OMPJac* Jacobian calculation: OMP not enabled
+ UEDGE $Name:  V7OMP84 $                                                               
+ **** mhdgeo=-1: cartesian grid generated *****
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=      8.021616135305333     nfe=      1
+  Updating Jacobian, npe =                      2
+ **** Time in jac_lu_decomp:   9.5264339819550514E-002 [banded  |old]
+ iter=    1 fnrm=     0.7800919899147198     nfe=      4
+ iter=    2 fnrm=     0.3547138785090726E-02 nfe=     11
+ iter=    3 fnrm=     0.3649746590800179E-03 nfe=     25
+ iter=    4 fnrm=     0.4019720855085297E-04 nfe=     42
+ iter=    5 fnrm=     0.9564154758511830E-08 nfe=     60
+ iter=    6 fnrm=     0.2528086350830382E-12 nfe=     91
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      7.059434092919041     nfe=      1
+ iter=    1 fnrm=     0.1868409952314606E-01 nfe=      7
+ iter=    2 fnrm=     0.1115061331800346E-03 nfe=     18
+ iter=    3 fnrm=     0.2390555138418737E-06 nfe=     36
+ iter=    4 fnrm=     0.4398970380456413E-12 nfe=     57
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      7.048946504164063     nfe=      1
+ iter=    1 fnrm=     0.4519705127702034E-02 nfe=      7
+ iter=    2 fnrm=     0.6626685457698344E-05 nfe=     19
+ iter=    3 fnrm=     0.2594635254649689E-10 nfe=     38
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      7.042758247706105     nfe=      1
+ iter=    1 fnrm=     0.1356996925053870E-02 nfe=      6
+ iter=    2 fnrm=     0.1236162072330938E-05 nfe=     20
+ iter=    3 fnrm=     0.2497651101283927E-10 nfe=     42
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      7.037344466042979     nfe=      1
+ iter=    1 fnrm=     0.5251837342614621E-03 nfe=      6
+ iter=    2 fnrm=     0.1471556907572706E-05 nfe=     22
+ iter=    3 fnrm=     0.4226226579070166E-10 nfe=     44
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      7.032111320899090     nfe=      1
+ iter=    1 fnrm=     0.2702310376352427E-03 nfe=      6
+ iter=    2 fnrm=     0.1068310816329093E-05 nfe=     23
+ iter=    3 fnrm=     0.5223673422908319E-10 nfe=     46
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=      7.019078140433166     nfe=      1
+  Updating Jacobian, npe =                      2
+ **** Time in jac_lu_decomp:   8.0511236097663641E-002 [banded  |old]
+ iter=    1 fnrm=     0.2860937659163066E-02 nfe=      3
+ iter=    2 fnrm=     0.5839141581933237E-06 nfe=      8
+ iter=    3 fnrm=     0.5294429406188811E-11 nfe=     16
+
+
+ nksol ---  iterm = 1.
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 5.0000E-08[0m
+[44mruntest_1: Main loop i=1/3000       dtreal=5.0000E-08[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=1/3000 j=0/5 dtreal=5.0000E-08[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=1/3000 j=1/5 dtreal=5.0000E-08[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=1/3000 j=2/5 dtreal=5.0000E-08[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=1/3000 j=3/5 dtreal=5.0000E-08[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=1/3000 j=4/5 dtreal=5.0000E-08[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 2.5000E-07[0m
+[44mruntest_1: Main loop i=2/3000       dtreal=2.5000E-07[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=2/3000 j=0/5 dtreal=2.5000E-07[0m
+*** For isimpon=2, set afracs, not afrac ***
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      6.992027380945142     nfe=      1
+ iter=    1 fnrm=     0.2410160407532001E-02 nfe=      4
+ iter=    2 fnrm=     0.1615003590352275E-06 nfe=      9
+ iter=    3 fnrm=     0.6625066595662371E-12 nfe=     19
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      6.961887409228594     nfe=      1
+ iter=    1 fnrm=     0.2327648035133899E-02 nfe=      4
+ iter=    2 fnrm=     0.7215556075255655E-07 nfe=     10
+ iter=    3 fnrm=     0.3409649175266170E-12 nfe=     21
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      6.928290308980566     nfe=      1
+ iter=    1 fnrm=     0.2275473010196483E-02 nfe=      4
+ iter=    2 fnrm=     0.5759746873291743E-07 nfe=     10
+ iter=    3 fnrm=     0.2568622574222622E-12 nfe=     22
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      6.891117300788036     nfe=      1
+ iter=    1 fnrm=     0.2231138895633278E-02 nfe=      5
+ iter=    2 fnrm=     0.7488238497953705E-08 nfe=     11
+ iter=    3 fnrm=     0.9905301867074874E-13 nfe=     25
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      6.850348228104941     nfe=      1
+ iter=    1 fnrm=     0.2186491165700556E-02 nfe=      5
+ iter=    2 fnrm=     0.1195851016896473E-07 nfe=     11
+ iter=    3 fnrm=     0.8397023075069468E-13 nfe=     26
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=      6.854077851058566     nfe=      1
+  Updating Jacobian, npe =                      2
+ **** Time in jac_lu_decomp:   7.5833299662917852E-002 [banded  |old]
+ iter=    1 fnrm=     0.5153343313391563E-01 nfe=      4
+ iter=    2 fnrm=     0.3319647003514468E-04 nfe=      8
+ iter=    3 fnrm=     0.6537053326922029E-11 nfe=     15
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      6.585141759741958     nfe=      1
+ iter=    1 fnrm=     0.5897763824680887E-01 nfe=      5
+ iter=    2 fnrm=     0.5371577114537133E-05 nfe=      9
+ iter=    3 fnrm=     0.1444640367067098E-10 nfe=     20
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      6.209183659257631     nfe=      1
+ iter=    1 fnrm=     0.3678070184375756E-01 nfe=      6
+ iter=    2 fnrm=     0.2500256738439396E-05 nfe=     11
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=2/3000 j=1/5 dtreal=2.5000E-07[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=2/3000 j=2/5 dtreal=2.5000E-07[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=2/3000 j=3/5 dtreal=2.5000E-07[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=2/3000 j=4/5 dtreal=2.5000E-07[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 1.2500E-06[0m
+[44mruntest_1: Main loop i=3/3000       dtreal=1.2500E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=3/3000 j=0/5 dtreal=1.2500E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=3/3000 j=1/5 dtreal=1.2500E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=3/3000 j=2/5 dtreal=1.2500E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+ iter=    3 fnrm=     0.1822305920588068E-10 nfe=     26
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      5.787763267902795     nfe=      1
+ iter=    1 fnrm=     0.3072783016859966E-01 nfe=      6
+ iter=    2 fnrm=     0.2102494977621594E-05 nfe=     12
+ iter=    3 fnrm=     0.4216603526053961E-10 nfe=     31
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      5.338347028953713     nfe=      1
+ iter=    1 fnrm=     0.4121425451968181E-01 nfe=      7
+ iter=    2 fnrm=     0.2473202594273568E-05 nfe=     13
+ iter=    3 fnrm=     0.1907158100314994E-09 nfe=     36
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      4.860332741074590     nfe=      1
+ iter=    1 fnrm=     0.1798657079358119E-01 nfe=      7
+ iter=    2 fnrm=     0.8130693938735909E-06 nfe=     15
+ iter=    3 fnrm=     0.5525409865408059E-10 nfe=     44
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=      5.827300818208445     nfe=      1
+  Updating Jacobian, npe =                      2
+ **** Time in jac_lu_decomp:   9.3616537749767303E-002 [banded  |old]
+ iter=    1 fnrm=     0.2384454822914052     nfe=      4
+ iter=    2 fnrm=     0.1950933569720983E-02 nfe=      9
+ iter=    3 fnrm=     0.4200003157587613E-07 nfe=     15
+ iter=    4 fnrm=     0.8792697311244274E-13 nfe=     28
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      3.472331542691332     nfe=      1
+ iter=    1 fnrm=     0.6211003672133780E-01 nfe=      7
+ iter=    2 fnrm=     0.1376856317052742E-03 nfe=     15
+ iter=    3 fnrm=     0.1249916819416336E-08 nfe=     28
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=      1.866160569135564     nfe=      1
+ iter=    1 fnrm=     0.1232700300311608E-01 nfe=      9
+ iter=    2 fnrm=     0.9293721406337786E-05 nfe=     21
+ iter=    3 fnrm=     0.9130287858494738E-09 nfe=     43
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.9297494181074685     nfe=      1
+ iter=    1 fnrm=     0.6922665828818052E-02 nfe=     13
+ iter=    2 fnrm=     0.1691334088244098E-05 nfe=     29
+ iter=    3 fnrm=     0.9715864544279570E-11 nfe=     64
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.5053783800604578     nfe=      1
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=3/3000 j=3/5 dtreal=1.2500E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=3/3000 j=4/5 dtreal=1.2500E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 6.2500E-06[0m
+[44mruntest_1: Main loop i=4/3000       dtreal=6.2500E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=4/3000 j=0/5 dtreal=6.2500E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=4/3000 j=1/5 dtreal=6.2500E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=4/3000 j=2/5 dtreal=6.2500E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=4/3000 j=3/5 dtreal=6.2500E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+ iter=    1 fnrm=     0.4943763534020354E-02 nfe=     15
+ iter=    2 fnrm=     0.1860422268270563E-05 nfe=     36
+ iter=    3 fnrm=     0.1295940354723372E-10 nfe=     79
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.4550118116271893     nfe=      1
+ iter=    1 fnrm=     0.3198613694015782E-02 nfe=     21
+ iter=    2 fnrm=     0.1583986080999683E-05 nfe=     50
+ iter=    3 fnrm=     0.2874137251644144E-10 nfe=     93
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=     0.7222499562102609     nfe=      1
+  Updating Jacobian, npe =                      2
+ **** Time in jac_lu_decomp:  0.12466607522219419      [banded  |old]
+ iter=    1 fnrm=     0.2954344944149211E-01 nfe=      4
+ iter=    2 fnrm=     0.3009258791009688E-02 nfe=     13
+ iter=    3 fnrm=     0.1401908637431271E-05 nfe=     23
+ iter=    4 fnrm=     0.5148647031576776E-11 nfe=     41
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.7258926151273196     nfe=      1
+ iter=    1 fnrm=     0.1142933358530158E-01 nfe=     10
+ iter=    2 fnrm=     0.8641359993944927E-03 nfe=     27
+ iter=    3 fnrm=     0.2530874029519905E-06 nfe=     45
+ iter=    4 fnrm=     0.5570531833835518E-11 nfe=     88
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.5894996396745190     nfe=      1
+ iter=    1 fnrm=     0.6019307931681968E-02 nfe=     18
+ iter=    2 fnrm=     0.1520433206865466E-03 nfe=     50
+ iter=    3 fnrm=     0.1576292078045664E-07 nfe=     93
+ iter=    4 fnrm=     0.9182222320942848E-12 nfe=    136
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.4590297712462704     nfe=      1
+ iter=    1 fnrm=     0.3134006628969537E-02 nfe=     31
+ iter=    2 fnrm=     0.1129567115990329E-04 nfe=     74
+ iter=    3 fnrm=     0.1285582960536636E-07 nfe=    117
+ iter=    4 fnrm=     0.8166288799441146E-10 nfe=    160
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.3578731355253277     nfe=      1
+ iter=    1 fnrm=     0.1894708377088477E-02 nfe=     44
+ iter=    2 fnrm=     0.2417658866725938E-04 nfe=     87
+ iter=    3 fnrm=     0.5984722524696279E-06 nfe=    130
+ iter=    4 fnrm=     0.4497111272287779E-07 nfe=    173
+ iter=    5 fnrm=     0.4539887233805203E-08 nfe=    216
+ iter=    6 fnrm=     0.4475938387793307E-09 nfe=    259
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.2837051358004023     nfe=      1
+ iter=    1 fnrm=     0.1460691962903660E-02 nfe=     44
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=4/3000 j=4/5 dtreal=6.2500E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+>>>> Troublemaker equation is: 
+           [1m[32mIon density equation of species Fortran:1 | python:0 [iv_t=1] at ix=27; iy=1[0m
+
+>>>> Trouble making equation for Fortran:iv=775 | for python:iv=774
+>>>> Timestep for troublemaker equation: 6.2499999999999995e-06
+>>>> yl for troublemaker equation:0.1691863926065108
+
+>>>> yldot=8.923201050947682e-05 and sfscal=5.9916791388931635e-05 for trouble making equation
+>>>> Number of equations solved per cell:numvar = 6
+[41mConverg. fails for bbb.dtreal; reduce time-step by 3[0m
+[45mNew time-step = 2.0833E-06[0m
+[44mruntest_1: Main loop i=5/3000       dtreal=2.0833E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=5/3000 j=0/5 dtreal=2.0833E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=5/3000 j=1/5 dtreal=2.0833E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=5/3000 j=2/5 dtreal=2.0833E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=5/3000 j=3/5 dtreal=2.0833E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=5/3000 j=4/5 dtreal=2.0833E-06[0m
+*** For isimpon=2, set afracs, not afrac ***
+ iter=    2 fnrm=     0.6632214463213969E-04 nfe=     87
+ iter=    3 fnrm=     0.1343657071705041E-04 nfe=    130
+ iter=    4 fnrm=     0.4948564527847017E-05 nfe=    173
+ iter=    5 fnrm=     0.6632658018019215E-06 nfe=    216
+ iter=    6 fnrm=     0.2201165696465741E-06 nfe=    259
+ iter=    7 fnrm=     0.7271167078395024E-07 nfe=    302
+ iter=    8 fnrm=     0.2470848553674734E-07 nfe=    345
+ iter=    9 fnrm=     0.8664739331186204E-08 nfe=    388
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=     0.3757233555045498     nfe=      1
+  Updating Jacobian, npe =                      2
+ **** Time in jac_lu_decomp:  0.13125442760065198      [banded  |old]
+ iter=    1 fnrm=     0.1456394751685796E-01 nfe=      4
+ iter=    2 fnrm=     0.6393594370639653E-06 nfe=      7
+ iter=    3 fnrm=     0.9301965007558267E-11 nfe=     17
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.3447988083211561     nfe=      1
+ iter=    1 fnrm=     0.7779131288104585E-02 nfe=      6
+ iter=    2 fnrm=     0.2394423907823757E-06 nfe=     11
+ iter=    3 fnrm=     0.5424192477848493E-11 nfe=     26
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.3171908970567368     nfe=      1
+ iter=    1 fnrm=     0.4120140254723416E-02 nfe=      7
+ iter=    2 fnrm=     0.9844059071199465E-07 nfe=     15
+ iter=    3 fnrm=     0.1634700543511324E-10 nfe=     35
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.2925924396298726     nfe=      1
+ iter=    1 fnrm=     0.2174162160368459E-02 nfe=      8
+ iter=    2 fnrm=     0.1255750184579093E-06 nfe=     20
+ iter=    3 fnrm=     0.2020432570022267E-10 nfe=     45
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.2707098280945973     nfe=      1
+ iter=    1 fnrm=     0.1148935852031517E-02 nfe=      9
+ iter=    2 fnrm=     0.1664193743044922E-06 nfe=     26
+ iter=    3 fnrm=     0.3002186524977462E-10 nfe=     54
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.2512680433695981     nfe=      1
+ iter=    1 fnrm=     0.6143724471273893E-03 nfe=     11
+ iter=    2 fnrm=     0.1179107569108858E-06 nfe=     33
+ iter=    3 fnrm=     0.1846768197306871E-10 nfe=     70
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=     0.2473111388387735     nfe=      1
+  Updating Jacobian, npe =                      2
+ **** Time in jac_lu_decomp:  0.14124787924811244      [banded  |old]
+ iter=    1 fnrm=     0.3445422215530789E-01 nfe=      3
+ iter=    2 fnrm=     0.1757978768594391E-04 nfe=      9
+ iter=    3 fnrm=     0.2300587763407875E-08 nfe=     22
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 1.0417E-05[0m
+[44mruntest_1: Main loop i=6/3000       dtreal=1.0417E-05[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=6/3000 j=0/5 dtreal=1.0417E-05[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=6/3000 j=1/5 dtreal=1.0417E-05[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=6/3000 j=2/5 dtreal=1.0417E-05[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=6/3000 j=3/5 dtreal=1.0417E-05[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=6/3000 j=4/5 dtreal=1.0417E-05[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 5.2083E-05[0m
+[44mruntest_1: Main loop i=7/3000       dtreal=5.2083E-05[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=7/3000 j=0/5 dtreal=5.2083E-05[0m
+*** For isimpon=2, set afracs, not afrac ***
+ iter=    4 fnrm=     0.1257351007312289E-12 nfe=     44
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.1879513049595195     nfe=      1
+ iter=    1 fnrm=     0.5377222254089330E-02 nfe=      9
+ iter=    2 fnrm=     0.4470286217322625E-05 nfe=     20
+ iter=    3 fnrm=     0.1188131628906659E-08 nfe=     40
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.1511831411661627     nfe=      1
+ iter=    1 fnrm=     0.1536699163664558E-02 nfe=     10
+ iter=    2 fnrm=     0.2111428879980013E-05 nfe=     24
+ iter=    3 fnrm=     0.3832499463399501E-09 nfe=     51
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.1270910492828339     nfe=      1
+ iter=    1 fnrm=     0.1229463861126459E-02 nfe=     10
+ iter=    2 fnrm=     0.1091515089686664E-05 nfe=     27
+ iter=    3 fnrm=     0.2272054783200141E-09 nfe=     60
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.1097077492252545     nfe=      1
+ iter=    1 fnrm=     0.1063127126034654E-02 nfe=     11
+ iter=    2 fnrm=     0.4460472265572317E-06 nfe=     31
+ iter=    3 fnrm=     0.1277131081430797E-09 nfe=     71
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.9578227105551633E-01 nfe=      1
+ iter=    1 fnrm=     0.9681670619566825E-03 nfe=     13
+ iter=    2 fnrm=     0.1021026875335672E-05 nfe=     36
+ iter=    3 fnrm=     0.5749642126240403E-10 nfe=     75
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=     0.1038364262163256     nfe=      1
+  Updating Jacobian, npe =                      2
+ **** Time in jac_lu_decomp:  0.11626851931214333      [banded  |old]
+ iter=    1 fnrm=     0.1034313668993988E-01 nfe=      3
+ iter=    2 fnrm=     0.5135332617994308E-04 nfe=     12
+ iter=    3 fnrm=     0.2459451373574069E-06 nfe=     27
+ iter=    4 fnrm=     0.3216078807762999E-11 nfe=     47
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.5421110626514940E-01 nfe=      1
+ iter=    1 fnrm=     0.2593140522573387E-02 nfe=      8
+ iter=    2 fnrm=     0.1879012608424554E-04 nfe=     20
+ iter=    3 fnrm=     0.1077373475687461E-07 nfe=     39
+ iter=    4 fnrm=     0.8188431804034924E-13 nfe=     64
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=7/3000 j=1/5 dtreal=5.2083E-05[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=7/3000 j=2/5 dtreal=5.2083E-05[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=7/3000 j=3/5 dtreal=5.2083E-05[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=7/3000 j=4/5 dtreal=5.2083E-05[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 2.6042E-04[0m
+[44mruntest_1: Main loop i=8/3000       dtreal=2.6042E-04[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=8/3000 j=0/5 dtreal=2.6042E-04[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=8/3000 j=1/5 dtreal=2.6042E-04[0m
+*** For isimpon=2, set afracs, not afrac ***
+ iter=    0 fnrm=     0.2679823753632747E-01 nfe=      1
+ iter=    1 fnrm=     0.8949712301314940E-03 nfe=     11
+ iter=    2 fnrm=     0.9669761706254574E-05 nfe=     29
+ iter=    3 fnrm=     0.7275391470921033E-09 nfe=     54
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.1530741974830610E-01 nfe=      1
+ iter=    1 fnrm=     0.9314744076934738E-03 nfe=     14
+ iter=    2 fnrm=     0.9639223702950051E-05 nfe=     38
+ iter=    3 fnrm=     0.2050870669738804E-08 nfe=     72
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.1176655876163172E-01 nfe=      1
+ iter=    1 fnrm=     0.7806957839710386E-03 nfe=     21
+ iter=    2 fnrm=     0.3886921425487634E-05 nfe=     54
+ iter=    3 fnrm=     0.3381128335569899E-09 nfe=     97
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.1019131127125819E-01 nfe=      1
+ iter=    1 fnrm=     0.4299279602911744E-03 nfe=     27
+ iter=    2 fnrm=     0.1021560963467883E-05 nfe=     70
+ iter=    3 fnrm=     0.4638337619451665E-10 nfe=    113
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=     0.1104245439694079E-01 nfe=      1
+  Updating Jacobian, npe =                      2
+ **** Time in jac_lu_decomp:  0.11547575937584043      [banded  |old]
+ iter=    1 fnrm=     0.2234679718871980E-02 nfe=      3
+ iter=    2 fnrm=     0.9708599414796611E-05 nfe=     10
+ iter=    3 fnrm=     0.1996015707221361E-09 nfe=     20
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.5845556458433906E-02 nfe=      1
+ iter=    1 fnrm=     0.3976350647850807E-02 nfe=      8
+ iter=    2 fnrm=     0.3022509852398687E-05 nfe=     15
+ iter=    3 fnrm=     0.2117142783480137E-09 nfe=     27
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.4106085963069198E-02 nfe=      1
+ iter=    1 fnrm=     0.1588158579737724E-02 nfe=      9
+ iter=    2 fnrm=     0.1862173440128628E-05 nfe=     17
+ iter=    3 fnrm=     0.8686933931456062E-10 nfe=     31
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.3015772399549096E-02 nfe=      1
+ iter=    1 fnrm=     0.2906268133356636E-03 nfe=     10
+ iter=    2 fnrm=     0.2879881698610882E-06 nfe=     22
+ iter=    3 fnrm=     0.3722704070753797E-11 nfe=     39
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=8/3000 j=2/5 dtreal=2.6042E-04[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=8/3000 j=3/5 dtreal=2.6042E-04[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=8/3000 j=4/5 dtreal=2.6042E-04[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 1.3021E-03[0m
+[44mruntest_1: Main loop i=9/3000       dtreal=1.3021E-03[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/save_300622_171518.npy ...
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=9/3000 j=0/5 dtreal=1.3021E-03[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=9/3000 j=1/5 dtreal=1.3021E-03[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=9/3000 j=2/5 dtreal=1.3021E-03[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=9/3000 j=3/5 dtreal=1.3021E-03[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=9/3000 j=4/5 dtreal=1.3021E-03[0m
+*** For isimpon=2, set afracs, not afrac ***
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.1848180912562269E-02 nfe=      1
+ iter=    1 fnrm=     0.1194765224877379E-03 nfe=     12
+ iter=    2 fnrm=     0.3403116024270797E-07 nfe=     24
+ iter=    3 fnrm=     0.3131854571430288E-12 nfe=     44
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.9476556689403564E-03 nfe=      1
+ iter=    1 fnrm=     0.4774423324856229E-04 nfe=     13
+ iter=    2 fnrm=     0.2741998747777402E-08 nfe=     27
+ iter=    3 fnrm=     0.1068083897286187E-12 nfe=     49
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=     0.3854436629973285E-03 nfe=      1
+  Updating Jacobian, npe =                      2
+ **** Time in jac_lu_decomp:  0.11132922722026706      [banded  |old]
+ iter=    1 fnrm=     0.2642494410417805E-04 nfe=      4
+ iter=    2 fnrm=     0.3546123722259825E-09 nfe=      8
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.3668615687210433E-04 nfe=      1
+ iter=    1 fnrm=     0.2768530464680254E-06 nfe=      6
+ iter=    2 fnrm=     0.4480770258784556E-12 nfe=     12
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.3578427442418861E-05 nfe=      1
+ iter=    1 fnrm=     0.1922527773870825E-08 nfe=      7
+ iter=    2 fnrm=     0.9240820859209112E-13 nfe=     14
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.4539767530371294E-06 nfe=      1
+ iter=    1 fnrm=     0.5342563240326010E-10 nfe=      7
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.5136767379560059E-07 nfe=      1
+ iter=    1 fnrm=     0.2666906608200962E-11 nfe=      8
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.1514565120388234E-07 nfe=      1
+ iter=    1 fnrm=     0.5334599039801810E-12 nfe=      8
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=     0.3697692181675907E-08 nfe=      1
+  Updating Jacobian, npe =                      2
+ **** Time in jac_lu_decomp:   9.4547513872385025E-002 [banded  |old]
+ iter=    1 fnrm=     0.1606701607771700E-12 nfe=      5
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 6.5104E-03[0m
+[44mruntest_1: Main loop i=10/3000       dtreal=6.5104E-03[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=10/3000 j=0/5 dtreal=6.5104E-03[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=10/3000 j=1/5 dtreal=6.5104E-03[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=10/3000 j=2/5 dtreal=6.5104E-03[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=10/3000 j=3/5 dtreal=6.5104E-03[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[43mruntest_1: Subloop   i=10/3000 j=4/5 dtreal=6.5104E-03[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 3.2552E-02[0m
+[44mruntest_1: Main loop i=11/3000       dtreal=3.2552E-02[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 1.6276E-01[0m
+[44mruntest_1: Main loop i=12/3000       dtreal=1.6276E-01[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 8.1380E-01[0m
+[44mruntest_1: Main loop i=13/3000       dtreal=8.1380E-01[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 4.0690E+00[0m
+[44mruntest_1: Main loop i=14/3000       dtreal=4.0690E+00[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 2.0345E+01[0m
+[44mruntest_1: Main loop i=15/3000       dtreal=2.0345E+01[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 1.0173E+02[0m
+[44mruntest_1: Main loop i=16/3000       dtreal=1.0173E+02[0m
+*** For isimpon=2, set afracs, not afrac ***
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.1434017128911194E-09 nfe=      1
+ iter=    1 fnrm=     0.9435586671431658E-13 nfe=      5
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.4278398557379487E-11 nfe=      1
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.4278398398610841E-11 nfe=      1
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.4278398386575256E-11 nfe=      1
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+ iter=    0 fnrm=     0.4278398386575256E-11 nfe=      1
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=     0.4278398627218889E-11 nfe=      1
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=     0.4278398627218889E-11 nfe=      1
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=     0.4278398627218889E-11 nfe=      1
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=     0.4278398627218889E-11 nfe=      1
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=     0.4278398627218889E-11 nfe=      1
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=     0.4278398627218889E-11 nfe=      1
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 5.0863E+02[0m
+[44mruntest_1: Main loop i=17/3000       dtreal=5.0863E+02[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+[45mNew time-step = 2.5431E+03[0m
+[44mruntest_1: Main loop i=18/3000       dtreal=2.5431E+03[0m
+*** For isimpon=2, set afracs, not afrac ***
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/last.npy ...
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/final_state.npy ...
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/final_state_300622_171548.npy ...
+Unable to collect data "relx" from UEDGE package "relx"
+Saving 1 datafields in /fusion/projects/boundary/guterlj/simulations/UEDGE/slab1Db/SaveDir/runtest_1/power.npy ...
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=     0.4278398627218889E-11 nfe=      1
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
+*OMPJac* Jacobian calculation: OMP not enabled
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=     0.4278398627218889E-11 nfe=      1
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1

@@ -1,0 +1,38 @@
+>>> UEDGE version: 7.1.0.0.0
+>>> UEDGE Git SHA:, efecb620cf635f3eaee5af63d3a193d7f979bf4b
+UBOXSim init ----------------------------------------------
+Loaded Packages: ['aph', 'api', 'bbb', 'com', 'flx', 'grd', 'ppp', 'svr', 'wdf']
+UBox configuration loaded from /home/guterlj/.UBoxSettings.yml
+0 projects loaded from /fusion/projects/boundary/guterlj/simulations/UEDGE/.UBoxProjects.yml ...
+UEDGEToolBox sucessfully launched. Type QuickStart() for basic commands.
+Cannot find project slab1Db ....
+*** For isimpon=2, set afracs, not afrac ***
+[46m----Starting Main Loop ----[0m
+[45mNew time-step = 1.0000E-08[0m
+[44mruntest_7: Main loop i=0/3000       dtreal=1.0000E-08[0m
+*** For isimpon=2, set afracs, not afrac ***
+Creating folder:/fusion/projects/boundary/guterlj/UEDGEToolBox/UEDGEToolBox/ParallelLauncher/SaveDir/runtest_7
+*OMPJac* Jacobian calculation: OMP not enabled
+ **** mhdgeo=-1: cartesian grid generated *****
+*OMPJac* Jacobian calculation: OMP not enabled
+ UEDGE $Name:  V7OMP84 $                                                               
+ **** mhdgeo=-1: cartesian grid generated *****
+  Updating Jacobian, npe =                      1
+ iter=    0 fnrm=      46.58697524693467     nfe=      1
+  Updating Jacobian, npe =                      2
+ **** Time in jac_lu_decomp:   8.1609392073005438E-002 [banded  |old]
+ iter=    1 fnrm=      42.29388264931708     nfe=      4
+ iter=    2 fnrm=      34.73607626998192     nfe=     10
+ iter=    3 fnrm=      21.04322967394940     nfe=     17
+ iter=    4 fnrm=     0.1390236875491402     nfe=     25
+ iter=    5 fnrm=     0.2183516822229084E-02 nfe=     39
+ iter=    6 fnrm=     0.4003707288329548E-04 nfe=     61
+ iter=    7 fnrm=     0.7463398911761514E-08 nfe=     88
+ iter=    8 fnrm=     0.3256148337981646E-12 nfe=    127
+
+
+ nksol ---  iterm = 1.
+            maxnorm(sf*f(u)) .le. ftol, where maxnorm() is
+            the maximum norm function.  u is probably an
+            approximate root of f.
+ Interpolants created; mype =                   -1
