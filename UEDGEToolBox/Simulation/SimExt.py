@@ -7,7 +7,7 @@ Created on Wed Oct 28 21:59:13 2020
 """
 from UEDGEToolBox.Utils.Misc import GetListPackage
 from colorama import  Back, Style
-
+import numpy as np
 class UBoxSimExt():
     
     def WideSave(self):
@@ -98,7 +98,6 @@ class UBoxSimExt():
         self.PrintInfo('Converg. fails due to negative densities: time-step reduced by 100',Back.RED)
         bbb.iterm = 1
         bbb.dtreal/=10
-          
     def RunRamp(self,RampVariable:str,RampValues:list or np.array,iter_start=0,FileName=None,dtreal:float=5e-8,t_stop:float=10,ForceRun=False,LoadLast=True,ThresholdDens=False,**kwargs):
         """
 
@@ -135,6 +134,68 @@ class UBoxSimExt():
                 continue
             else:
                 RampInfo=["RampVariable:{}\n".format(RampVariable),"RampValues:{}".format(RampValues)," CurrentRampValue: {}".format(V)]
+                self.WriteInputFile(ExtraHeader=RampInfo)
+                LoadLastSuccess = False
+                if LoadLast:
+                    LoadLastSuccess=self.Load('last.npy')
+                if ThresholdDens:
+                    from uedge import com
+                    from uedge import bbb
+                    for i in range(com.nisp):bbb.ni[(bbb.ni[:,:,i]<bbb.nzbackg[i]),i]=bbb.nzbackg[i]
+                    for i in range(com.ngsp):bbb.ng[(bbb.ng[:,:,i]<bbb.ngbackg[i]),i]=bbb.ngbackg[i]
+                    for i in range(com.nisp):bbb.nis[(bbb.nis[:,:,i]<bbb.nzbackg[i]),i]=bbb.nzbackg[i]
+                    for i in range(com.ngsp):bbb.ngs[(bbb.ng[:,:,i]<bbb.ngbackg[i]),i]=bbb.ngbackg[i]
+                if LoadLastSuccess:
+                    Status=self.Cont(**kwargs)
+                else:
+                    Status=self.Cont(dt_tot=0.0,dtreal=dtreal,t_stop=t_stop,**kwargs)
+                if Status=='tstop':
+                    self.Save('final_state_ramp')
+                else:
+                    print('Exiting ramp... Need to add a routine to restart after dtkill')
+                    return
+                
+    def RunRamps(self,Ramp:dict,iter_start=0,dtreal:float=5e-8,t_stop:float=10,ForceRun=False,LoadLast=True,ThresholdDens=False,**kwargs):
+        """
+
+        Args:
+            Data (dict): ebbb.g. Dic={'ncore[0]':np.linspace(1e19,1e20,10),'pcoree':np.linspace(0.5e6,5e6,10)}
+            Istart (int, optional): DESCRIPTION. Defaults to 0.
+            dtreal_start (float, optional): DESCRIPTION. Defaults to 5e-8.
+            tstop (float, optional): DESCRIPTION. Defaults to 10.
+
+        Returns:
+            None.
+
+        """
+        lv = [len(v) for v in Ramp.values()]
+        assert np.min(lv) == np.max(lv)
+        RampVariables = list(Ramp.keys()) 
+        RampValues = list(Ramp.values())
+        
+        #self.Restore(FileName)
+        BaseCaseName = self.CaseName
+        print('BaseCaseName: {}'.format(BaseCaseName))
+        print('Starting ramp for {} with values:{}'.format(RampVariables,RampValues))
+        Niter=len(RampValues[0])
+        self.InputLines.append('')
+
+        for i in range(iter_start,Niter):
+            StrParams='_'.join(['{}_{:2.3e}'.format(var.split('[')[0].split('.')[-1],val[i]) for (var,val) in Ramp.items()])
+            self.CaseName = BaseCaseName+'_'+StrParams
+            info = ';'.join(['{}={:2.3e}'.format(var,val[i]) for (var,val) in Ramp.items()])
+            self.PrintInfo('Ramp iteration i={}/{} : {} : {}'.format(i+1,Niter,info,self.CaseName),color=Back.MAGENTA)
+            for (var,val) in Ramp.items():
+                self.InputLines.append(self.SetParamValue(var,val[i]))
+            FileName = 'final_state_ramp.npy'
+            FilePath=self.Source(FileName,Folder='SaveDir',EnforceExistence=False,CreateFolder=True)
+            
+            
+            if self.Load(FilePath) and not ForceRun:
+                print('Final state exists and loaded. Skipping this ramp iteration...')
+                continue
+            else:
+                RampInfo= ' ; '.join(['='.join(["RampVariable:{}\n".format(var),"RampValues:{}".format(val)," CurrentRampValue: {}".format(val[i])]) for (var,val) in Ramp.items() ])
                 self.WriteInputFile(ExtraHeader=RampInfo)
                 LoadLastSuccess = False
                 if LoadLast:

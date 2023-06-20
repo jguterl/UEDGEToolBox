@@ -128,8 +128,10 @@ class UBoxSingleProject(UBoxFileHelper):
         return UBoxSingleProject(Name=NewName,RootPath=self.RootPath,Owner=self.Owner,Description=self.Description,Parent=self.Parent,Create=False)
         
     def __CreateFolder(self):
+        print("Mkdir folder : ",self.GetPath())
         os.mkdir(self.GetPath())
         for k in self.__class__.ListDir:
+            print("Mkdir folder : ",self.GetDir(k))
             os.mkdir(self.GetDir(k))
             
     def __CreateReadmeFile(self):
@@ -312,7 +314,7 @@ class UBoxProjects(UBoxSettings):
         if Description is None:
             Description='none'
             
-        if self.ProjectExist(Name,self.__GetPathProject(Name,RootPath)):
+        if self.ProjectExist(Name,self.__GetPathProject(Name,RootPath)) and not force:
             print('Project {} or folder {} already exist.Cannot create project ...'.format(Name,self.__GetPathProject(Name,RootPath)))
             return
         else:
@@ -566,7 +568,7 @@ class UBoxProjects(UBoxSettings):
  
          
             
-    def CreateProject(self, Name=None, force=False)->None:
+    def CreateProject(self, Name=None, force=False, overwrite=False)->None:
         """Create a new project."""
         if self.ProjectsFile is None:
             print("Cannot create a new project. A project file must be first set with SetProjectsFile()")
@@ -588,7 +590,7 @@ class UBoxProjects(UBoxSettings):
             os.mkdir(RootPath)
             return None
         
-        if self.ProjectExist(Name,self.__GetPathProject(Name,RootPath)):
+        if self.ProjectExist(Name,self.__GetPathProject(Name,RootPath)) and not overwrite:
             print('Project {} or folder {} already exist.Cannot create project ...'.format(Name,self.__GetPathProject(Name,RootPath)))
             return
         if not force: 

@@ -38,7 +38,7 @@ class UBoxParallelLauncher():
         
 
 
-    def setup_parallel_runs(self, params, inputfile, casename='run'):
+    def setup_array_runs(self, params, inputfile, casename='run'):
 
         print("----- Project:",self.CurrentProject)
         dic={}
@@ -66,7 +66,44 @@ class UBoxParallelLauncher():
         dic['sims_param_array'] = sim_param_array
         dic['sims'] = sims
         self.sim_setup = dic 
-        self.njobs = len(list(self.sim_setup['sims'].keys()))
+        self.njobs = len(list(self.sim_setup['sims'].keys()))   
+    @staticmethod
+    def random_sampling(pval, scale=None):
+        if scale == 'linear' or scale is None:
+            return (np.max(pval) - np.min(pval)) * np.random.random_sample() + np.min(pval)
+        elif scale =='log':
+            return np.exp((np.max(np.log(pval)) - np.min(np.log(pval))) * np.random.random_sample() + np.min(np.log(pval)))
+        else:
+            raise ValueError("unknon scale:{}".format(scale))
+    def setup_random_runs(self, params, inputfile, nruns=100, casename='run', params_sampling=None):
+         if params_sampling is None:
+            params_sampling = dict((k,'linear') for k in params.keys())
+         print("----- Project:",self.CurrentProject)
+         dic={}
+         dic['inputfile'] = os.path.abspath(inputfile)
+         dic['project'] = self.CurrentProject.Name
+         dic['directory'] = os.path.abspath(self.CurrentProject.GetPath())
+         dic['params'] = params
+         dic['nsim'] = nruns
+         sims = {}
+         sim_param_array = np.zeros((dic['nsim'],len([k for k in params.values()])))
+         
+         for i in range(nruns):
+             sim_params = dict((k,self.random_sampling(pval,params_sampling.get(k))  ) for k,pval in params.items() )
+             print('Setup simulation # {} with :'.format(i),';'.join(['{}={}'.format(k,val) for k,val in sim_params.items()]))
+             sim = {}
+             sim['inputfile'] =  dic['inputfile']
+             sim['project'] = dic['project']
+             sim['params'] = dict((k,v) for k,v in  sim_params.items())
+             sim['casename'] = '{}_{}'.format(casename,i)
+             sim_param_array[i,:] =  np.array([v for v in sim_params.values()])
+             self.make_command_line(sim)
+             sims[i] = sim
+             
+         dic['sims_param_array'] = sim_param_array
+         dic['sims'] = sims
+         self.sim_setup = dic 
+         self.njobs = len(list(self.sim_setup['sims'].keys()))
         
   
     @staticmethod
