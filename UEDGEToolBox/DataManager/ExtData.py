@@ -11,6 +11,7 @@ from UEDGEToolBox.DataManager.IO import UBoxIO
 from UEDGEToolBox.DataManager.Interpolate import UBoxInterpolate
 from UEDGEToolBox.DataManager.Grid import UBoxGrid
 from UEDGEToolBox.ProjectManager.Source import UBoxSource
+import glob
 
 # @UBoxPreFix()
 
@@ -79,6 +80,25 @@ class UBoxExtData(UBoxSource, UBoxPlot, UBoxInterpolate):  # ,UBoxPlot):
         (self.Data, self.Tag) = self.LoadData(self.FileName)
         L = self.ImportData(self.Data, DataSet, DataType, EnforceDim=False, PrintStatus=self.Verbose, ReturnList=True, ExtData=True)
         print(L)
+        
+    @ClassInstanceMethod
+    def Batch(self, FilePattern, Every=1, **kwargs):
+       UData=[]  
+       FileList=glob.glob(FilePattern)
+       FileList.sort()
+       if len(FileList)>0:
+           for i in range(0,len(FileList),Every):
+               F=FileList[i]
+               try:
+                   UData.append(UBoxExtData(F, **kwargs))
+                   print('Loading {} ... Success'.format(F))
+               except:
+                   print('Loading {} ... Fail'.format(F))
+       return UData
+        
+        
+        
+
 
     @ClassInstanceMethod
     def GetData(self, Field: str, DicAttr: str = 'DataUEDGE', CorrectTempUnit=True):
@@ -157,7 +177,10 @@ class UBoxExtData(UBoxSource, UBoxPlot, UBoxInterpolate):  # ,UBoxPlot):
 
     @ClassInstanceMethod
     def GetTag(self):
-        return self.Tag
+        if hasattr(self,'Tag'):
+            return self.Tag
+        else:
+            return {}
 
     def InterpolateLoad(self, OldData, OldGrid, NewGrid, DataType=None, **kwargs):
         self.Data = self.InterpolateData(OldData, OldGrid, NewGrid, DataType, **kwargs)

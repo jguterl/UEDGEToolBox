@@ -11,6 +11,7 @@ from UEDGEToolBox.Plot.PlotUtils import UBoxPlotUtils
 import matplotlib
 from matplotlib import pyplot as plt
 import numpy as np
+import itertools
 
 from UEDGEToolBox.DataManager.DataParser import UBoxDataParser
 from UEDGEToolBox.DataManager.Grid import UBoxGrid
@@ -40,23 +41,25 @@ class UBoxPlot1D(UBoxPlotUtils):
 
         # ax.plot((rm[:,iysptrx,3]),ax.get_ylim(),color=color,linewidth=linewidth,**kwargs)
 
-    def PlotData1D(self, x, data, Label=None, ShowLegend=False, **kwargs):
+    def PlotData1D(self, x, data, Label=None, **kwargs):
         ax = self.GetAx(**kwargs)
-
         if type(x) == list:
             p = []
             for x_, data_ in zip(x, data):
                 p.extend(ax.plot(x_, data_, **self.PlotKw(**kwargs)))
         else:
             p = ax.plot(x, data, **self.PlotKw(**kwargs))
+        
+
+        if type(p) != list:
+            p = [p]
+        
         if Label is not None:
             if type(Label) != list:
                 Label = [Label]
             for pp, l in zip(p, Label):
                 pp.set_label(l)
-
-        if type(p) != list:
-            p = [p]
+                print('SETLABEL',l)
         return p
 
 
@@ -321,7 +324,7 @@ class UBoxDataPlotter(UBoxPlot2D, UBoxPlot1D, UBoxPlotUtils):
                     else:
                         self.Print('Cannot find property "{}" in DataPlotter)'.format(DataProperty))
 
-    def SetLabel(self, SetupLabels=[], **kwargs):
+    def SetLabel(self, SetupLabels=[], FLabel= lambda x:x, **kwargs):
         if type(SetupLabels) != list:
             SetupLabels = [SetupLabels]
 
@@ -334,9 +337,11 @@ class UBoxDataPlotter(UBoxPlot2D, UBoxPlot1D, UBoxPlotUtils):
             if 'DataSpecies' in SetupLabels:
                 Label.append(DS)
             if 'ExtraLabels' in SetupLabels:
-                Label.append(EL)
+                Label.append(":"+EL)
             if Label != []:
-                P.set_label(' | '.join(Label))
+                P.set_label(FLabel(' | '.join(Label)))
+
+            
 
     def SetLegend(self,**kwargs):
         Dic = self.LegendKw(**kwargs)
@@ -346,7 +351,7 @@ class UBoxDataPlotter(UBoxPlot2D, UBoxPlot1D, UBoxPlotUtils):
     @staticmethod
     def MakeDicStyle(DataProperty, ListStyle):
         DicStyle = {}
-        Style = iter(ListStyle)
+        Style = itertools.cycle(ListStyle)
         for P in DataProperty:
             if DicStyle.get(P) is None:
                 DicStyle[P] = next(Style)
@@ -1063,9 +1068,11 @@ class UBoxPlot(UBoxDataParser):
     def __init__(self):
         self.CurrentFigure = None
         self.Figures = {}
-
+        
+    @ClassInstanceMethod
     def NewFig(self, FigName=None, **kwargs):
         if not hasattr(self, 'CurrentFigure'):
+            print(self)
             self.CurrentFigure = None
         if not hasattr(self, 'Figures'):
             self.Figures = {}
@@ -1138,6 +1145,7 @@ class UBoxPlot(UBoxDataParser):
 
         if not hasattr(self, 'CurrentFigure'):
             self.CurrentFigure = None
+            
         if not hasattr(self, 'Figures'):
             self.Figures = {}
 
@@ -1155,14 +1163,14 @@ class UBoxPlot(UBoxDataParser):
                 CompareWith=[CompareWith]
             self.PrintVerbose('Add plot for comparison with:',CompareWith)
             for W in CompareWith:
-                    Parent = self.CurrentFigure.Parent
-                    try:
-                        self.CurrentFigure.Parent = W
-                        self.CurrentFigure.AddDataPlotter(DataFields, **kwargs)
-                    except Exception:
-                        raise Exception
-                    finally:
-                        self.CurrentFigure.Parent = Parent
+                Parent = self.CurrentFigure.Parent
+                try:
+                    self.CurrentFigure.Parent = W
+                    self.CurrentFigure.AddDataPlotter(DataFields, **kwargs)
+                except Exception:
+                    raise Exception
+                finally:
+                    self.CurrentFigure.Parent = Parent
 
         self.CurrentFigure.AddDataPlotter(DataFields, **kwargs)
 

@@ -21,58 +21,7 @@ from UEDGEToolBox.DataManager.IO import UBoxIO
 from UEDGEToolBox.Plot.Plot import UBoxPlot
 import numpy as np
 
-
-class UBoxSim(UBoxSimUtils, UBoxIO, UBoxInput, UBoxPlot, UBoxSimExt):
-    """ Main class to run an UEDGE simulation.
-
-        This class contains methods to run, save and restore UEDGE simulation.
-        An instance of this class "Sim" is automatically created when the module uedge is imported.
-        This class is derived from UEDGESimBase, which containes the method Run() which is the equilent of rdrundt/rdcondt and Show
-
-        Methods:
-
-        Example:
-        Examples can be given using either the ``Example`` or ``Examples``
-        sections. Sections support any reStructuredText formatting, including
-        literal blocks::
-
-            $ python example_google.py
-
-    Section breaks are created by resuming unindented text. Section breaks
-    are also implicitly created anytime a new section starts.
-
-    Attributes:
-        module_level_variable1 (int): Module level variables may be documented in
-            either the ``Attributes`` section of the module docstring, or in an
-            inline docstring immediately following the variable.
-
-            Either form is acceptable, but the two should not be mixed. Choose
-            one convention to document module level variables and be consistent
-            with it.
-
-    Todo:
-        * For module TODOs
-        * You have to also use ``sphinx.ext.todo`` extension
-
-    .. _Google Python Style Guide:
-       http://google.github.io/styleguide/pyguide.html
-
-    """
-    CaseName = None
-    Verbose = False
-    CurrentProject = None
-
-    def __init__(self):
-        super().__init__()
-        self.CaseName = None
-        self.Description = 'None'
-        # ListBefore=list(self.__dict__.keys())
-        self._iSave = 1
-        self._imain = 0
-
-        # ListAfter=list(self.__dict__.keys())
-        #self.ListRunSettings=[k for k in ListAfter if k not in ListBefore]
-
+class UBoxSimIO(UBoxIO, UBoxInput):
     def Read(self, FileName=None, Filter: str = '*', ExtraCommand: list = [], ShowLines=False, Vars={}, DicG=globals(), **kwargs) -> None:
         """
         Parse and execute sequentialy a python script input file (*.py).
@@ -129,6 +78,114 @@ class UBoxSim(UBoxSimUtils, UBoxIO, UBoxInput, UBoxPlot, UBoxSimExt):
 
         self.ParseInputFile(FilePath, ExtraCommand, ShowLines, Vars, DicG)
         return True
+    
+    def LoadPlasma(self, FileName=None, **kwargs):
+        return self.Load(FileName=FileName, DataSet=['plasmavarss', 'plasmavars'], DataType='UEDGE', **kwargs)
+
+    def LoadPlasmaFinal(self, CaseName=None, **kwargs):
+        return self.Load(FileName=self.GetFinalStateFileName(), DataSet=['plasmavarss', 'plasmavars'], DataType='UEDGE', CaseName=CaseName, **kwargs)
+
+    def Load(self, FileName=None, DataSet=['all'], DataType=['UEDGE'], Ext='*.npy', EnforceDim=True, PrintStatus=False, Folder='SaveDir', Init=True, CaseName=None):
+        """
+        Wrapper method to load UEDGE simulation data
+        See Load method of UEDGEIO class
+        Args:
+            FileName (TYPE): DESCRIPTION.
+            CaseName (TYPE, optional): DESCRIPTION. Defaults to None.
+            Folder (TYPE, optional): DESCRIPTION. Defaults to 'SaveDir'.
+            LoadList (TYPE, optional): DESCRIPTION. Defaults to [].
+            ExcludeList (TYPE, optional): DESCRIPTION. Defaults to [].
+            Format (TYPE, optional): DESCRIPTION. Defaults to 'numpy'.
+            CheckCompat (TYPE, optional): DESCRIPTION. Defaults to True.
+            Verbose (TYPE, optional): DESCRIPTION. Defaults to False.
+
+        Returns:
+            None.
+
+        """
+
+        if CaseName is None:
+            if hasattr(self, 'CaseName'):
+                CaseName = self.CaseName
+
+        if hasattr(self, 'CurrentProject'):
+            Project = self.CurrentProject
+        else:
+            Project = None
+
+        if FileName is None:
+            FileName = BrowserFolder(self.Source(None, CaseName, Folder, Project), Ext=Ext)
+        if FileName is None:
+            raise IOError("Cannot read the file {}... Exiting".format(FileName))
+
+        FilePath = self.Source(FileName, CaseName, Folder, Project)
+        print("Loading data from file:{}".format(FilePath))
+        # Looking for file
+        if FilePath is not None and os.path.isfile(FilePath):
+            (Data, Tag) = self.LoadData(FilePath)
+            ListLoadedVar = self.ImportData(Data, DataSet, DataType, EnforceDim, PrintStatus, ReturnList=True)
+            print('Loaded variables:', ListLoadedVar)
+            if Init:
+                self.Init()
+                bbb.restart = 1
+            return True
+        else:
+            print("Cannot read the file '{}'... Exiting".format(FileName))
+            return False
+        
+        
+class UBoxSim(UBoxSimUtils, UBoxPlot, UBoxSimIO, UBoxSimExt):
+    """ Main class to run an UEDGE simulation.
+
+        This class contains methods to run, save and restore UEDGE simulation.
+        An instance of this class "Sim" is automatically created when the module uedge is imported.
+        This class is derived from UEDGESimBase, which containes the method Run() which is the equilent of rdrundt/rdcondt and Show
+
+        Methods:
+
+        Example:
+        Examples can be given using either the ``Example`` or ``Examples``
+        sections. Sections support any reStructuredText formatting, including
+        literal blocks::
+
+            $ python example_google.py
+
+    Section breaks are created by resuming unindented text. Section breaks
+    are also implicitly created anytime a new section starts.
+
+    Attributes:
+        module_level_variable1 (int): Module level variables may be documented in
+            either the ``Attributes`` section of the module docstring, or in an
+            inline docstring immediately following the variable.
+
+            Either form is acceptable, but the two should not be mixed. Choose
+            one convention to document module level variables and be consistent
+            with it.
+
+    Todo:
+        * For module TODOs
+        * You have to also use ``sphinx.ext.todo`` extension
+
+    .. _Google Python Style Guide:
+       http://google.github.io/styleguide/pyguide.html
+
+    """
+    CaseName = None
+    Verbose = False
+    CurrentProject = None
+
+    def __init__(self):
+        super().__init__()
+        self.CaseName = None
+        self.Description = 'None'
+        # ListBefore=list(self.__dict__.keys())
+        self._iSave = 1
+        self._imain = 0
+
+        # ListAfter=list(self.__dict__.keys())
+        #self.ListRunSettings=[k for k in ListAfter if k not in ListBefore]
+
+    
 
     def Cont(self, **kwargs):
         return self.Run(Restart=True, **kwargs)
@@ -195,59 +252,7 @@ class UBoxSim(UBoxSimUtils, UBoxIO, UBoxInput, UBoxPlot, UBoxSimExt):
     #     self.Tag.update(Tag)
     #     FilePath=Source(FileName,Folder=Folder,Enforce=False,Verbose=self.Verbose,CaseName=self.CaseName,CheckExistence=False,CreateFolder=True)
     #     self.IO.SaveLog(FilePath,Str,self.Tag)
-    def LoadPlasma(self, FileName=None, **kwargs):
-        return self.Load(FileName=FileName, DataSet=['plasmavarss', 'plasmavars'], DataType='UEDGE', **kwargs)
-
-    def LoadPlasmaFinal(self, CaseName=None, **kwargs):
-        return self.Load(FileName=self.GetFinalStateFileName(), DataSet=['plasmavarss', 'plasmavars'], DataType='UEDGE', CaseName=CaseName, **kwargs)
-
-    def Load(self, FileName=None, DataSet=['all'], DataType=['UEDGE'], Ext='*.npy', EnforceDim=True, PrintStatus=False, Folder='SaveDir', Init=True, CaseName=None):
-        """
-        Wrapper method to load UEDGE simulation data
-        See Load method of UEDGEIO class
-        Args:
-            FileName (TYPE): DESCRIPTION.
-            CaseName (TYPE, optional): DESCRIPTION. Defaults to None.
-            Folder (TYPE, optional): DESCRIPTION. Defaults to 'SaveDir'.
-            LoadList (TYPE, optional): DESCRIPTION. Defaults to [].
-            ExcludeList (TYPE, optional): DESCRIPTION. Defaults to [].
-            Format (TYPE, optional): DESCRIPTION. Defaults to 'numpy'.
-            CheckCompat (TYPE, optional): DESCRIPTION. Defaults to True.
-            Verbose (TYPE, optional): DESCRIPTION. Defaults to False.
-
-        Returns:
-            None.
-
-        """
-
-        if CaseName is None:
-            if hasattr(self, 'CaseName'):
-                CaseName = self.CaseName
-
-        if hasattr(self, 'CurrentProject'):
-            Project = self.CurrentProject
-        else:
-            Project = None
-
-        if FileName is None:
-            FileName = BrowserFolder(self.Source(None, CaseName, Folder, Project), Ext=Ext)
-        if FileName is None:
-            raise IOError("Cannot read the file {}... Exiting".format(FileName))
-
-        FilePath = self.Source(FileName, CaseName, Folder, Project)
-        print("Loading data from file:{}".format(FilePath))
-        # Looking for file
-        if FilePath is not None and os.path.isfile(FilePath):
-            (Data, Tag) = self.LoadData(FilePath)
-            ListLoadedVar = self.ImportData(Data, DataSet, DataType, EnforceDim, PrintStatus, ReturnList=True)
-            print('Loaded variables:', ListLoadedVar)
-            if Init:
-                self.Init()
-                bbb.restart = 1
-            return True
-        else:
-            print("Cannot read the file '{}'... Exiting".format(FileName))
-            return False
+    
 
     def Restore(self, FileName: str or None = None, DataSet=['all'], DataType=['UEDGE'], EnforceDim=True, PrintStatus=False, ExtraCommand: dict = [], ShowLines=False, **kwargs):
         """Read an input file, initalize UEDGE main engine and load plasma state variables into UEDGE from last.npy file in Folder SaveDir/Casename."""
@@ -545,9 +550,30 @@ class UBoxSim(UBoxSimUtils, UBoxIO, UBoxInput, UBoxPlot, UBoxSimExt):
                 self.mult_dt_fwd = mult_dt_fwd
 
         return Func
+    
+    @staticmethod
+    def SmoothEnd(dt_threshold=5e-3, Jmax=0):
+
+        def Func(self, **kwargs):
+            if not hasattr(self,'JmaxSave'):
+               self.JmaxSave = None
+              
+            if dt_threshold < bbb.dtreal:
+                if self.JmaxSave is None:
+                    self.JmaxSave = self.Jmax
+                    self.Jmax = Jmax
+            else:
+                if self.JmaxSave is not None:
+                    self.Jmax = self.JmaxSave
+                    self.JmaxSave = None
+
+
+        return Func
 
     def ApplyRunTimeModifier(self, Modifier: list or None = None, **kwargs):
-
+        #Set defaults
+        if Modifier is None:
+            Modifier = [self.SmoothEnd()]
         if Modifier is not None:
             if type(Modifier) != list:
                 Modifier = [Modifier]

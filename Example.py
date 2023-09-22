@@ -1,22 +1,9 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Aug 25 23:35:29 2020
+from UEDGEToolBox.Bas2Py.Bas2Py import UBoxBas2Py
+Worker=UBoxBas2Py(Verbose=True,VerboseArgout=True)
+BasFile='/home/jguterl/d3d_174270_2500/rd_nf_2019_nc57_ln4'
+PyFile='/home/jguterl/Dropbox/python/UEDGEToolBox/UEDGEToolBox/Bas2Py/test.py'
+Worker.Convert(BasFile,PyFile,Imax=None)
 
-@author: jguterl
-"""
-from UEDGEToolBox.RunSim import UBoxRun
-from UEDGEToolBox.Launcher import UBoxLauncher
-
-
-class NewRun(UBoxRun):
-    def NewLoad(self,*args,**kwargs):
-        print('>>>>>>>>>>>>> New method <<<<<<<<<<<<<')
-        
-        self.Load(args,kwargs)
-        
-        
-class UBoxNew(UBoxLauncher,NewRun):
-
-        
+    
     

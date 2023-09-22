@@ -21,7 +21,7 @@ from UEDGEToolBox.ProjectManager.Settings import UBoxSettings
 from UEDGEToolBox.Utils.Doc import UBoxDoc
 from UEDGEToolBox.DataManager.ExtData import UBoxExtData
 from UEDGEToolBox.DataManager.Grid import UBoxGrid
-from UEDGEToolBox.Simulation.Sim import UBoxSim
+from UEDGEToolBox.Simulation.Sim import UBoxSim,UBoxSimIO
 from matplotlib import pyplot as plt 
 #from UEDGEToolBox.Grid import *
 import yaml
@@ -58,6 +58,7 @@ class UBoxLauncher(UBoxProjects,UBoxSim):
         if CreateAliases:
             CreateGlobalAliases(self.Doc,Verbose=self.Verbose)
             CreateGlobalAliases(self,Include=GetMethods(UBoxSim),Verbose=self.Verbose)
+            CreateGlobalAliases(self,Include=GetMethods(UBoxSimIO),Verbose=self.Verbose)
             CreateGlobalAliases(self,Include=['SetCaseName','Source','SourceGrid'],Verbose=self.Verbose)
             CreateGlobalAliases(self,Include=['ReadGridFile'],Verbose=self.Verbose)
                                

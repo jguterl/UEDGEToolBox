@@ -99,7 +99,8 @@ class UBoxSimExt():
         bbb.iterm = 1
         bbb.dtreal/=10
           
-    def RunRamp(self,RampVariable:str,RampValues:list or np.array,FileName=None,dtreal:float=5e-8,t_stop:float=10,ForceRun=False,LoadLast=True,ThresholdDens=False,**kwargs):
+    def RunRamp(self,RampVariable:str,RampValues:list or np.array,FileName=None,dtreal:float=5e-8,t_stop:float=100,
+                ForceRun=False,LoadLast=True,ThresholdDens=False, Finalize=True, **kwargs):
         """
 
         Args:
@@ -122,7 +123,7 @@ class UBoxSimExt():
         self.InputLines.append('')
         for i,V in enumerate(RampValues):
             StrParams=['{}_{:2.3e}'.format(RampVariable.split('[')[0].split('.')[-1],V)]
-            self.CaseName=BaseCaseName+'_'+'_'.join(StrParams)
+            self.CaseName=BaseCaseName+'/'+'_'.join(StrParams)
             self.PrintInfo('Ramp iteration i={}/{} : {}={} : {}'.format(i+1,Niter,RampVariable,V,self.CaseName),color=Back.MAGENTA)
             
             self.InputLines[-1]=self.SetParamValue(RampVariable,V)
@@ -152,6 +153,8 @@ class UBoxSimExt():
                     Status=self.Cont(dt_tot=0.0,dtreal=dtreal,t_stop=t_stop,**kwargs)
                 if Status=='tstop':
                     self.Save('final_state_ramp')
+
+                        
                 else:
                     print('Exiting ramp... Need to add a routine to restart after dtkill')
                     return
