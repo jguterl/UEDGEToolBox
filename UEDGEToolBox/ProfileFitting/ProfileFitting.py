@@ -54,7 +54,53 @@ class ExperimentalData(object):
         self.Interpolant['ne'] = interpolate.InterpolatedUnivariateSpline(psi, ne)
         self.Interpolant['Te'] = interpolate.InterpolatedUnivariateSpline(psi, Te)
 
+class ProfileData(object):
+    def __init__(self,*args,**kwargs):
+        self.GetProfileData(*args,**kwargs)
 
+    def GetProfileData(self,Data,psi_shift=0):
+        if type(Data) == str:
+            self.ProfileData=np.load(Data,allow_pickle=True).tolist()
+        else:
+            self.ProfileData = Data
+            
+        self.ProfileData['psi'] = [p+psi_shift for p in self.ProfileData['psi']]
+        self.CreateInterpolant()
+
+
+    def PlotProfileData(self,ax=None, **kwargs):
+        if ax is None:
+            if not hasattr(self,'ax_data') or self.ax_data is None:
+                fig, self.ax_data = plt.subplots(2);
+        else:
+            self.ax_data = ax
+
+        if kwargs.get('label') is None:
+            kwargs['label'] = ' Generated Profile.'
+
+        self.ax_data[0].plot(self.ExpData['psi'],self.ExpData['ne'],**kwargs)
+        self.ax_data[1].plot(self.ExpData['psi'],self.ExpData['Te'],**kwargs)
+        self.ax_data[0].set_xlabel('\Psi')
+        self.ax_data[1].set_xlabel('\Psi')
+        self.ax_data[0].set_ylabel('n_e [m^-3]')
+        self.ax_data[1].set_ylabel('T_e [eV]')
+        self.ax_data[0].legend()
+        self.ax_data[1].legend()
+
+
+
+    def CreateInterpolant(self):
+        psi = np.array(self.ProfileData['psi'])
+        ne = np.array(self.ProfileData['ne'])
+        Te = np.array(self.ProfileData['Te'])
+        idx = np.unique(psi,return_index=True)[1]
+        ne = ne[idx]
+        psi = psi[idx]
+        Te= Te[idx]
+
+        self.Interpolant = {}
+        self.Interpolant['ne'] = interpolate.InterpolatedUnivariateSpline(psi, ne)
+        self.Interpolant['Te'] = interpolate.InterpolatedUnivariateSpline(psi, Te)
 class UBoxProfileFitting(ExperimentalData):
     def __init__(self, UBox, ixslice=None):
 
@@ -62,9 +108,9 @@ class UBoxProfileFitting(ExperimentalData):
         self.UBox = UBox
         self.Itermax = 10
 
-    def Setup(self,Data,gFileName, psi_shift=0.0,**kwargs):
+    def Setup(self,Data,gFileName, psi_shift=0.0, psi_left=None,psi_right=None,**kwargs):
         self.GetExpData(Data,psi_shift)
-        self.GetPsiN(gFileName)
+        self.GetPsiN(gFileName,psi_left,psi_right)
         self.SetIxSlice(**kwargs)
         self.InterpolateExpData()
         self.SetCore()
@@ -72,10 +118,23 @@ class UBoxProfileFitting(ExperimentalData):
         self.GetTranspCoeffs()
         self.PlotTranspCoeffs()
 
-    def GetPsiN(self,gFileName):
+    def GetPsiN(self,gFileName, psi_left = None, psi_right=None,sibry=None,simag=None):
+
         from omfit_classes.omfit_eqdsk import OMFITgeqdsk
+        from uedge import bbb
         g = OMFITgeqdsk(gFileName)
-        self.psi = (self.UBox.Grid['psi'][0,:,0]-g['SIMAG'])/(g['SIBRY'] - g['SIMAG'])
+        if sibry is None:
+            sibry = g['SIBRY']
+        if simag is None:
+                simag = g['SIMAG']
+        self.psi = (self.UBox.Grid['psi'][bbb.ixmp,:,0]-simag)/(sibry - simag)
+        if psi_left is not None and psi_right is not None:
+            
+            psi_bar_1 = self.UBox.Grid['psi'][bbb.ixmp,-1,0]
+            psi_bar_0 = self.UBox.Grid['psi'][bbb.ixmp,0,0]
+            a = (psi_bar_0 * psi_right - psi_bar_1*psi_left)/(psi_right-psi_left)
+            b = a + (psi_bar_1 - psi_bar_0)/(psi_right-psi_left)
+            self.psi =(self.UBox.Grid['psi'][bbb.ixmp,:,0]-a)/(b-a)
 
     def SetIxSlice(self,ixslice=None, **kwargs):
         from uedge import bbb
@@ -99,7 +158,7 @@ class UBoxProfileFitting(ExperimentalData):
         self.D_new = np.copy(self.D_old)
         self.kye_new = np.copy(self.kye_old)
 
-    def UpdateTranspCoeffs2(self, kye_max=100, D_max=6,D_min=0.1, kye_min=0.5,max_frac=20, alpha_te=0,beta_te=1.0,**kwargs):
+    def UpdateTranspCoeffs2(self, kye_max=100, D_max=10,D_min=0.01, kye_min=0.05,max_frac=20, alpha_te=0,beta_te=1.0,**kwargs):
         from uedge import bbb, com
         self.grad_ne = np.diff(bbb.ne[self.ixslice,0:])*com.gyc[self.ixslice,1:]
         self.grad_te = np.diff(bbb.te[self.ixslice,0:])*com.gyc[self.ixslice,1:]
@@ -136,7 +195,7 @@ class UBoxProfileFitting(ExperimentalData):
         print('final kye_use new/old',self.kye_new[0:-1]/self.kye_old[0:-1])
         
         
-    def UpdateTranspCoeffs(self, kye_max=100, D_max=10,D_min=0.01, kye_min=0.05,max_frac=1000, alpha_te=0,beta_te=1.0,**kwargs):
+    def UpdateTranspCoeffs(self, kye_max=100, D_max=100,D_min=0.0001, kye_min=0.0005,max_frac=1000,  alpha_D=1.0, alpha_ne=1.0, alpha_te=0,beta_te=1.0,skip_ky = False,**kwargs):
         from uedge import bbb, com
         self.UBox.Pandf()
         self.grad_ne = np.diff(bbb.ne[self.ixslice,0:])*com.gyc[self.ixslice,1:]
@@ -145,11 +204,17 @@ class UBoxProfileFitting(ExperimentalData):
         
         self.D_new[0:-1] = self.D_old[0:-1] * self.grad_ne/self.grad_ne_exp
         self.D_new[self.D_new>self.D_old*max_frac] = self.D_old[self.D_new>self.D_old*max_frac]*max_frac
-        fac = (self.grad_te/bbb.ev/self.grad_te_exp)**beta_te
-        fac2= (bbb.feey[self.ixslice,0:]/com.sy[self.ixslice,0:]-5.0/2.0*bbb.vey[self.ixslice,0:]*bbb.ne[self.ixslice,0:]*bbb.te[self.ixslice,0:])/bbb.ne[self.ixslice,0:]
-        fac3 = -fac2[0:-1]/(self.grad_te_exp*bbb.ev)
-        self.kye_new[0:-1] = fac3#self.kye_old[0:-1] * fac
-        print('self.kye_old[0:-1] * fac',self.kye_old[0:-1] * fac)
+        if not skip_ky:
+            fac = (self.grad_te/bbb.ev/self.grad_te_exp)**beta_te
+            fac2= (bbb.feey[self.ixslice,0:]/com.sy[self.ixslice,0:]-5.0/2.0*bbb.vey[self.ixslice,0:]*bbb.ne[self.ixslice,0:]*bbb.te[self.ixslice,0:])/bbb.ne[self.ixslice,0:]
+            fac3 = -fac2[0:-1]/(self.grad_te_exp*bbb.ev)
+            self.kye_new[0:-1] = fac3#self.kye_old[0:-1] * fac
+            print('self.kye_old[0:-1] * fac',self.kye_old[0:-1] * fac)
+            self.kye_new[-2:] = self.kye_new[-3]
+        else:
+            self.kye_new[0:-1] = self.kye_old[0:-1]
+        
+        
         
         # if beta_te!=1.0:
         #     print('Fitting with beta_te')
@@ -162,7 +227,7 @@ class UBoxProfileFitting(ExperimentalData):
         #     self.kye_new[0:-1] = self.kye_old[0:-1] *fac
         #Extrapolate
         
-        self.kye_new[-2:] = self.kye_new[-3]
+        
         self.D_new[-2:] = self.D_new[-3]
         print('self.kye_new[0:-1]',self.kye_new[0:-1])
 
@@ -172,7 +237,8 @@ class UBoxProfileFitting(ExperimentalData):
         self.kye_new[(self.kye_new>kye_max)] = kye_max
         self.kye_new[(self.kye_new<kye_min)] = kye_min
         self.D_new[(self.D_new>D_max)] = D_max
-
+        print(">>>>>>> Rescaling D with alpha_D={}".format(alpha_D))
+        self.D_new[0:-1] = self.D_old[0:-1] + (self.D_new[0:-1] - self.D_old[0:-1]) * alpha_D
         bbb.dif_use[:,:,0] =np.copy(self.D_new[:])
         bbb.kye_use[:,:] = np.copy(self.kye_new[:])
         bbb.kyi_use = np.copy(bbb.kye_use)
@@ -227,7 +293,7 @@ class UBoxProfileFitting(ExperimentalData):
         self.Itermax = Itermax
         self.Iteration = 0
         self.UBox.CaseName = CaseName + '_fit_{}'.format(self.Iteration)
-        self.SetCore()
+        #self.SetCore()
         self.PlotExpData()
         self.GetTranspCoeffs()
         self.PlotTranspCoeffs()
@@ -235,6 +301,7 @@ class UBoxProfileFitting(ExperimentalData):
         plt.show()
         plt.draw()
         plt.pause(0.5)
+        
         
         self.UBox.RunTime(dtreal=dtreal, dt_tot=dt_tot, **kwargs)
         self.PlotProfiles()
@@ -262,7 +329,7 @@ class UBoxProfileFitting(ExperimentalData):
             self.UBox.CaseName = CaseName + '_fit_{}'.format(self.Iteration)
             self.UpdateTranspCoeffs(**kwargs)
             self.PlotTranspCoeffs()
-            self.UBox.RunTime(dtreal=dtreal, dt_tot=dt_tot, **kwargs)
+            Status=self.UBox.RunTime(dtreal=dtreal, dt_tot=dt_tot, **kwargs)
             self.UBox.Save('transpcoeff.npy',DataSet=[('dif_use','kye_use')],DataType=['UEDGE'],OverWrite=True)
             #self.UBox.Save('last_transpcoeff.npy',DataSet=[('dif_use','kye_use')],DataType=['UEDGE'],OverWrite=True)
             #self.UBox.Save('last_fit.npy',OverWrite=True)
@@ -270,5 +337,10 @@ class UBoxProfileFitting(ExperimentalData):
             self.PlotProfiles()
             plt.pause(0.5)
             plt.show()
+            if Status=='tstop':
+                self.Save('final_state_fitting')
+            else:
+                print('Exiting fitting... Need to add a routine to restart after dtkill')
+                return
 
 

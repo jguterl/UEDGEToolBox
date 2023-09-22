@@ -155,7 +155,7 @@ class UBoxSimExt():
                     print('Exiting ramp... Need to add a routine to restart after dtkill')
                     return
                 
-    def RunRamps(self,Ramp:dict,iter_start=0,dtreal:float=5e-8,t_stop:float=10,ForceRun=False,LoadLast=True,ThresholdDens=False,**kwargs):
+    def RunRamps(self,Ramp:dict,iter_start=0,dtreal:float=5e-8,t_stop:float=10,ForceRun=False,LoadLast=True,ThresholdDens=False,BaseCaseName = None,**kwargs):
         """
 
         Args:
@@ -174,7 +174,8 @@ class UBoxSimExt():
         RampValues = list(Ramp.values())
         
         #self.Restore(FileName)
-        BaseCaseName = self.CaseName
+        if BaseCaseName is None:
+            BaseCaseName = self.CaseName
         print('BaseCaseName: {}'.format(BaseCaseName))
         print('Starting ramp for {} with values:{}'.format(RampVariables,RampValues))
         Niter=len(RampValues[0])
